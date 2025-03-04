@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/components/main/PatientInfo.dart';
+import 'package:flutter_exe/components/main/PrescriptionConsent.dart';
+import 'package:flutter_exe/components/main/WrittenConsent.dart';
 
 class MainContent extends StatelessWidget {
   const MainContent({super.key});
@@ -21,7 +23,18 @@ class MainContent extends StatelessWidget {
           ),
           SizedBox(width: 20),
           Expanded(
-            child: Text('MainContent'),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: PrescriptionConsent(),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: WrittenConsent(),
+                ),
+              ],
+            ),
           ),
         ],
       ),
