@@ -55,12 +55,22 @@ class PrescriptionConsent extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            child: const Text(
-                              '처방동의서',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '처방동의서',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  '처방일',
+                                  style: TextStyle(
+                                    fontSize: 13, 
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.gray300,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 16),
