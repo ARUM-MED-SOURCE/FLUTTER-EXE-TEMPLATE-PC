@@ -72,11 +72,23 @@ class PatientInfo extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        const Text(
-                          '환자 정보',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Colors.grey.shade200,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            '환자 정보',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 16),
