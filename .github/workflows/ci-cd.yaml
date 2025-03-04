@@ -28,9 +28,6 @@ jobs:
           channel: stable
           flutter-version: '3.19.4'
           
-      - name: Enable desktop support
-        run: flutter config --enable-desktop
-        
       - name: Install dependencies
         run: flutter pub get
         
