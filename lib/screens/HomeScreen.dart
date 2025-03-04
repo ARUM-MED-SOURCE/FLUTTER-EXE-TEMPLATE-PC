@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/layout/default_layout.dart';
 import 'package:flutter_exe/components/Sidebar.dart';
 import 'package:flutter_exe/components/main/MainComponent.dart';
+import 'package:flutter_exe/components/right/Consent.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   
@@ -12,8 +13,12 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Sidebar(),
-          Expanded(child: MainComponent()),
-          SizedBox(width: 100, height: 100, child: Text('Home')),
+          Expanded(
+            flex: 3,
+            child: MainComponent()),
+          Expanded(
+            flex: 1,
+            child: Consent()),
         ],
       ),  
     );
