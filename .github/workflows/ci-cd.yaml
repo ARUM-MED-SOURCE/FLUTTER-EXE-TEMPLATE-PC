@@ -10,14 +10,12 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [windows-latest, macos-latest]
         include:
           - os: windows-latest
             build: windows
           - os: macos-latest
             build: macos
-          - os: ubuntu-latest
-            build: linux
 
     runs-on: ${{ matrix.os }}
     
@@ -28,8 +26,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.19.3'
-          enable-desktop: true
+          flutter-version: '3.19.4'
           
       - name: Install dependencies
         run: flutter pub get

@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.0
+  sdk: '>=3.3.2 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -33,7 +33,7 @@ dependencies:
   # 날짜 선택
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0
+  intl: ^0.18.1
   # 서버 통신
   dio: ^5.8.0+1
   # 저장소
@@ -75,16 +75,10 @@ dev_dependencies:
   riverpod_generator: ^2.4.0
 
   # 문서 생성
-  dartdoc: ^8.3.2
+  dartdoc: ^7.0.0
 
-
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  # flutter_lints 버전을 3.0.1로 다운그레이드
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
