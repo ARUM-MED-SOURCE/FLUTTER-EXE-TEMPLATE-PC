@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const DefaultLayout(
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Sidebar(),
           Expanded(child: MainComponent()),

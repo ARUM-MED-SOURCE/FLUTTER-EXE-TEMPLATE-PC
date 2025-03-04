@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/components/main/PatientInfo.dart';
+
 class MainContent extends StatelessWidget {
   const MainContent({super.key});
 
   @override
   Widget build(BuildContext context) {  
     return Container(
-      width: 1000,
-      height: 1000,
+      height: MediaQuery.of(context).size.height,
       color: AppColors.blue50,
-      child: Column(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('MainContent'),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: PatientInfo(),
+            ),
+          ),
+          SizedBox(width: 20),
+          Expanded(
+            child: Text('MainContent'),
+          ),
         ],
       ),
     );

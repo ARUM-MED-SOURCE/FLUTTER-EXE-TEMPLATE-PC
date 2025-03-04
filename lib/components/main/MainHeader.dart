@@ -45,7 +45,7 @@ class _MainHeaderState extends State<MainHeader> {
               width: 150,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                border: Border.all(color: AppColors.gray50),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -57,7 +57,11 @@ class _MainHeaderState extends State<MainHeader> {
                       : dateFormat.format(DateTime.now()),
                     style: const TextStyle(fontSize: 14),
                   ),
-                  const Icon(Icons.calendar_today, size: 16),
+                  const Icon(
+                    Icons.calendar_today,
+                    size: 16,
+                    color: AppColors.gray200,
+                  ),
                 ],
               ),
             ),
@@ -104,7 +108,7 @@ class _MainHeaderState extends State<MainHeader> {
       width: 150,
       height: 38,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.withOpacity(0.3)),
+        border: Border.all(color: AppColors.gray50),
         borderRadius: BorderRadius.circular(4),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -129,7 +133,7 @@ class _MainHeaderState extends State<MainHeader> {
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2025, 12, 31),
+      lastDate: DateTime(2030, 12, 31),
       locale: const Locale('ko', 'KR'),
     );
 
