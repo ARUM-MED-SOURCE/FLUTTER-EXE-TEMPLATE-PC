@@ -1,116 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
 
+const _patientData = [
+  {
+    'name': '김영진',
+    'id': '00000010',
+    'type': 'OS',
+    'ward': 'A5 / 85',
+    'ageGender': '32 / 여',
+    'admissionDate': '2023/07/31 / B7 / 14',
+    'doctor': '장준혁',
+    'attendingDoctor': '최준영',
+    'diagnosis': '발목 골절',
+    'alert': 'BSA : FM90.00, 혈액형 : O+'
+  },
+  {
+    'name': '김영진',
+    'id': '00000010',
+    'type': 'OS',
+    'ward': 'A5 / 85',
+    'ageGender': '32 / 여',
+    'admissionDate': '2023/07/31 / B7 / 14',
+    'doctor': '장준혁',
+    'attendingDoctor': '최준영',
+    'diagnosis': '발목 골절',
+    'alert': 'BSA : FM90.00, 혈액형 : O+'
+  },
+  {
+    'name': '김영진',
+    'id': '00000010',
+    'type': 'OS',
+    'ward': 'A5 / 85',
+    'ageGender': '32 / 여',
+    'admissionDate': '2023/07/31 / B7 / 14',
+    'doctor': '장준혁',
+    'attendingDoctor': '최준영',
+    'diagnosis': '발목 골절',
+    'alert': 'BSA : FM90.00, 혈액형 : O+'
+  }
+];
+
 class PatientInfo extends StatelessWidget {
   const PatientInfo({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height - 100,
       color: AppColors.blue50,
-      child: Column(
-        children: [
-          Container(
-            color: AppColors.white,
-            padding: EdgeInsets.zero,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey.shade200),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey.shade200),
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          '환자 정보',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ListView(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.only(bottom: 24),
+                          children: _patientData.map((patient) => _buildPatientCard(
+                              name: patient['name'] ?? '',
+                              id: patient['id'] ?? '',
+                              type: patient['type'] ?? '',
+                              ward: patient['ward'] ?? '',
+                              ageGender: patient['ageGender'] ?? '',
+                              admissionDate: patient['admissionDate'] ?? '',
+                              doctor: patient['doctor'] ?? '',
+                              attendingDoctor: patient['attendingDoctor'] ?? '',
+                              diagnosis: patient['diagnosis'] ?? '',
+                              alert: patient['alert'] ?? '',
+                            ),
+                          ).toList(),
+                        ),
+                      ],
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      const Text(
-                        '환자 정보',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height - 100,
-                        child: ListView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(bottom: 24),
-                          children: [
-                            _buildPatientCard(
-                              name: '김영진',
-                              id: '00000010',
-                              type: 'OS',
-                              ward: 'A5 / 85',
-                              ageGender: '32 / 여',
-                              admissionDate: '2023/07/31 / B7 / 14',
-                              doctor: '장준혁',
-                              attendingDoctor: '최준영',
-                              diagnosis: '발목 골절',
-                              alert: 'BSA : FM90.00, 혈액형 : O+',
-                            ),
-                            _buildPatientCard(
-                              name: '김영진',
-                              id: '00000010',
-                              type: 'OS',
-                              ward: 'A5 / 85',
-                              ageGender: '32 / 여',
-                              admissionDate: '2023/07/31 / B7 / 14',
-                              doctor: '장준혁',
-                              attendingDoctor: '최준영',
-                              diagnosis: '발목 골절',
-                              alert: 'BSA : FM90.00, 혈액형 : O+',
-                            ),
-                            _buildPatientCard(
-                              name: '김영진',
-                              id: '00000010',
-                              type: 'OS',
-                              ward: 'A5 / 85',
-                              ageGender: '32 / 여',
-                              admissionDate: '2023/07/31 / B7 / 14',
-                              doctor: '장준혁',
-                              attendingDoctor: '최준영',
-                              diagnosis: '발목 골절',
-                              alert: 'BSA : FM90.00, 혈액형 : O+',
-                            ),
-                            _buildPatientCard(
-                              name: '김영진',
-                              id: '00000010',
-                              type: 'OS',
-                              ward: 'A5 / 85',
-                              ageGender: '32 / 여',
-                              admissionDate: '2023/07/31 / B7 / 14',
-                              doctor: '장준혁',
-                              attendingDoctor: '최준영',
-                              diagnosis: '발목 골절',
-                              alert: 'BSA : FM90.00, 혈액형 : O+',
-                            ),
-                            _buildPatientCard(
-                              name: '김영진',
-                              id: '00000010',
-                              type: 'OS',
-                              ward: 'A5 / 85',
-                              ageGender: '32 / 여',
-                              admissionDate: '2023/07/31 / B7 / 14',
-                              doctor: '장준혁',
-                              attendingDoctor: '최준영',
-                              diagnosis: '발목 골절',
-                              alert: 'BSA : FM90.00, 혈액형 : O+',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -133,7 +128,9 @@ class PatientInfo extends StatelessWidget {
         border: Border(
           bottom: BorderSide(color: Colors.grey.shade200),
         ),
+        borderRadius: BorderRadius.circular(12),
       ),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
