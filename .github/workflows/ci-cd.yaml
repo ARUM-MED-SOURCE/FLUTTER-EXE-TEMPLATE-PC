@@ -29,8 +29,10 @@ jobs:
         with:
           channel: stable
           flutter-version: '3.19.4'
-          enable-desktop: true
           
+      - name: Enable desktop support
+        run: flutter config --enable-desktop
+        
       - name: Install dependencies
         run: flutter pub get
         
@@ -45,6 +47,3 @@ jobs:
         with:
           name: ${{ matrix.build }}-release
           path: build/${{ matrix.build }}/release/bundle
-
-environment:
-  sdk: '>=3.3.2 <4.0.0'
