@@ -41,7 +41,7 @@ jobs:
         run: flutter build ${{ matrix.build }} --release
         
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.build }}-release
           path: build/${{ matrix.build }}/release/bundle
