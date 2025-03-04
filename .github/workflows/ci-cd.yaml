@@ -27,7 +27,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: beta
+          channel: stable
           flutter-version: '3.19.4'
           enable-desktop: true
           
@@ -45,3 +45,6 @@ jobs:
         with:
           name: ${{ matrix.build }}-release
           path: build/${{ matrix.build }}/release/bundle
+
+environment:
+  sdk: '>=3.3.2 <4.0.0'
