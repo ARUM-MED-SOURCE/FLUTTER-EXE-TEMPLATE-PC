@@ -16,8 +16,6 @@ jobs:
             build: windows
           - os: macos-latest
             build: macos
-          - os: ubuntu-latest
-            build: linux
 
     runs-on: ${{ matrix.os }}
     
