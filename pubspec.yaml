@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # 날짜 선택
+  flutter_localizations:
+    sdk: flutter
   intl: ^0.19.0
   # 서버 통신
   dio: ^5.8.0+1

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/layout/default_layout.dart';
 import 'package:flutter_exe/components/Sidebar.dart';
-
+import 'package:flutter_exe/components/main/MainComponent.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   
@@ -11,7 +11,8 @@ class HomeScreen extends StatelessWidget {
       child: Row(
         children: [
           Sidebar(),
-          Expanded(child: Text('Home')),
+          Expanded(child: MainComponent()),
+          SizedBox(width: 100, height: 100, child: Text('Home')),
         ],
       ),  
     );
