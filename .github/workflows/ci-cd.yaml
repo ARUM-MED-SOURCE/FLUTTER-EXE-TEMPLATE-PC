@@ -28,7 +28,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.19.0'
+          flutter-version: '3.19.3'
           enable-desktop: true
           
       - name: Install dependencies
@@ -41,7 +41,7 @@ jobs:
         run: flutter build ${{ matrix.build }} --release
         
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.build }}-release
           path: build/${{ matrix.build }}/release/bundle
