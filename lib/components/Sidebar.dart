@@ -8,18 +8,19 @@ class Sidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSelected = false;
     return Container(
-      width: 200,
-      height: 1000,
+      width: 150,
       color: AppColors.blue500,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 44),
-          Image.asset(
-            'assets/images/company-logo-color-white.png',
-            width: 184,
-            height: 44,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Image.asset(
+              'assets/images/company-logo-color-white.png',
+            ),
           ),
+          const SizedBox(height: 30),
           ...['입원', '외래', '응급', '수술', '검사실', '검색', '빠른조회'].map((e) => Column(
             children: [
               const SizedBox(height: 12),

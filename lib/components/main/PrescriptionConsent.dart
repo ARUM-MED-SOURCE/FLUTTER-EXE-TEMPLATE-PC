@@ -45,7 +45,7 @@ class _PrescriptionConsentState extends State<PrescriptionConsent> {
     return Container(
       color: AppColors.blue50,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -59,7 +59,7 @@ class _PrescriptionConsentState extends State<PrescriptionConsent> {
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade200),
+                    bottom: BorderSide(color: AppColors.gray100),
                   ),
                 ),
                 child: Column(
@@ -152,7 +152,7 @@ class PrescriptionConsentItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200),
+          bottom: BorderSide(color: AppColors.gray100),
         ),
       ),
       child: Row(
