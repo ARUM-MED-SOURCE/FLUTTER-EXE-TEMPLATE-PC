@@ -121,7 +121,19 @@ class PatientInfoItem extends StatelessWidget {
   final String attendingDoctor;
   final String diagnosis;
   final String alert; 
-  const PatientInfoItem({super.key, required this.name, required this.id, required this.type, required this.ward, required this.ageGender, required this.admissionDate, required this.doctor, required this.attendingDoctor, required this.diagnosis, required this.alert});
+  const PatientInfoItem({
+    super.key, 
+    required this.name, 
+    required this.id, 
+    required this.type, 
+    required this.ward, 
+    required this.ageGender, 
+    required this.admissionDate, 
+    required this.doctor, 
+    required this.attendingDoctor, 
+    required this.diagnosis, 
+    required this.alert,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -129,100 +141,56 @@ class PatientInfoItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200),
+          bottom: BorderSide(color: AppColors.gray100),
         ),
       ),
       child: Row(
         children: [
-         _buildPatientCard(name: name, id: id, type: type, ward: ward, ageGender: ageGender, admissionDate: admissionDate, doctor: doctor, attendingDoctor: attendingDoctor, diagnosis: diagnosis, alert: alert),
-        ],
-      ),
-    );
-  }
-}
-
- 
-
-  Widget _buildPatientCard({
-    required String name,
-    required String id,
-    required String type,
-    required String ward,
-    required String ageGender,
-    required String admissionDate,
-    required String doctor,
-    required String attendingDoctor,
-    required String diagnosis,
-    required String alert,
-  }) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          border: Border(
-            bottom: BorderSide(color: Colors.grey.shade200),
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildPatientInfoRow(name, id, type),
-            const SizedBox(height: 12),
-            _buildInfoGrid(
-              '병동/병실: $ward',
-              '나이/성별: $ageGender',
-              '입원일: $admissionDate',
-              '지정의: $doctor',
-              '주치의: $attendingDoctor',
-              '진단명: $diagnosis',
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPatientInfoRow(name, id, type),
+                  const SizedBox(height: 12),
+                  _buildInfoGrid(
+                    ward,
+                    ageGender,
+                    admissionDate,
+                    doctor,
+                    attendingDoctor,
+                    diagnosis,
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(4),
+                  Row(
+                    children: [
+                      Text(
+                        'ALERT',
+                        style: TextStyle(
+                          color: AppColors.pink500,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        alert,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ],
                   ),
-                  child: const Text(
-                    'ALERT',
+                  const SizedBox(height: 4),
+                  Text(
+                    '복숭아 알레르기',
                     style: TextStyle(
-                      color: Colors.red,
+                      color: AppColors.pink500,
                       fontSize: 12,
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  alert,
-                  style: const TextStyle(fontSize: 12),
-                ),
-              ],
-            ),
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(0, 30),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              ),
-              child: const Text(
-                '복숭아 알레르기',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 12,
-                ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -238,19 +206,33 @@ class PatientInfoItem extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        Text(
-          id,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey.shade600,
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.blue100,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            id,
+            style: TextStyle(fontSize: 12, color: AppColors.blue300),
           ),
         ),
         const SizedBox(width: 8),
-        Text(
-          type,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey.shade600,
+        Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 4,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.blue70,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Text(
+            type,
+            style: TextStyle(fontSize: 12, color: AppColors.blue200),
           ),
         ),
       ],
@@ -265,33 +247,58 @@ class PatientInfoItem extends StatelessWidget {
     String attendingDoctor,
     String diagnosis,
   ) {
+    final infoRows = [
+      [
+        _buildInfoItem('병동/병실: ', ward),
+        _buildInfoItem('나이/성별: ', ageGender),
+      ],
+      [
+        _buildInfoItem('입원일: ', admissionDate),
+        _buildInfoItem('지정의: ', doctor),
+      ],
+      [
+        _buildInfoItem('주치의: ', attendingDoctor),
+        _buildInfoItem('진단명: ', diagnosis),
+      ],
+    ];
+
     return Column(
+      children: infoRows.map((row) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: Row(
+            children: row.map((widget) => 
+              Expanded(
+                child: widget,
+              ),
+            ).toList(),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildInfoItem(String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Expanded(child: Text(ward, style: const TextStyle(fontSize: 12))),
-            Expanded(child: Text(ageGender, style: const TextStyle(fontSize: 12))),
-          ],
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.gray500,
+            height: 1.5,
+          ),
         ),
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            Expanded(
-                child:
-                    Text(admissionDate, style: const TextStyle(fontSize: 12))),
-            Expanded(child: Text(doctor, style: const TextStyle(fontSize: 12))),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            Expanded(
-                child:
-                    Text(attendingDoctor, style: const TextStyle(fontSize: 12))),
-            Expanded(
-                child: Text(diagnosis, style: const TextStyle(fontSize: 12))),
-          ],
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 12,
+              color: AppColors.black,
+            height: 1.5,
+          ),
         ),
       ],
     );
   }
+}

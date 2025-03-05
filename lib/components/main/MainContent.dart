@@ -16,12 +16,8 @@ class MainContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: PatientInfo(),
             ),
-          ),
-          SizedBox(width: 20),
           Expanded(
             child: Column(
               children: [
