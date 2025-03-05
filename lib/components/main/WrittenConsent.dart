@@ -65,7 +65,7 @@ class _WrittenConsentState extends State<WrittenConsent> {
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade200),
+                    bottom: BorderSide(color: AppColors.gray100),
                   ),
                 ),
                 child: Column(
@@ -186,7 +186,7 @@ class WrittenConsentItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200),
+          bottom: BorderSide(color: AppColors.gray100),
         ),
       ),
       child: SingleChildScrollView(

@@ -8,15 +8,15 @@ class MainComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 1000,
       color: AppColors.blue50,
       child: Column(
-          children: [
-            MainHeader(),
-            const SizedBox(height: 10),
-            MainContent(),
-          ],
-        ),
+        children: [
+          MainHeader(),
+          Expanded(
+            child: MainContent(),
+          ),
+        ],
+      ),
     );
   } 
 }

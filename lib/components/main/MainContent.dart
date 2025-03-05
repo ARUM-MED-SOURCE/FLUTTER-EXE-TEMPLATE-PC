@@ -10,10 +10,9 @@ class MainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {  
     return Container(
-      height: MediaQuery.of(context).size.height - 100,
       color: AppColors.blue50,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
               child: PatientInfo(),

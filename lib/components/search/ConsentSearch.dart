@@ -37,88 +37,92 @@ class ConsentSearch extends StatefulWidget {
 }
 
 class _ConsentSearchState extends State<ConsentSearch> {
+  String selectedOption = 'all';
+
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return Container(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
-
-          ),
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade200),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('동의서 검색', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                Transform.scale(
+                  scale: 0.8,
+                  child: Radio(
+                    value: 'all',
+                    groupValue: selectedOption,
+                    onChanged: (value) => setState(() => selectedOption = value!),
+                    activeColor: AppColors.blue300,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      '동의서 검색',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text('동의서 검색', 
-                            style: TextStyle(fontSize: 14, color: AppColors.gray500)
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12, 
-                              vertical: 8
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.gray100),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Icon(
-                                  Icons.calendar_today,
-                                  size: 16,
-                                  color: AppColors.gray200,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  child: ListView.builder(
-                    itemCount: _consentData.length,
-                    itemBuilder: (context, index) {
-                      final consent = _consentData[index];
-                      return ConsentSearchItem(
-                        name: consent['name'] ?? '',
-                        id: consent['id'] ?? '',
-                      );
-                    },
+                const Text('전체', style: TextStyle(fontSize: 12)),
+                Transform.scale(
+                  scale: 0.8,
+                  child: Radio(
+                    value: 'set',
+                    groupValue: selectedOption,
+                    onChanged: (value) => setState(() => selectedOption = value!),
+                    activeColor: AppColors.blue300,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
+                const Text('세트동의서', style: TextStyle(fontSize: 12)),
+                Transform.scale(
+                  scale: 0.8,
+                  child: Radio(
+                    value: 'favorite',
+                    groupValue: selectedOption,
+                    onChanged: (value) => setState(() => selectedOption = value!),
+                    activeColor: AppColors.blue300,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                ),
+                const Text('즐겨찾기', style: TextStyle(fontSize: 12)),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: '동의서 검색',
+                hintStyle: TextStyle(color: AppColors.gray500),
+                filled: true,
+                fillColor: AppColors.blue150,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                suffixIcon: Icon(Icons.search, color: AppColors.blue300),
               ),
-            ],
-          ),
+              )
+            ),
+            const SizedBox(height: 16),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: AppColors.gray100,
+            ),
+            Expanded(
+              child: ListView.separated(
+                itemCount: _consentData.length,
+                separatorBuilder: (context, index) => const Divider(height: 1, color: AppColors.gray100),
+                itemBuilder: (context, index) {
+                  final consent = _consentData[index];
+                  return ConsentSearchItem(
+                    name: consent['name'] ?? '',
+                    id: consent['id'] ?? '',
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -134,25 +138,34 @@ class ConsentSearchItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200),
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Row(
         children: [
-          Text('$id.', style: const TextStyle(fontSize: 14)),
+          SizedBox(
+            width: 24,
+            child: Text(
+              '$id.',
+              style: const TextStyle(fontSize: 14, color: AppColors.black),
+            ),
+          ),
           Checkbox(
             value: false,
             onChanged: (value) {},
-            side: BorderSide(color: AppColors.gray150),
+            activeColor: AppColors.blue300,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4),
+            ),
           ),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
               name,
               style: const TextStyle(fontSize: 14),
             ),
+          ),
+          IconButton(
+            icon: Icon(Icons.star_border, color: Colors.grey[400]),
+            onPressed: () {},
           ),
         ],
       ),

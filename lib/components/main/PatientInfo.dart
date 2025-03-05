@@ -37,6 +37,18 @@ const _patientData = [
     'attendingDoctor': '최준영',
     'diagnosis': '발목 골절',
     'alert': 'BSA : FM90.00, 혈액형 : O+'
+  },
+  {
+    'name': '김영진',
+    'id': '00000010',
+    'type': 'OS',
+    'ward': 'A5 / 85',
+    'ageGender': '32 / 여',
+    'admissionDate': '2023/07/31 / B7 / 14',
+    'doctor': '장준혁',
+    'attendingDoctor': '최준영',
+    'diagnosis': '발목 골절',
+    'alert': 'BSA : FM90.00, 혈액형 : O+'
   }
 ];
 
@@ -54,7 +66,7 @@ class _PatientInfoState extends State<PatientInfo> {
     return Container(
       color: AppColors.blue50,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -69,7 +81,7 @@ class _PatientInfoState extends State<PatientInfo> {
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade200),
+                    bottom: BorderSide(color: AppColors.gray100),
                   ),
                 ),
                 width: double.infinity,
