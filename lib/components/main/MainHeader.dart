@@ -89,13 +89,21 @@ class _MainHeaderState extends State<MainHeader> {
           
           // 검색 아이콘
           IconButton(
-            icon: const Icon(Icons.search, size: 20),
+            icon: const Icon(
+              Icons.search,
+              size: 20,
+              color: AppColors.gray400,
+            ),
             onPressed: () {},
           ),
           
           // 새로고침 아이콘
           IconButton(
-            icon: const Icon(Icons.refresh, size: 20),
+            icon: const Icon(
+              Icons.refresh,
+              size: 20,
+              color: AppColors.gray400,
+            ),
             onPressed: () {},
           ),
         ],
@@ -118,12 +126,16 @@ class _MainHeaderState extends State<MainHeader> {
         items: items.map((String item) {
           return DropdownMenuItem<String>(
             value: item,
-            child: Text(item, style: const TextStyle(fontSize: 14)),
+            child: Text(item, style: const TextStyle(fontSize: 14, color: AppColors.gray300)),
           );
         }).toList(),
         onChanged: onChanged,
         underline: Container(),
-        icon: const Icon(Icons.arrow_drop_down, size: 20),
+        icon: const Icon(
+          Icons.arrow_drop_down,
+          size: 20,
+          color: AppColors.gray300,
+        ),
       ),
     );
   }
