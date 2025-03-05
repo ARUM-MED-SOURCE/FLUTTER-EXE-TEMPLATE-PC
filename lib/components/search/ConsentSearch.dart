@@ -152,6 +152,7 @@ class ConsentSearchItem extends StatelessWidget {
             value: false,
             onChanged: (value) {},
             activeColor: AppColors.blue300,
+            side: BorderSide(color: AppColors.gray200),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4),
             ),
@@ -164,7 +165,7 @@ class ConsentSearchItem extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.star_border, color: Colors.grey[400]),
+            icon: Icon(Icons.star_border, color: AppColors.gray200),
             onPressed: () {},
           ),
         ],
