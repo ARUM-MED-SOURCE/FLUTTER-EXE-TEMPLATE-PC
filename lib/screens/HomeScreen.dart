@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/layout/default_layout.dart';
 import 'package:flutter_exe/components/Sidebar.dart';
 import 'package:flutter_exe/components/main/MainComponent.dart';
-import 'package:flutter_exe/components/right/Consent.dart';
+import 'package:flutter_exe/components/search/ConsentSearch.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
             child: MainComponent()),
           Expanded(
             flex: 1,
-            child: Consent()),
+            child: ConsentSearch()),
         ],
       ),  
     );
