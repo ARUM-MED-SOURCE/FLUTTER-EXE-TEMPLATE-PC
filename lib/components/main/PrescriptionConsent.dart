@@ -50,7 +50,8 @@ class _PrescriptionConsentState extends State<PrescriptionConsent> {
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.shade200),
+            border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
+
           ),
           child: Column(
             children: [
@@ -82,7 +83,7 @@ class _PrescriptionConsentState extends State<PrescriptionConsent> {
                             vertical: 8
                           ),
                           decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.gray50),
+                            border: Border.all(color: AppColors.gray100),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Row(
@@ -156,19 +157,16 @@ class PrescriptionConsentItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SizedBox(
-            width: 30,
-            child: Text(
-              id,
-              style: const TextStyle(
-                color: AppColors.gray500,
-                fontSize: 14,
-              ),
-            ),
-          ),
+          Text('$id.', style: const TextStyle(fontSize: 14)),
           Checkbox(
             value: false,
             onChanged: (value) {},
+            // activeColor: AppColors.gray500,
+            // fillColor: MaterialStateProperty.all(AppColors.gray500),
+            // hoverColor: AppColors.gray500,
+            // focusColor: AppColors.gray500,
+            // checkColor: AppColors.white,
+            side: BorderSide(color: AppColors.gray150),
           ),
           Expanded(
             child: Text(

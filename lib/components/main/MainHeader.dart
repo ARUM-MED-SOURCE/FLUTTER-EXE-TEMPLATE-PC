@@ -45,7 +45,7 @@ class _MainHeaderState extends State<MainHeader> {
               width: 150,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.gray50),
+                border: Border.all(color: AppColors.gray100),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -116,7 +116,7 @@ class _MainHeaderState extends State<MainHeader> {
       width: 150,
       height: 38,
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.gray50),
+        border: Border.all(color: AppColors.gray100),
         borderRadius: BorderRadius.circular(4),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

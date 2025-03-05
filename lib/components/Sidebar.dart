@@ -25,7 +25,7 @@ class Sidebar extends StatelessWidget {
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: () {},
-                child: Text(e, style: TextStyle(color: isSelected ? AppColors.white : AppColors.gray100),),
+                child: Text(e, style: TextStyle(color: isSelected ? AppColors.white : AppColors.gray200),),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isSelected ? AppColors.blue400 : AppColors.blue500,
                   foregroundColor: Colors.white,
