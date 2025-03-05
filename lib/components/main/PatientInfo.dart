@@ -54,7 +54,7 @@ class _PatientInfoState extends State<PatientInfo> {
     return Container(
       color: AppColors.blue50,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.white,

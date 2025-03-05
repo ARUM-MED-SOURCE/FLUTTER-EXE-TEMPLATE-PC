@@ -51,7 +51,7 @@ class _WrittenConsentState extends State<WrittenConsent> {
     return Container(
       color: AppColors.blue50,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.white,
