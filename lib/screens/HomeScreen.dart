@@ -14,10 +14,10 @@ class HomeScreen extends StatelessWidget {
         children: [
           Sidebar(),
           Expanded(
-            flex: 3,
+            flex: 11,
             child: MainComponent()),
           Expanded(
-            flex: 1,
+            flex: 4,
             child: ConsentSearch()),
         ],
       ),  
