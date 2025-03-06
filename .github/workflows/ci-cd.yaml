@@ -74,7 +74,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "${{ steps.outcome == 'success' && '✅' || '❌' }} Flutter Desktop ${{ matrix.build }} 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ steps.outcome }}\nOS: ${{ matrix.os }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              "text": "${{ (matrix.os == 'windows-latest' && steps.upload-windows-artifact.outcome == 'success' || matrix.os == 'macos-latest' && steps.upload-macos-artifact.outcome == 'success') && '✅' || '❌' }} Flutter Desktop ${{ matrix.build }} 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ (matrix.os == 'windows-latest' && steps.upload-windows-artifact.outcome) || (matrix.os == 'macos-latest' && steps.upload-macos-artifact.outcome) }}\nOS: ${{ matrix.os }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
