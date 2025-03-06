@@ -11,10 +11,10 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
-      environment: ${{ steps.set-environment.outputs.environment }}
+      environment: ${{ steps.set-env.outputs.environment }}
     steps:
-      - name: set environment
-        id: set-environment
+      - name: set env
+        id: set-env
         run: |
           echo ${{ github.base_ref }}
           echo "environment=dev" >> $GITHUB_OUTPUT
@@ -22,14 +22,14 @@ jobs:
           if [ ${{ github.base_ref }} == "main" ]; then
             echo "environment=prod" >> $GITHUB_OUTPUT
           fi
-      - name: check environment
-        run: echo ${{ steps.set-environment.outputs.environment }}
+      - name: check env
+        run: echo ${{ steps.set-env.outputs.environment }}
 
   build:
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
-        environment: ${{ fromJson(needs.set-environment.outputs.environment) }}
+        environment: ${{ fromJson(needs.set-env.outputs.environment) }}
         include:
           - os: windows-latest
             build: windows
@@ -39,7 +39,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs: [set-environment]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
