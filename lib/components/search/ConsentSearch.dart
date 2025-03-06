@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/components/common/InfoCard.dart';
+import 'package:flutter_exe/components/common/InfoHeader.dart';
+import 'package:flutter_exe/components/common/InfoList.dart';
+import 'package:flutter_exe/components/common/ConsentItem.dart';
 
 class ConsentSearch extends StatefulWidget {
   const ConsentSearch({super.key});
@@ -19,6 +23,7 @@ class _ConsentSearchState extends State<ConsentSearch> {
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ConsentSearchCard(
         header: ConsentSearchHeader(
+          title: '동의서 검색',
           options: ConsentSearchOptions(
             selectedOption: selectedOption,
             onOptionChanged: (value) => setState(() => selectedOption = value),
@@ -37,40 +42,24 @@ class _ConsentSearchState extends State<ConsentSearch> {
   }
 }
 
-class ConsentSearchCard extends StatelessWidget {
-  final Widget header;
-  final Widget body;
-
-  const ConsentSearchCard({ 
-    required this.header,
-    required this.body,
+class ConsentSearchCard extends InfoCard {
+  const ConsentSearchCard({
+    required Widget header,
+    required Widget body,
     super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        // borderRadius: BorderRadius.circular(20),
-        // border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [header,  body],
-      ),
-    );
-  }
+  }) : super(header: header, body: body);
 }
 
-class ConsentSearchHeader extends StatelessWidget {
+class ConsentSearchHeader extends InfoHeader {
   final Widget options;
   final Widget searchBar;
+
   const ConsentSearchHeader({
-    super.key, 
-    required this.options, 
+    required String title,
+    required this.options,
     required this.searchBar,
-  });
+    super.key,
+  }) : super(title: title);
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +75,8 @@ class ConsentSearchHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '동의서 검색',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           options,
           searchBar,
@@ -96,9 +85,6 @@ class ConsentSearchHeader extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class ConsentSearchOptions extends StatelessWidget {
   final String selectedOption;
@@ -165,103 +151,30 @@ class ConsentSearchBar extends StatelessWidget {
   }
 }
 
-class ConsentSearchList extends StatelessWidget {
-  final List<Map<String, String>> consents;
+class ConsentSearchList extends InfoList<Map<String, String>> {
   final Set<String> selectedConsents;
   final Set<String> favoriteConsents;
   final Function(String) onConsentSelected;
   final Function(String) onFavoriteToggled;
 
   const ConsentSearchList({
-    required this.consents,
+    required List<Map<String, String>> consents,
     required this.selectedConsents,
     required this.favoriteConsents,
     required this.onConsentSelected,
     required this.onFavoriteToggled,
     super.key,
-  });
+  }) : super(items: consents);
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        itemCount: consents.length,
-        separatorBuilder: (context, index) => const Divider(
-          height: 1,
-        color: AppColors.gray100,
-      ),
-      itemBuilder: (context, index) {
-        final consent = consents[index];
-        return ConsentSearchItem(
-          name: consent['name'] ?? '',
-          id: consent['id'] ?? '',
-          isSelected: selectedConsents.contains(consent['id']),
-          isFavorite: favoriteConsents.contains(consent['id']),
-          onSelected: () => onConsentSelected(consent['id']!),
-          onFavoriteToggled: () => onFavoriteToggled(consent['id']!),
-        );
-      },
-      ),
-    );  
-  }
-}
-
-class ConsentSearchItem extends StatelessWidget {
-  final String name;
-  final String id;
-  final bool isSelected;
-  final bool isFavorite;
-  final VoidCallback onSelected;
-  final VoidCallback onFavoriteToggled;
-
-  const ConsentSearchItem({
-    required this.name,
-    required this.id,
-    required this.isSelected,
-    required this.isFavorite,
-    required this.onSelected,
-    required this.onFavoriteToggled,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 24,
-            child: Text(
-              '$id.',
-              style: const TextStyle(fontSize: 14, color: AppColors.black),
-            ),
-          ),
-          Checkbox(
-            value: isSelected,
-            onChanged: (_) => onSelected(),
-            activeColor: AppColors.blue300,
-            side: BorderSide(color: AppColors.gray200),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              name,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
-          IconButton(
-            icon: Icon(
-              isFavorite ? Icons.star : Icons.star_border,
-              color: isFavorite ? AppColors.blue300 : AppColors.gray200,
-            ),
-            onPressed: onFavoriteToggled,
-          ),
-        ],
-      ),
+  Widget buildItem(Map<String, String> consent) {
+    return FavoriteConsentItem(
+      name: consent['name'] ?? '',
+      id: consent['id'] ?? '',
+      isSelected: selectedConsents.contains(consent['id']),
+      isFavorite: favoriteConsents.contains(consent['id']),
+      onSelected: () => onConsentSelected(consent['id']!),
+      onFavoriteToggled: () => onFavoriteToggled(consent['id']!),
     );
   }
 }

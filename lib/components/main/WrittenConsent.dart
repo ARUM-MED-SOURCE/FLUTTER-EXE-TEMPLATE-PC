@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_exe/components/common/InfoCard.dart';
+import 'package:flutter_exe/components/common/InfoHeader.dart';
+import 'package:flutter_exe/components/common/InfoList.dart';
+import 'package:flutter_exe/components/common/DatePickerField.dart';
+import 'package:flutter_exe/components/common/ConsentItem.dart';
 
 class WrittenConsent extends StatefulWidget {
   const WrittenConsent({super.key});
@@ -10,7 +15,8 @@ class WrittenConsent extends StatefulWidget {
 }
 
 class _WrittenConsentState extends State<WrittenConsent> {
-  DateTime? selectedDate = DateTime.now();
+  DateTime? startDate = DateTime.now();
+  DateTime? endDate = DateTime.now();
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd', 'ko_KR');
 
   @override
@@ -20,66 +26,69 @@ class _WrittenConsentState extends State<WrittenConsent> {
       padding: const EdgeInsets.all(8.0),
       child: WrittenConsentCard(
         header: WrittenConsentHeader(
-          selectedDate: selectedDate,
+          title: '작성동의서',
+          startDate: startDate,
+          endDate: endDate,
           dateFormat: dateFormat,
-          onDateSelected: _selectDate,
+          onStartDateSelected: _selectStartDate,
+          onEndDateSelected: _selectEndDate,
         ),
         body: WrittenConsentList(consents: _consentData),
       ),
     );
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate ?? DateTime.now(),
+      initialDate: startDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2030, 12, 31),
       locale: const Locale('ko', 'KR'),
     );
     if (picked != null) {
-      setState(() => selectedDate = picked);
+      setState(() => startDate = picked);
+    }
+  }
+
+  Future<void> _selectEndDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: endDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2030, 12, 31),
+      locale: const Locale('ko', 'KR'),
+    );
+    if (picked != null) {
+      setState(() => endDate = picked);
     }
   }
 }
 
-class WrittenConsentCard extends StatelessWidget {
-  final Widget header;
-  final Widget body;
-
+class WrittenConsentCard extends InfoCard {
   const WrittenConsentCard({
-    required this.header,
-    required this.body,
+    required Widget header,
+    required Widget body,
     super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [header, body],
-      ),
-    );
-  }
+  }) : super(header: header, body: body);
 }
 
-class WrittenConsentHeader extends StatelessWidget {
-  final DateTime? selectedDate;
+class WrittenConsentHeader extends InfoHeader {
+  final DateTime? startDate;
+  final DateTime? endDate;
   final DateFormat dateFormat;
-  final Function(BuildContext) onDateSelected;
+  final Function(BuildContext) onStartDateSelected;
+  final Function(BuildContext) onEndDateSelected;
 
   const WrittenConsentHeader({
-    required this.selectedDate,
+    required String title,
+    required this.startDate,
+    required this.endDate,
     required this.dateFormat,
-    required this.onDateSelected,
+    required this.onStartDateSelected,
+    required this.onEndDateSelected,
     super.key,
-  });
+  }) : super(title: title);
 
   @override
   Widget build(BuildContext context) {
@@ -93,128 +102,37 @@ class WrittenConsentHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '작성동의서',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          Text(
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          Row(
-            children: [
-              _buildDatePicker(context, true),
-              const SizedBox(width: 8),
-              Text('~', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
-              const SizedBox(width: 8),
-              _buildDatePicker(context, false),
-            ],
+          DateRangePickerField(
+            startDate: startDate,
+            endDate: endDate,
+            dateFormat: dateFormat,
+            onStartDateSelected: onStartDateSelected,
+            onEndDateSelected: onEndDateSelected,
           ),
         ],
       ),
     );
   }
-
-  Widget _buildDatePicker(BuildContext context, bool isStartDate) {
-    return GestureDetector(
-      onTap: () => onDateSelected(context),
-      child: Container(
-        width: 150,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.gray100),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              dateFormat.format(selectedDate ?? DateTime.now()),
-              style: const TextStyle(fontSize: 14),
-            ),
-            const Icon(
-              Icons.calendar_today,
-              size: 16,
-              color: AppColors.gray200,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
-class WrittenConsentList extends StatelessWidget {
-  final List<Map<String, String>> consents;
-
+class WrittenConsentList extends InfoList<Map<String, String>> {
   const WrittenConsentList({
-    required this.consents,
+    required List<Map<String, String>> consents,
     super.key,
-  });
+  }) : super(items: consents);
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView.builder(
-          itemCount: consents.length,
-          itemBuilder: (context, index) {
-            final consent = consents[index];
-            return WrittenConsentItem(
-              type: consent['type'] ?? '',
-              date: consent['date'] ?? '',
-              name: consent['name'] ?? '',
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class WrittenConsentItem extends StatelessWidget {
-  final String type;
-  final String date;
-  final String name;
-
-  const WrittenConsentItem({
-    required this.type,
-    required this.date,
-    required this.name,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.gray100),
-        ),
-      ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.blue100,
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Text(
-                type,
-                style: const TextStyle(fontSize: 14, color: AppColors.blue300),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text('[$date]', style: const TextStyle(fontSize: 14)),
-            const SizedBox(width: 8),
-            Text(name, style: const TextStyle(fontSize: 14)),
-          ],
-        ),
-      ),
+  Widget buildItem(Map<String, String> consent) {
+    return TaggedConsentItem(
+      type: consent['type'] ?? '',
+      date: consent['date'] ?? '',
+      name: consent['name'] ?? '',
+      id: '',
     );
   }
 }
