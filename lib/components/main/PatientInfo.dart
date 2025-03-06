@@ -96,37 +96,6 @@ class PatientInfoCard extends StatelessWidget {
   }
 }
 
-class PatientInfoItem extends StatelessWidget {
-  final Patient patient;
-
-  const PatientInfoItem({
-    required this.patient,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: AppColors.gray100)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          PatientBasicInfo(patient: patient),
-          const SizedBox(height: 12),
-          PatientDetailInfo(patient: patient),
-          PatientAlertInfo(
-            alert: patient.alert,
-            allergies: patient.allergies,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class PatientInfoHeader extends StatelessWidget {
   const PatientInfoHeader({super.key});
 
@@ -174,135 +143,31 @@ class PatientInfoList extends StatelessWidget {
   }
 }
 
-class PatientBasicInfo extends StatelessWidget {
+class PatientInfoItem extends StatelessWidget {
   final Patient patient;
 
-  const PatientBasicInfo({
+  const PatientInfoItem({
     required this.patient,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildPatientInfoRow(patient.name, patient.id, patient.type),
-                const SizedBox(height: 12),
-                _buildInfoGrid(
-                  patient.ward,
-                  patient.ageGender,
-                  patient.admissionDate,
-                  patient.doctor,
-                  patient.attendingDoctor,
-                  patient.diagnosis,
-                ),
-              ],
-            ),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: AppColors.gray100)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PatientDetailInfo(patient: patient),
+          PatientAlertInfo(
+            alert: patient.alert,
+            allergies: patient.allergies,
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPatientInfoRow(String name, String id, String type) {
-    return Row(
-      children: [
-        Text(
-          name,
-          style: PatientStyles.nameStyle,
-        ),
-        const SizedBox(width: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 4,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.blue100,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Text(
-            id,
-            style: TextStyle(fontSize: 12, color: AppColors.blue300),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 4,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.blue70,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Text(
-            type,
-            style: TextStyle(fontSize: 12, color: AppColors.blue200),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildInfoGrid(
-    String ward,
-    String ageGender,
-    String admissionDate,
-    String doctor,
-    String attendingDoctor,
-    String diagnosis,
-  ) {
-    final infoRows = [
-      [
-        _buildInfoItem('병동/병실: ', ward),
-        _buildInfoItem('나이/성별: ', ageGender),
-      ],
-      [
-        _buildInfoItem('입원일: ', admissionDate),
-        _buildInfoItem('지정의: ', doctor),
-      ],
-      [
-        _buildInfoItem('주치의: ', attendingDoctor),
-        _buildInfoItem('진단명: ', diagnosis),
-      ],
-    ];
-
-    return Column(
-      children: infoRows.map((row) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 4),
-          child: Row(
-            children: row.map((widget) => 
-              Expanded(
-                child: widget,
-              ),
-            ).toList(),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildInfoItem(String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: PatientStyles.infoLabelStyle,
-        ),
-        Text(
-          value,
-          style: PatientStyles.infoValueStyle,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
