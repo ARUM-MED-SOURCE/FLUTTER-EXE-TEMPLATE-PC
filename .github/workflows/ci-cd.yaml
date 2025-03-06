@@ -47,6 +47,7 @@ jobs:
         run: flutter pub run build_runner build --delete-conflicting-outputs
         
       - name: Build desktop app
+        id: build-desktop
         run: flutter build ${{ matrix.build }} --release
         
       - name: Upload Windows artifact
@@ -69,9 +70,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ Flutter Desktop 빌드 성공 (${{ matrix.build }})\n
-                        저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}
-                        \n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              "text": "✅ Flutter Desktop 빌드\nEnvironment: ${{ needs.set-environment.outputs.environment }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
