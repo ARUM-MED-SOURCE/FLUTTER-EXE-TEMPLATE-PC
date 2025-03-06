@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:intl/intl.dart';  // intl 패키지 import
+import 'package:flutter_exe/components/common/DatePickerField.dart';
+
+// 드롭다운 타입을 위한 enum
+enum DropdownType {
+  department,
+  project,
+  confirm,
+  // test,
+}
+
+// 드롭다운 옵션을 위한 상수 클래스
+class DropdownOptions {
+  static const List<String> departments = ['병동', '외래', '응급실'];
+  static const List<String> projects = ['신경과', '내과', '외과', '소아과'];
+  static const List<String> confirms = ['담당의사', '전공의', '전문의'];
+  // static const List<String> tests = ['처방동의서', '작성동의서'];
+}
 
 class MainHeader extends StatefulWidget {
   const MainHeader({super.key});
@@ -12,21 +29,25 @@ class MainHeader extends StatefulWidget {
 class _MainHeaderState extends State<MainHeader> {
   DateTime? selectedDate;
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd', 'ko_KR');
-  String selectedDepartment = '병동';
-  String selectedProject = '신경과';
-  String selectedConfirm = '담당의사';
+  
+  // 드롭다운 상태를 Map으로 관리
+  final Map<DropdownType, String> selectedValues = {
+    DropdownType.department: '병동',
+    DropdownType.project: '신경과',
+    DropdownType.confirm: '담당의사',
+    // DropdownType.test: '처방동의서',
+  };
+
   OverlayEntry? _overlayEntry;
-  String? _activeDropdown;
+  DropdownType? _activeDropdown;
 
-  // 각 드롭다운을 위한 LayerLink
-  final LayerLink _departmentLink = LayerLink();
-  final LayerLink _projectLink = LayerLink();
-  final LayerLink _confirmLink = LayerLink();
-
-  // 드롭다운 옵션 리스트를 상수로 정의
-  final List<String> departmentItems = ['병동', '외래', '응급실'];
-  final List<String> projectItems = ['신경과', '내과', '외과', '소아과'];
-  final List<String> confirmItems = ['담당의사', '전공의', '전문의'];
+  // LayerLink를 Map으로 관리
+  final Map<DropdownType, LayerLink> _layerLinks = {
+    DropdownType.department: LayerLink(),
+    DropdownType.project: LayerLink(),
+    DropdownType.confirm: LayerLink(),
+    // DropdownType.test: LayerLink(),
+  };
 
   @override
   void dispose() {
@@ -39,38 +60,36 @@ class _MainHeaderState extends State<MainHeader> {
     _overlayEntry = null;
   }
 
-  void _showOverlay(String type) {
+  void _showOverlay(DropdownType type) {
     _removeOverlay();
     _activeDropdown = type;
     _overlayEntry = _createOverlayEntry(type);
     Overlay.of(context).insert(_overlayEntry!);
   }
 
-  LayerLink _getLayerLink(String type) {
+  List<String> _getItemsForType(DropdownType type) {
     switch (type) {
-      case 'department':
-        return _departmentLink;
-      case 'project':
-        return _projectLink;
-      case 'confirm':
-        return _confirmLink;
-      default:
-        return _departmentLink;
+      case DropdownType.department:
+        return DropdownOptions.departments;
+      case DropdownType.project:
+        return DropdownOptions.projects;
+      case DropdownType.confirm:
+        return DropdownOptions.confirms;
+      // case DropdownType.test:
+      //   return DropdownOptions.tests;
     }
   }
 
-  OverlayEntry _createOverlayEntry(String type) {
-    final items = type == 'department' ? departmentItems :
-                  type == 'project' ? projectItems : confirmItems;
-    final selectedValue = type == 'department' ? selectedDepartment :
-                         type == 'project' ? selectedProject : selectedConfirm;
-    final layerLink = _getLayerLink(type);
+  OverlayEntry _createOverlayEntry(DropdownType type) {
+    final items = _getItemsForType(type);
+    final selectedValue = selectedValues[type];
+    final layerLink = _layerLinks[type];
 
     return OverlayEntry(
       builder: (context) => Positioned(
         width: 150,
         child: CompositedTransformFollower(
-          link: layerLink,
+          link: layerLink!,
           showWhenUnlinked: false,
           offset: const Offset(0, 40),
           child: Material(
@@ -83,40 +102,36 @@ class _MainHeaderState extends State<MainHeader> {
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: items.map((item) {
-                  final isSelected = item == selectedValue;
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (type == 'department') {
-                          selectedDepartment = item;
-                        } else if (type == 'project') {
-                          selectedProject = item;
-                        } else {
-                          selectedConfirm = item;
-                        }
-                      });
-                      _removeOverlay();
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: isSelected ? AppColors.blue50 : Colors.transparent,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        item,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: isSelected ? AppColors.blue300 : AppColors.gray300,
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                children: items.map((item) => _buildDropdownItem(item, selectedValue, type)).toList(),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownItem(String item, String? selectedValue, DropdownType type) {
+    final isSelected = item == selectedValue;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          selectedValues[type] = item;
+        });
+        _removeOverlay();
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.blue50 : Colors.transparent,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Text(
+          item,
+          style: TextStyle(
+            fontSize: 14,
+            color: isSelected ? AppColors.blue300 : AppColors.gray300,
           ),
         ),
       ),
@@ -140,95 +155,34 @@ class _MainHeaderState extends State<MainHeader> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          // 날짜 선택 버튼
-          InkWell(
-            onTap: () => _selectDate(context),
-            child: Container(
-              width: 150,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.gray100),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    selectedDate != null 
-                      ? dateFormat.format(selectedDate!)
-                      : dateFormat.format(DateTime.now()),
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  const Icon(
-                    Icons.calendar_today,
-                    size: 16,
-                    color: AppColors.gray200,
-                  ),
-                ],
+          DatePickerField(
+            selectedDate: selectedDate,
+            dateFormat: dateFormat,
+            onDateSelected: _selectDate,
+          ),
+          const SizedBox(width: 8),
+          
+          ...DropdownType.values.map((type) => Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: CompositedTransformTarget(
+              link: _layerLinks[type]!,
+              child: _buildDropdownButton(
+                selectedValues[type]!,
+                type,
               ),
             ),
-          ),
-          const SizedBox(width: 8),
-          
-          // 병동 드롭다운
-          CompositedTransformTarget(
-            link: _departmentLink,
-            child: _buildDropdownButton(
-              selectedDepartment,
-              'department',
-              '병동',
-            ),
-          ),
-          const SizedBox(width: 8),
-          
-          // 신경과 드롭다운
-          CompositedTransformTarget(
-            link: _projectLink,
-            child: _buildDropdownButton(
-              selectedProject,
-              'project',
-              '신경과',
-            ),
-          ),
-          const SizedBox(width: 8),
-          
-          // 담당의사 드롭다운
-          CompositedTransformTarget(
-            link: _confirmLink,
-            child: _buildDropdownButton(
-              selectedConfirm,
-              'confirm',
-              '담당의사',
-            ),
-          ),
+          )),
           
           const Spacer(),
           
-          // 검색 아이콘
-          IconButton(
-            icon: const Icon(
-              Icons.search,
-              size: 20,
-              color: AppColors.gray400,
-            ),
-            onPressed: () {},
-          ),
-          
-          // 새로고침 아이콘
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              size: 20,
-              color: AppColors.gray400,
-            ),
-            onPressed: () {},
-          ),
+          _buildIconButton(Icons.search, () {}),
+          _buildIconButton(Icons.refresh, () {}),
         ],
       ),
     );
   }
 
-  Widget _buildDropdownButton(String value, String type, String label) {
+  Widget _buildDropdownButton(String value, DropdownType type) {
     final isActive = _activeDropdown == type;
     return InkWell(
       onTap: () => _showOverlay(type),
@@ -261,6 +215,17 @@ class _MainHeaderState extends State<MainHeader> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
+    return IconButton(
+      icon: Icon(
+        icon,
+        size: 20,
+        color: AppColors.gray400,
+      ),
+      onPressed: onPressed,
     );
   }
 
