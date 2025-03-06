@@ -75,7 +75,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ Flutter Desktop 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ steps.build-desktop.outputs.status }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+              "text": "${{ steps.build-desktop.outcome == 'success' && '✅' || '❌' }} Flutter Desktop 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ steps.build-desktop.outcome }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
