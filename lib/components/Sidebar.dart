@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
 
-class Sidebar extends StatelessWidget {
+class Sidebar extends StatefulWidget {
   const Sidebar({super.key});
 
   @override
+  State<Sidebar> createState() => _SidebarState();
+}
+
+class _SidebarState extends State<Sidebar> {
+  String selectedButton = '입원';
+
+  @override
   Widget build(BuildContext context) {
-    final isSelected = false;
     return Container(
       height: 80,
       color: AppColors.blue500,
@@ -37,17 +43,17 @@ class Sidebar extends StatelessWidget {
                         child: SizedBox(
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () => setState(() => selectedButton = e),
                             child: Text(
                               e,
                               style: TextStyle(
-                                color: isSelected ? AppColors.white : AppColors.gray200,
+                                color: selectedButton == e ? AppColors.white : AppColors.gray200,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: isSelected ? AppColors.blue400 : AppColors.blue500,
+                              backgroundColor: selectedButton == e ? AppColors.blue400 : AppColors.blue500,
                               foregroundColor: Colors.white,
-                              elevation: isSelected ? 10 : 0,
+                              elevation: selectedButton == e ? 10 : 0,
                               padding: const EdgeInsets.symmetric(horizontal: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
