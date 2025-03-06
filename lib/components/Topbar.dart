@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
 
-class Sidebar extends StatefulWidget {
-  const Sidebar({super.key});
+class TopBar extends StatefulWidget {
+  const TopBar({super.key});
 
   @override
-  State<Sidebar> createState() => _SidebarState();
+  State<TopBar> createState() => _TopBarState();
 }
 
-class _SidebarState extends State<Sidebar> {
+class _TopBarState extends State<TopBar> {
   String selectedButton = '입원';
 
   @override
