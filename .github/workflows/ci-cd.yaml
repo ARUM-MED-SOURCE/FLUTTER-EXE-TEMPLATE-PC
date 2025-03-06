@@ -1,13 +1,32 @@
 name: Flutter Desktop CI/CD
 
 on:
-  # push:
-  #   branches: ['main']
   pull_request:
-    branches: ['main']
+    types: [opened, synchronize, closed]
+    branches: [dev,main]
 
 jobs:
+
+  set-environment:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-environment.outputs.environment }}
+    steps:
+      - name: set environment
+        id: set-environment
+        run: |
+          echo ${{ github.base_ref }}
+          echo "environment=dev" >> $GITHUB_OUTPUT
+
+          if [ ${{ github.base_ref }} == "main" ]; then
+            echo "environment=prod" >> $GITHUB_OUTPUT
+          fi
+      - name: check environment
+        run: echo ${{ steps.set-environment.outputs.environment }}
+
   build:
+    environment: ${{ needs.set-environment.outputs.environment }}
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
@@ -16,12 +35,10 @@ jobs:
             build: windows
           - os: macos-latest
             build: macos
-
     runs-on: ${{ matrix.os }}
-    
+    needs: [set-environment]
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v4
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -39,6 +56,7 @@ jobs:
         
       - name: Upload Windows artifact
         if: matrix.os == 'windows-latest'
+        id: upload-windows-artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
@@ -46,7 +64,20 @@ jobs:
           
       - name: Upload macOS artifact
         if: matrix.os == 'macos-latest'
+        id: upload-macos-artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-release
           path: build/macos/Build/Products/Release/
+
+      - name: Notify Slack on Success
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "${{ job.status == 'success' && '✅' || '❌' }} Flutter Desktop ${{ matrix.build }} 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ job.status }}\nOS: ${{ matrix.os }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING-WEBHOOK

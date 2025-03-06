@@ -11,15 +11,14 @@ void main() {
 WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('전자동의시스템');
-    setWindowMinSize(const Size(1280, 720));
-    setWindowMaxSize(const Size(1920, 1080));
-    getCurrentScreen().then((screen) {
-      setWindowFrame(Rect.fromCenter(
-        center: screen!.frame.center,
-        width: 1280,
-        height: 720,
-      ));
-    });
+    setWindowMinSize(const Size(1920, 1080));
+    setWindowMaxSize(const Size(2560, 1440));
+    setWindowFrame(Rect.fromLTWH(
+      0,
+      0,
+      1920,
+      1080,
+    ));
   }
 
   runApp(

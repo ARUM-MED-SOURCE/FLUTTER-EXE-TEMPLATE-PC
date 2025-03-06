@@ -15,11 +15,113 @@ class _MainHeaderState extends State<MainHeader> {
   String selectedDepartment = '병동';
   String selectedProject = '신경과';
   String selectedConfirm = '담당의사';
+  OverlayEntry? _overlayEntry;
+  String? _activeDropdown;
+
+  // 각 드롭다운을 위한 LayerLink
+  final LayerLink _departmentLink = LayerLink();
+  final LayerLink _projectLink = LayerLink();
+  final LayerLink _confirmLink = LayerLink();
 
   // 드롭다운 옵션 리스트를 상수로 정의
   final List<String> departmentItems = ['병동', '외래', '응급실'];
   final List<String> projectItems = ['신경과', '내과', '외과', '소아과'];
   final List<String> confirmItems = ['담당의사', '전공의', '전문의'];
+
+  @override
+  void dispose() {
+    _removeOverlay();
+    super.dispose();
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  void _showOverlay(String type) {
+    _removeOverlay();
+    _activeDropdown = type;
+    _overlayEntry = _createOverlayEntry(type);
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  LayerLink _getLayerLink(String type) {
+    switch (type) {
+      case 'department':
+        return _departmentLink;
+      case 'project':
+        return _projectLink;
+      case 'confirm':
+        return _confirmLink;
+      default:
+        return _departmentLink;
+    }
+  }
+
+  OverlayEntry _createOverlayEntry(String type) {
+    final items = type == 'department' ? departmentItems :
+                  type == 'project' ? projectItems : confirmItems;
+    final selectedValue = type == 'department' ? selectedDepartment :
+                         type == 'project' ? selectedProject : selectedConfirm;
+    final layerLink = _getLayerLink(type);
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        width: 150,
+        child: CompositedTransformFollower(
+          link: layerLink,
+          showWhenUnlinked: false,
+          offset: const Offset(0, 40),
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(4),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: items.map((item) {
+                  final isSelected = item == selectedValue;
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        if (type == 'department') {
+                          selectedDepartment = item;
+                        } else if (type == 'project') {
+                          selectedProject = item;
+                        } else {
+                          selectedConfirm = item;
+                        }
+                      });
+                      _removeOverlay();
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: isSelected ? AppColors.blue50 : Colors.transparent,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        item,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: isSelected ? AppColors.blue300 : AppColors.gray300,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +147,7 @@ class _MainHeaderState extends State<MainHeader> {
               width: 150,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.gray50),
+                border: Border.all(color: AppColors.gray100),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -68,34 +170,57 @@ class _MainHeaderState extends State<MainHeader> {
           ),
           const SizedBox(width: 8),
           
-          //  병동 드롭다운
-          _buildDropdown(selectedDepartment, departmentItems, (value) {
-            setState(() => selectedDepartment = value!);
-          }),
+          // 병동 드롭다운
+          CompositedTransformTarget(
+            link: _departmentLink,
+            child: _buildDropdownButton(
+              selectedDepartment,
+              'department',
+              '병동',
+            ),
+          ),
           const SizedBox(width: 8),
           
           // 신경과 드롭다운
-          _buildDropdown(selectedProject, projectItems, (value) {
-            setState(() => selectedProject = value!);
-          }),
+          CompositedTransformTarget(
+            link: _projectLink,
+            child: _buildDropdownButton(
+              selectedProject,
+              'project',
+              '신경과',
+            ),
+          ),
           const SizedBox(width: 8),
           
           // 담당의사 드롭다운
-          _buildDropdown(selectedConfirm, confirmItems, (value) {
-            setState(() => selectedConfirm = value!);
-          }),
+          CompositedTransformTarget(
+            link: _confirmLink,
+            child: _buildDropdownButton(
+              selectedConfirm,
+              'confirm',
+              '담당의사',
+            ),
+          ),
           
           const Spacer(),
           
           // 검색 아이콘
           IconButton(
-            icon: const Icon(Icons.search, size: 20),
+            icon: const Icon(
+              Icons.search,
+              size: 20,
+              color: AppColors.gray400,
+            ),
             onPressed: () {},
           ),
           
           // 새로고침 아이콘
           IconButton(
-            icon: const Icon(Icons.refresh, size: 20),
+            icon: const Icon(
+              Icons.refresh,
+              size: 20,
+              color: AppColors.gray400,
+            ),
             onPressed: () {},
           ),
         ],
@@ -103,27 +228,38 @@ class _MainHeaderState extends State<MainHeader> {
     );
   }
 
-  Widget _buildDropdown(String value, List<String> items, Function(String?) onChanged) {
-    return Container(
-      width: 150,
-      height: 38,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.gray50),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: DropdownButton<String>(
-        isExpanded: true,
-        value: value,
-        items: items.map((String item) {
-          return DropdownMenuItem<String>(
-            value: item,
-            child: Text(item, style: const TextStyle(fontSize: 14)),
-          );
-        }).toList(),
-        onChanged: onChanged,
-        underline: Container(),
-        icon: const Icon(Icons.arrow_drop_down, size: 20),
+  Widget _buildDropdownButton(String value, String type, String label) {
+    final isActive = _activeDropdown == type;
+    return InkWell(
+      onTap: () => _showOverlay(type),
+      child: Container(
+        width: 150,
+        height: 38,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: isActive ? AppColors.blue300 : AppColors.gray100,
+          ),
+          borderRadius: BorderRadius.circular(4),
+          color: isActive ? AppColors.blue50 : Colors.white,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 14,
+                color: isActive ? AppColors.blue300 : AppColors.gray300,
+              ),
+            ),
+            Icon(
+              Icons.arrow_drop_down,
+              size: 20,
+              color: isActive ? AppColors.blue300 : AppColors.gray300,
+            ),
+          ],
+        ),
       ),
     );
   }
