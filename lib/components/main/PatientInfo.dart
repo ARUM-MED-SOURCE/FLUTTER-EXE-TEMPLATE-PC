@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/components/common/InfoCard.dart';
+import 'package:flutter_exe/components/common/InfoHeader.dart';
 import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
+import 'package:flutter_exe/components/common/InfoList.dart';
 
 const _patientData = [
   {
@@ -63,83 +66,43 @@ class PatientInfo extends StatelessWidget {
       color: AppColors.blue50,
       padding: const EdgeInsets.all(8.0),
       child: PatientInfoCard(
-        header: const PatientInfoHeader(),
+        header: const PatientInfoHeader(title: '환자정보'),
         body: PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
       ),
     );
   }
 }
 
-class PatientInfoCard extends StatelessWidget {
-  final Widget header;
-  final Widget body;
-
+class PatientInfoCard extends InfoCard {
   const PatientInfoCard({
-    required this.header,
-    required this.body,
+    required Widget header,
+    required Widget body,
     super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [header, body],
-      ),
-    );
-  }
+  }) : super(header: header, body: body);
 }
 
-class PatientInfoHeader extends StatelessWidget {
-  const PatientInfoHeader({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.gray100),
-        ),
-      ),
-      width: double.infinity,
-      child: Text(
-        '환자정보',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
+class PatientInfoHeader extends InfoHeader {
+  const PatientInfoHeader({
+    required String title,
+    Widget? options,
+    Widget? searchBar,
+    super.key,
+  }) : super(
+    title: title, 
+    options: options, 
+    searchBar: searchBar,
+  );
 }
 
-class PatientInfoList extends StatelessWidget {
-  final List<Patient> patients;
-
+class PatientInfoList extends InfoList<Patient> {
   const PatientInfoList({
-    required this.patients,
+    required List<Patient> patients,
     super.key,
-  });
+  }) : super(items: patients);
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView.builder(
-          itemCount: patients.length,
-          itemBuilder: (context, index) {
-            final patient = patients[index];
-            return PatientInfoItem(patient: patient);
-          },
-        ),
-      ),
-    );
+  Widget buildItem(Patient patient) {
+    return PatientInfoItem(patient: patient);
   }
 }
 
@@ -161,57 +124,40 @@ class PatientInfoItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PatientDetailInfo(patient: patient),
-          PatientAlertInfo(
-            alert: patient.alert,
-            allergies: patient.allergies,
-          ),
+          PatientDetail(patient: patient),
+          PatientAlert(patient: patient),
         ],
       ),
     );
   }
 }
 
-class PatientDetailInfo extends StatelessWidget {
+class PatientDetail extends StatelessWidget {
   final Patient patient;
 
-  const PatientDetailInfo({
+  const PatientDetail({
     required this.patient,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return _buildInfoGrid(
-      patient.ward,
-      patient.ageGender,
-      patient.admissionDate,
-      patient.doctor,
-      patient.attendingDoctor,
-      patient.diagnosis,
-    );
+    return _buildInfoGrid();
   }
 
-  Widget _buildInfoGrid(
-    String ward,
-    String ageGender,
-    String admissionDate,
-    String doctor,
-    String attendingDoctor,
-    String diagnosis,
-  ) {
+  Widget _buildInfoGrid() {
     final infoRows = [
       [
-        _buildInfoItem('병동/병실: ', ward),
-        _buildInfoItem('나이/성별: ', ageGender),
+        _buildInfoItem('병동/병실: ', patient.ward),
+        _buildInfoItem('나이/성별: ', patient.ageGender),
       ],
       [
-        _buildInfoItem('입원일: ', admissionDate),
-        _buildInfoItem('지정의: ', doctor),
+        _buildInfoItem('입원일: ', patient.admissionDate),
+        _buildInfoItem('지정의: ', patient.doctor),
       ],
       [
-        _buildInfoItem('주치의: ', attendingDoctor),
-        _buildInfoItem('진단명: ', diagnosis),
+        _buildInfoItem('주치의: ', patient.attendingDoctor),
+        _buildInfoItem('진단명: ', patient.diagnosis),
       ],
     ];
 
@@ -248,13 +194,11 @@ class PatientDetailInfo extends StatelessWidget {
   }
 }
 
-class PatientAlertInfo extends StatelessWidget {
-  final String alert;
-  final List<String> allergies;
+class PatientAlert extends StatelessWidget {
+  final Patient patient;
 
-  const PatientAlertInfo({
-    required this.alert,
-    required this.allergies,
+  const PatientAlert({
+    required this.patient,
     super.key,
   });
 
@@ -268,10 +212,15 @@ class PatientAlertInfo extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          alert,
+          patient.alert,
           style: PatientStyles.alertStyle,
         ),
       ],
     );
   }
 }
+
+
+
+
+
