@@ -17,52 +17,21 @@ class _ConsentSearchState extends State<ConsentSearch> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            '동의서 검색',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          ConsentSearchOptions(
+      child: ConsentSearchCard(
+        header: ConsentSearchHeader(
+          options: ConsentSearchOptions(
             selectedOption: selectedOption,
             onOptionChanged: (value) => setState(() => selectedOption = value),
           ),
-          const SizedBox(height: 8),
-          const ConsentSearchBar(),
-          const SizedBox(height: 16),
-          const Divider(
-            height: 1,
-            thickness: 1,
-            color: AppColors.gray100,
-          ),
-          Expanded(
-            child: ConsentSearchList(
-              consents: _consentData,
-              selectedConsents: selectedConsents,
-              favoriteConsents: favoriteConsents,
-              onConsentSelected: (consentId) {
-                setState(() {
-                  if (selectedConsents.contains(consentId)) {
-                    selectedConsents.remove(consentId);
-                  } else {
-                    selectedConsents.add(consentId);
-                  }
-                });
-              },
-              onFavoriteToggled: (consentId) {
-                setState(() {
-                  if (favoriteConsents.contains(consentId)) {
-                    favoriteConsents.remove(consentId);
-                  } else {
-                    favoriteConsents.add(consentId);
-                  }
-                });
-              },
-            ),
-          ),
-        ],
+          searchBar: const ConsentSearchBar(),
+        ),
+        body: ConsentSearchList(
+          consents: _consentData,
+          selectedConsents: selectedConsents,
+          favoriteConsents: favoriteConsents,
+          onConsentSelected: (consentId) => setState(() => selectedConsents.add(consentId)),
+          onFavoriteToggled: (consentId) => setState(() => favoriteConsents.add(consentId)),
+        ),
       ),
     );
   }
@@ -83,19 +52,25 @@ class ConsentSearchCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
+        // borderRadius: BorderRadius.circular(20),
+        // border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [header, body],
+        children: [header,  body],
       ),
     );
   }
 }
 
 class ConsentSearchHeader extends StatelessWidget {
-  const ConsentSearchHeader({super.key});
+  final Widget options;
+  final Widget searchBar;
+  const ConsentSearchHeader({
+    super.key, 
+    required this.options, 
+    required this.searchBar,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +82,16 @@ class ConsentSearchHeader extends StatelessWidget {
         ),
       ),
       width: double.infinity,
-      child: Text(
-        '동의서 검색',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '동의서 검색',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          options,
+          searchBar,
+        ],
       ),
     );
   }
@@ -201,10 +183,11 @@ class ConsentSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: consents.length,
-      separatorBuilder: (context, index) => const Divider(
-        height: 1,
+    return Expanded(
+      child: ListView.separated(
+        itemCount: consents.length,
+        separatorBuilder: (context, index) => const Divider(
+          height: 1,
         color: AppColors.gray100,
       ),
       itemBuilder: (context, index) {
@@ -218,7 +201,8 @@ class ConsentSearchList extends StatelessWidget {
           onFavoriteToggled: () => onFavoriteToggled(consent['id']!),
         );
       },
-    );
+      ),
+    );  
   }
 }
 
