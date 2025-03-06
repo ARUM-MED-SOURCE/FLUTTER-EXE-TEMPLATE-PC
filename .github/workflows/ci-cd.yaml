@@ -26,21 +26,14 @@ jobs:
         run: echo ${{ steps.set-environment.outputs.environment }}
 
   build:
+    environment: ${{ needs.set-environment.outputs.environment }}
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
-        environment: ${{ fromJson(needs.set-environment.outputs.environment) }}
-        include:
-          - os: windows-latest
-            build: windows
-          - os: macos-latest
-            build: macos
-    environment: ${{ matrix.environment }}
     runs-on: ${{ matrix.os }}
     needs: [set-environment]
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@v4
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
