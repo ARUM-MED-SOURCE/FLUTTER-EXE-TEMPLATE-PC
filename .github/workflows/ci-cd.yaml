@@ -84,20 +84,20 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING-WEBHOOK
       
-    create-pr:
-      if: needs.set-environment.outputs.environment == 'dev'
-      runs-on: ubuntu-latest
-      needs: [set-environment, build]
-      steps:
-        - name: checkout
-          uses: actions/checkout@v4
-        - name: gh auth login
-          run: |
-            echo ${{ secrets.PERSONAL_ACCESS_TOKEN }} | gh auth login --with-token
-        - name: create branch
-          run: |
-            git checkout -b release/${{ github.run_id }}
-            git push origin release/${{ github.run_id }}
-        - name: create pr
-          run: |
-            gh pr create --base main --head release/${{ github.run_id }} --title "release/${{github.run_id}}" --body "This release PR is automatically created by GitHub Actions"
+  create-pr:
+    if: needs.set-environment.outputs.environment == 'dev'
+    runs-on: ubuntu-latest
+    needs: [set-environment, build]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: gh auth login
+        run: |
+          echo ${{ secrets.PERSONAL_ACCESS_TOKEN }} | gh auth login --with-token
+      - name: create branch
+        run: |
+          git checkout -b release/${{ github.run_id }}
+          git push origin release/${{ github.run_id }}
+      - name: create pr
+        run: |
+          gh pr create --base main --head release/${{ github.run_id }} --title "release/${{github.run_id}}" --body "This release PR is automatically created by GitHub Actions"
