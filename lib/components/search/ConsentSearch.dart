@@ -68,6 +68,56 @@ class _ConsentSearchState extends State<ConsentSearch> {
   }
 }
 
+class ConsentSearchCard extends StatelessWidget {
+  final Widget header;
+  final Widget body;
+
+  const ConsentSearchCard({ 
+    required this.header,
+    required this.body,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [header, body],
+      ),
+    );
+  }
+}
+
+class ConsentSearchHeader extends StatelessWidget {
+  const ConsentSearchHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColors.gray100),
+        ),
+      ),
+      width: double.infinity,
+      child: Text(
+        '동의서 검색',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+
+
+
 class ConsentSearchOptions extends StatelessWidget {
   final String selectedOption;
   final Function(String) onOptionChanged;
