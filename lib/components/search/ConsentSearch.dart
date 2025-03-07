@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/components/common/InfoCard.dart';
-import 'package:flutter_exe/components/common/InfoHeader.dart';
-import 'package:flutter_exe/components/common/InfoList.dart';
+import 'package:flutter_exe/components/common/container/InfoCard.dart';
+import 'package:flutter_exe/components/common/container/InfoHeader.dart';
+import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 
 class ConsentSearch extends StatefulWidget {
@@ -44,8 +44,8 @@ class _ConsentSearchState extends State<ConsentSearch> {
 
 class ConsentSearchCard extends InfoCard {
   const ConsentSearchCard({
-    required Widget header,
-    required Widget body,
+    required InfoHeader header,
+    required InfoList body,
     super.key,
   }) : super(header: header, body: body);
 }

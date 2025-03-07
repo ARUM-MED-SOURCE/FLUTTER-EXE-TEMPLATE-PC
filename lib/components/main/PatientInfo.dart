@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/components/common/InfoCard.dart';
-import 'package:flutter_exe/components/common/InfoHeader.dart';
+import 'package:flutter_exe/components/common/container/InfoCard.dart';
+import 'package:flutter_exe/components/common/container/InfoHeader.dart';
+import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
-import 'package:flutter_exe/components/common/InfoList.dart';
 
 const _patientData = [
   {
@@ -75,8 +75,8 @@ class PatientInfo extends StatelessWidget {
 
 class PatientInfoCard extends InfoCard {
   const PatientInfoCard({
-    required Widget header,
-    required Widget body,
+    required InfoHeader header,
+    required InfoList body,
     super.key,
   }) : super(header: header, body: body);
 }
@@ -84,14 +84,8 @@ class PatientInfoCard extends InfoCard {
 class PatientInfoHeader extends InfoHeader {
   const PatientInfoHeader({
     required String title,
-    Widget? options,
-    Widget? searchBar,
     super.key,
-  }) : super(
-    title: title, 
-    options: options, 
-    searchBar: searchBar,
-  );
+  }) : super(title: title);
 }
 
 class PatientInfoList extends InfoList<Patient> {
