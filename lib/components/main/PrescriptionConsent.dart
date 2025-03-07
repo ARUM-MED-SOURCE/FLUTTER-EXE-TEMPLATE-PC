@@ -15,8 +15,6 @@ class PrescriptionConsent extends StatefulWidget {
 }
 
 class _PrescriptionConsentState extends State<PrescriptionConsent> {
-  DateTime? selectedDate = DateTime.now();
-  final DateFormat dateFormat = DateFormat('yyyy-MM-dd', 'ko_KR');
   final Set<String> selectedConsents = {};
 
   @override
@@ -25,40 +23,22 @@ class _PrescriptionConsentState extends State<PrescriptionConsent> {
       color: AppColors.blue50,
       padding: const EdgeInsets.all(8.0),
       child: PrescriptionConsentCard(
-        header: PrescriptionConsentHeader(
-          title: '처방동의서',
-          selectedDate: selectedDate,
-          dateFormat: dateFormat,
-          onDateSelected: _selectDate,
-        ),
+        header: const PrescriptionConsentHeader(title: '처방동의서'),
         body: PrescriptionConsentList(
           consents: _consentData,
           selectedConsents: selectedConsents,
-          onConsentSelected: (consentId) {
+          onConsentSelected: (String id) {
             setState(() {
-              if (selectedConsents.contains(consentId)) {
-                selectedConsents.remove(consentId);
+              if (selectedConsents.contains(id)) {
+                selectedConsents.remove(id);
               } else {
-                selectedConsents.add(consentId);
+                selectedConsents.add(id);
               }
             });
           },
         ),
       ),
     );
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2030, 12, 31),
-      locale: const Locale('ko', 'KR'),
-    );
-    if (picked != null) {
-      setState(() => selectedDate = picked);
-    }
   }
 }
 
@@ -71,45 +51,10 @@ class PrescriptionConsentCard extends InfoCard {
 }
 
 class PrescriptionConsentHeader extends InfoHeader {
-  final DateTime? selectedDate;
-  final DateFormat dateFormat;
-  final Function(BuildContext) onDateSelected;
-
   const PrescriptionConsentHeader({
     required String title,
-    required this.selectedDate,
-    required this.dateFormat,
-    required this.onDateSelected,
     super.key,
   }) : super(title: title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.gray100),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          DatePickerField(
-            selectedDate: selectedDate,
-            dateFormat: dateFormat,
-            onDateSelected: onDateSelected,
-            label: '처방일',
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class PrescriptionConsentList extends InfoList<Map<String, String>> {
