@@ -10,12 +10,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
 
 class PatientInfo extends Info {
-  PatientInfo({super.key}) : super(card: _PatientInfoCard(
-        header: _PatientInfoHeader(title: '환자정보'),
-        body: _PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
+  PatientInfo({super.key}) : super(
+    card: _PatientInfoCard(
+      header: _PatientInfoHeader(title: '환자정보'),
+      body: _PatientInfoList(
+        patients: _patientData.map(Patient.fromJson).toList(),
       ),
-    );
-  }
+    ),
+  );
+}
 
 class _PatientInfoCard extends InfoCard {
   const _PatientInfoCard({
