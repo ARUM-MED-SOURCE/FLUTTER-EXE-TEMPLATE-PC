@@ -64,6 +64,7 @@ class CheckableConsentItem extends StatelessWidget {
         Checkbox(
           value: isSelected,
           onChanged: (_) => onSelected(),
+          activeColor: AppColors.blue300,
           side: BorderSide(color: AppColors.gray150),
         ),
         const SizedBox(width: 8),
