@@ -57,53 +57,58 @@ const _patientData = [
   }
 ];
 
-class PatientInfo extends StatelessWidget {
+class PatientInfo extends StatefulWidget {
   const PatientInfo({super.key});
 
+  @override
+  State<PatientInfo> createState() => _PatientInfoState();
+}
+
+class _PatientInfoState extends State<PatientInfo> {
   @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.blue50,
       padding: const EdgeInsets.all(8.0),
-      child: PatientInfoCard(
-        header: const PatientInfoHeader(title: '환자정보'),
-        body: PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
+      child: _PatientInfoCard(
+        header: const _PatientInfoHeader(title: '환자정보'),
+        body: _PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
       ),
     );
   }
 }
 
-class PatientInfoCard extends InfoCard {
-  const PatientInfoCard({
+class _PatientInfoCard extends InfoCard {
+  const _PatientInfoCard({
     required InfoHeader header,
     required InfoList body,
     super.key,
   }) : super(header: header, body: body);
 }
 
-class PatientInfoHeader extends InfoHeader {
-  const PatientInfoHeader({
+class _PatientInfoHeader extends InfoHeader {
+  const _PatientInfoHeader({
     required String title,
     super.key,
   }) : super(title: title);
 }
 
-class PatientInfoList extends InfoList<Patient> {
-  const PatientInfoList({
+class _PatientInfoList extends InfoList<Patient> {
+  const _PatientInfoList({
     required List<Patient> patients,
     super.key,
   }) : super(items: patients);
 
   @override
   Widget buildItem(Patient patient) {
-    return PatientInfoItem(patient: patient);
+    return _PatientInfoItem(patient: patient);
   }
 }
 
-class PatientInfoItem extends StatelessWidget {
+class _PatientInfoItem extends StatelessWidget {
   final Patient patient;
 
-  const PatientInfoItem({
+  const _PatientInfoItem({
     required this.patient,
     super.key,
   });
@@ -118,18 +123,18 @@ class PatientInfoItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PatientDetail(patient: patient),
-          PatientAlert(patient: patient),
+          _PatientDetail(patient: patient),
+          _PatientAlert(patient: patient),
         ],
       ),
     );
   }
 }
 
-class PatientDetail extends StatelessWidget {
+class _PatientDetail extends StatelessWidget {
   final Patient patient;
 
-  const PatientDetail({
+  const _PatientDetail({
     required this.patient,
     super.key,
   });
@@ -188,10 +193,10 @@ class PatientDetail extends StatelessWidget {
   }
 }
 
-class PatientAlert extends StatelessWidget {
+class _PatientAlert extends StatelessWidget {
   final Patient patient;
 
-  const PatientAlert({
+  const _PatientAlert({
     required this.patient,
     super.key,
   });
