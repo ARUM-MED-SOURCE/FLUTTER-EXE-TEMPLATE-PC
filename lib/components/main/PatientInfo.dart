@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/components/common/container/Info.dart';
 import 'package:flutter_exe/components/common/container/InfoCard.dart';
 import 'package:flutter_exe/components/common/container/InfoHeader.dart';
 import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
-
 const _patientData = [
   {
     'name': '김영진',
@@ -57,26 +57,13 @@ const _patientData = [
   }
 ];
 
-class PatientInfo extends StatefulWidget {
-  const PatientInfo({super.key});
-
-  @override
-  State<PatientInfo> createState() => _PatientInfoState();
-}
-
-class _PatientInfoState extends State<PatientInfo> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.blue50,
-      padding: const EdgeInsets.all(8.0),
-      child: _PatientInfoCard(
-        header: const _PatientInfoHeader(title: '환자정보'),
+class PatientInfo extends Info {
+  PatientInfo({super.key}) : super(card: _PatientInfoCard(
+        header: _PatientInfoHeader(title: '환자정보'),
         body: _PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
       ),
     );
   }
-}
 
 class _PatientInfoCard extends InfoCard {
   const _PatientInfoCard({
