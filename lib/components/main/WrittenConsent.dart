@@ -12,13 +12,13 @@ import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 class WrittenConsent extends Info {
   WrittenConsent({super.key}) : super(
     card: _WrittenConsentCard(
-        header: _WrittenConsentHeader(title: '작성동의서'),
-        body: _WrittenConsentList(
-          consents: writtenConsentData.map(WrittenConsentData.fromJson).toList(),
-        ),
+      header: _WrittenConsentHeader(title: '작성동의서'),
+      body: _WrittenConsentList(
+        consents: writtenConsentData.map(WrittenConsentData.fromJson).toList(),
       ),
-    );
-  }
+    ),
+  );
+}
 
 class _WrittenConsentCard extends InfoCard {
   const _WrittenConsentCard({

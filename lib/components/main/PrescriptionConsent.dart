@@ -9,9 +9,10 @@ import 'package:flutter_exe/providers/selected_consents_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/utils/dummy_data.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
+
 class PrescriptionConsent extends Info {
   PrescriptionConsent({super.key}) : super(
-    card: InfoCard(
+    card: _PrescriptionConsentCard(
       header: _PrescriptionConsentHeader(title: '처방동의서'),
       body: _PrescriptionConsentList(
         consents: prescriptionConsentData.map(PrescriptionConsentData.fromJson).toList(),
