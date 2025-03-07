@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/providers/selected_consents_provider.dart';
-import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
 import 'package:flutter_exe/providers/selected_option_provider.dart';
 import 'package:flutter_exe/components/common/container/Info.dart';
 import 'package:flutter_exe/components/common/container/InfoCard.dart';
 import 'package:flutter_exe/components/common/container/InfoHeader.dart';
 import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
+import 'package:flutter_exe/providers/selected_consents_provider.dart';
+import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConsentSearch extends Info {
@@ -129,28 +129,63 @@ class _ConsentSearchBar extends StatelessWidget {
 }
 
 class _ConsentSearchList extends InfoList<Map<String, String>> {
+  final List<Map<String, String>>? consents;
 
   const _ConsentSearchList({
-    required List<Map<String, String>> consents,
+    this.consents,
     super.key,
-  }) : super(items: consents);
+  }) : super(items: const []);
+
+  @override
+  List<Map<String, String>> get items => consents ?? const [];
+
+  @override
+  Widget build(BuildContext context) {
+    if (consents == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (consents!.isEmpty) {
+      return const Center(
+        child: Text(
+          '검색 결과가 없습니다.',
+          style: TextStyle(
+            color: AppColors.gray500,
+            fontSize: 14,
+          ),
+        ),
+      );
+    }
+
+    return super.build(context);
+  }
 
   @override
   Widget buildItem(Map<String, String> consent) {
     return Consumer(
       builder: (context, ref, _) {
+        final id = consent['id'];
+        final name = consent['name'];
+        
+        // 필수 데이터가 없는 경우 처리
+        if (id == null || name == null) {
+          return const SizedBox.shrink();
+        }
+
         return FavoriteConsentItem(
-          name: consent['name'] ?? '',
-          id: consent['id'] ?? '',
-          isSelected: ref.watch(selectedConsentsProvider).contains(consent['id']),
-          isFavorite: ref.watch(selectedFavoriteConsentsProvider).contains(consent['id']),
+          name: name,
+          id: id,
+          isSelected: ref.watch(selectedConsentsProvider).contains(id),
+          isFavorite: ref.watch(selectedFavoriteConsentsProvider).contains(id),
           onSelected: () {
-        final notifier = ref.read(selectedConsentsProvider.notifier);
-        notifier.toggleConsent(consent['id']!);
-      },
-      onFavoriteToggled: () {
-        final notifier = ref.read(selectedFavoriteConsentsProvider.notifier);
-            notifier.toggleConsent(consent['id']!);
+            final notifier = ref.read(selectedConsentsProvider.notifier);
+            notifier.toggleConsent(id);
+          },
+          onFavoriteToggled: () {
+            final notifier = ref.read(selectedFavoriteConsentsProvider.notifier);
+            notifier.toggleConsent(id);
           },
         );
       },
@@ -158,31 +193,31 @@ class _ConsentSearchList extends InfoList<Map<String, String>> {
   }
 }
 
-const _consentData = [
-  {
-    'id': '1',
-    'name': '제왕절개술 동의서'
-  },
-  {
-    'id': '2',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '3',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '4',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '5',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '6',
-    'name': '척추 신경 차단술 동의서'
-  },
+const _consentData = <Map<String, String>>[
+  // {
+  //   'id': '1',
+  //   'name': '제왕절개술 동의서'
+  // },
+  // {
+  //   'id': '2',
+  //   'name': '척추 신경 차단술 동의서'
+  // },
+  // {
+  //   'id': '3',
+  //   'name': '척추 신경 차단술 동의서'
+  // },
+  // {
+  //   'id': '4',
+  //   'name': '척추 신경 차단술 동의서'
+  // },
+  // {
+  //   'id': '5',
+  //   'name': '척추 신경 차단술 동의서'
+  // },
+  // {
+  //   'id': '6',
+  //   'name': '척추 신경 차단술 동의서'
+  // },
 ];
 
 
