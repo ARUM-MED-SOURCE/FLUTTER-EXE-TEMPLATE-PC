@@ -6,6 +6,8 @@ import 'package:flutter_exe/components/common/container/InfoHeader.dart';
 import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/providers/selected_consents_provider.dart';
 const _patientData = [
   {
     'name': '김영진',

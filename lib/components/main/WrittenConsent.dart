@@ -1,51 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exe/constants/colors.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_exe/components/common/container/Info.dart';
 import 'package:flutter_exe/components/common/container/InfoCard.dart';
 import 'package:flutter_exe/components/common/container/InfoHeader.dart';
 import 'package:flutter_exe/components/common/container/InfoList.dart';
-import 'package:flutter_exe/components/common/DatePickerField.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 
-class WrittenConsent extends StatefulWidget {
-  const WrittenConsent({super.key});
-
-  @override
-  State<WrittenConsent> createState() => _WrittenConsentState();
-}
-
-class _WrittenConsentState extends State<WrittenConsent> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.blue50,
-      padding: const EdgeInsets.all(8.0),
-      child: WrittenConsentCard(
-        header: const WrittenConsentHeader(title: '작성동의서'),
-        body: WrittenConsentList(consents: _consentData),
+class WrittenConsent extends Info {
+  const WrittenConsent({super.key}) : super(
+    card: const _WrittenConsentCard(
+        header: _WrittenConsentHeader(title: '작성동의서'),
+        body: _WrittenConsentList(consents: _consentData),
       ),
     );
   }
-  }
 
-class WrittenConsentCard extends InfoCard {
-  const WrittenConsentCard({
+class _WrittenConsentCard extends InfoCard {
+  const _WrittenConsentCard({
     required InfoHeader header,
     required InfoList body,
     super.key,
   }) : super(header: header, body: body);
 }
 
-class WrittenConsentHeader extends InfoHeader {
-
-  const WrittenConsentHeader({
+class _WrittenConsentHeader extends InfoHeader {
+  const _WrittenConsentHeader({
     required String title,
     super.key,
   }) : super(title: title);
 }
 
-class WrittenConsentList extends InfoList<Map<String, String>> {
-  const WrittenConsentList({
+class _WrittenConsentList extends InfoList<Map<String, String>> {
+  const _WrittenConsentList({
     required List<Map<String, String>> consents,
     super.key,
   }) : super(items: consents);
