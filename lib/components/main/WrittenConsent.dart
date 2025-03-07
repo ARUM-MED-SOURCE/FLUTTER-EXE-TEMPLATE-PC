@@ -15,55 +15,18 @@ class WrittenConsent extends StatefulWidget {
 }
 
 class _WrittenConsentState extends State<WrittenConsent> {
-  DateTime? startDate = DateTime.now();
-  DateTime? endDate = DateTime.now();
-  final DateFormat dateFormat = DateFormat('yyyy-MM-dd', 'ko_KR');
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.blue50,
       padding: const EdgeInsets.all(8.0),
       child: WrittenConsentCard(
-        header: WrittenConsentHeader(
-          title: '작성동의서',
-          startDate: startDate,
-          endDate: endDate,
-          dateFormat: dateFormat,
-          onStartDateSelected: _selectStartDate,
-          onEndDateSelected: _selectEndDate,
-        ),
+        header: const WrittenConsentHeader(title: '작성동의서'),
         body: WrittenConsentList(consents: _consentData),
       ),
     );
   }
-
-  Future<void> _selectStartDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: startDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2030, 12, 31),
-      locale: const Locale('ko', 'KR'),
-    );
-    if (picked != null) {
-      setState(() => startDate = picked);
-    }
   }
-
-  Future<void> _selectEndDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: endDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2030, 12, 31),
-      locale: const Locale('ko', 'KR'),
-    );
-    if (picked != null) {
-      setState(() => endDate = picked);
-    }
-  }
-}
 
 class WrittenConsentCard extends InfoCard {
   const WrittenConsentCard({
@@ -74,50 +37,11 @@ class WrittenConsentCard extends InfoCard {
 }
 
 class WrittenConsentHeader extends InfoHeader {
-  final DateTime? startDate;
-  final DateTime? endDate;
-  final DateFormat dateFormat;
-  final Function(BuildContext) onStartDateSelected;
-  final Function(BuildContext) onEndDateSelected;
 
   const WrittenConsentHeader({
     required String title,
-    required this.startDate,
-    required this.endDate,
-    required this.dateFormat,
-    required this.onStartDateSelected,
-    required this.onEndDateSelected,
     super.key,
   }) : super(title: title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.gray100),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          DateRangePickerField(
-            startDate: startDate,
-            endDate: endDate,
-            dateFormat: dateFormat,
-            onStartDateSelected: onStartDateSelected,
-            onEndDateSelected: onEndDateSelected,
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class WrittenConsentList extends InfoList<Map<String, String>> {
