@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/components/common/container/Info.dart';
 import 'package:flutter_exe/components/common/container/InfoCard.dart';
 import 'package:flutter_exe/components/common/container/InfoHeader.dart';
 import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/providers/selected_consents_provider.dart';
 const _patientData = [
   {
     'name': '김영진',
@@ -57,53 +59,45 @@ const _patientData = [
   }
 ];
 
-class PatientInfo extends StatelessWidget {
-  const PatientInfo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.blue50,
-      padding: const EdgeInsets.all(8.0),
-      child: PatientInfoCard(
-        header: const PatientInfoHeader(title: '환자정보'),
-        body: PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
+class PatientInfo extends Info {
+  PatientInfo({super.key}) : super(card: _PatientInfoCard(
+        header: _PatientInfoHeader(title: '환자정보'),
+        body: _PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
       ),
     );
   }
-}
 
-class PatientInfoCard extends InfoCard {
-  const PatientInfoCard({
+class _PatientInfoCard extends InfoCard {
+  const _PatientInfoCard({
     required InfoHeader header,
     required InfoList body,
     super.key,
   }) : super(header: header, body: body);
 }
 
-class PatientInfoHeader extends InfoHeader {
-  const PatientInfoHeader({
+class _PatientInfoHeader extends InfoHeader {
+  const _PatientInfoHeader({
     required String title,
     super.key,
   }) : super(title: title);
 }
 
-class PatientInfoList extends InfoList<Patient> {
-  const PatientInfoList({
+class _PatientInfoList extends InfoList<Patient> {
+  const _PatientInfoList({
     required List<Patient> patients,
     super.key,
   }) : super(items: patients);
 
   @override
   Widget buildItem(Patient patient) {
-    return PatientInfoItem(patient: patient);
+    return _PatientInfoItem(patient: patient);
   }
 }
 
-class PatientInfoItem extends StatelessWidget {
+class _PatientInfoItem extends StatelessWidget {
   final Patient patient;
 
-  const PatientInfoItem({
+  const _PatientInfoItem({
     required this.patient,
     super.key,
   });
@@ -118,18 +112,18 @@ class PatientInfoItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PatientDetail(patient: patient),
-          PatientAlert(patient: patient),
+          _PatientDetail(patient: patient),
+          _PatientAlert(patient: patient),
         ],
       ),
     );
   }
 }
 
-class PatientDetail extends StatelessWidget {
+class _PatientDetail extends StatelessWidget {
   final Patient patient;
 
-  const PatientDetail({
+  const _PatientDetail({
     required this.patient,
     super.key,
   });
@@ -188,10 +182,10 @@ class PatientDetail extends StatelessWidget {
   }
 }
 
-class PatientAlert extends StatelessWidget {
+class _PatientAlert extends StatelessWidget {
   final Patient patient;
 
-  const PatientAlert({
+  const _PatientAlert({
     required this.patient,
     super.key,
   });
