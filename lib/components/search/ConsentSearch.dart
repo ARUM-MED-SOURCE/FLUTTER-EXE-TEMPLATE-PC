@@ -9,13 +9,15 @@ import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
 import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/utils/dummy_data.dart';
+import 'package:flutter_exe/model/prescription_consent_data.dart';
 
 class ConsentSearch extends Info {
-  const ConsentSearch({super.key}) : super(
-    card: const _ConsentSearchCard(
-      header: _ConsentSearchHeader(title: '동의서 검색'),
+  ConsentSearch({super.key}) : super(
+    card: _ConsentSearchCard(
+      header: const _ConsentSearchHeader(title: '동의서 검색'),
       body: _ConsentSearchList(
-        consents: _consentData,
+        consents: prescriptionConsentData.map(PrescriptionConsentData.fromJson).toList(),
       ),
     ),
     paddingOption: 'symmetric',
@@ -128,26 +130,23 @@ class _ConsentSearchBar extends StatelessWidget {
   }
 }
 
-class _ConsentSearchList extends InfoList<Map<String, String>> {
-  final List<Map<String, String>>? consents;
+class _ConsentSearchList extends InfoList<PrescriptionConsentData> {
+  final List<PrescriptionConsentData> consents;
 
   const _ConsentSearchList({
-    this.consents,
+    required this.consents,
     super.key,
-  }) : super(items: const []);
-
-  @override
-  List<Map<String, String>> get items => consents ?? const [];
+  }) : super(items: consents);
 
   @override
   Widget build(BuildContext context) {
-    if (consents == null) {
+    if (consents.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
 
-    if (consents!.isEmpty) {
+    if (consents.isEmpty) {
       return const Center(
         child: Text(
           '검색 결과가 없습니다.',
@@ -163,11 +162,11 @@ class _ConsentSearchList extends InfoList<Map<String, String>> {
   }
 
   @override
-  Widget buildItem(Map<String, String> consent) {
+  Widget buildItem(PrescriptionConsentData consent) {
     return Consumer(
       builder: (context, ref, _) {
-        final id = consent['id'];
-        final name = consent['name'];
+        final id = consent.id;
+        final name = consent.name;
         
         // 필수 데이터가 없는 경우 처리
         if (id == null || name == null) {
@@ -192,33 +191,3 @@ class _ConsentSearchList extends InfoList<Map<String, String>> {
     );
   }
 }
-
-const _consentData = <Map<String, String>>[
-  {
-    'id': '1',
-    'name': '제왕절개술 동의서'
-  },
-  {
-    'id': '2',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '3',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '4',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '5',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '6',
-    'name': '척추 신경 차단술 동의서'
-  },
-];
-
-
- 

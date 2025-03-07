@@ -1,42 +1,25 @@
-class Patient {
-  final String name;
-  final String id;
-  final String type;
-  final String ward;
-  final String ageGender;
-  final String admissionDate;
-  final String doctor;
-  final String attendingDoctor;
-  final String diagnosis;
-  final String alert;
-  final List<String> allergies;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const Patient({
-    required this.name,
-    required this.id,
-    required this.type,
-    required this.ward,
-    required this.ageGender,
-    required this.admissionDate,
-    required this.doctor,
-    required this.attendingDoctor,
-    required this.diagnosis,
-    required this.alert,
-    this.allergies = const [],
-  });
+part 'patient.freezed.dart';
+part 'patient.g.dart';
 
-  factory Patient.fromJson(Map<String, dynamic> json) {
-    return Patient(
-      name: json['name'] ?? '',
-      id: json['id'] ?? '',
-      type: json['type'] ?? '',
-      ward: json['ward'] ?? '',
-      ageGender: json['ageGender'] ?? '',
-      admissionDate: json['admissionDate'] ?? '',
-      doctor: json['doctor'] ?? '',
-      attendingDoctor: json['attendingDoctor'] ?? '',
-      diagnosis: json['diagnosis'] ?? '',
-      alert: json['alert'] ?? '',
-    );
-  }
+@freezed
+class Patient with _$Patient {
+  const factory Patient({
+    @Default('') String name,
+    @Default('') String id,
+    @Default('') String type,
+    @Default('') String ward,
+    @Default('') String ageGender,
+    @Default('') String admissionDate,
+    @Default('') String doctor,
+    @Default('') String attendingDoctor,
+    @Default('') String diagnosis,
+    @Default('') String alert,
+    @Default([]) List<String> allergies,
+  }) = _Patient;
+
+  factory Patient.fromJson(Map<String, dynamic> json) => _$PatientFromJson(json);
 }
+
+  
