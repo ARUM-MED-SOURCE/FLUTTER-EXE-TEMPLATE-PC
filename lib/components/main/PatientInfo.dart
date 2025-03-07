@@ -11,9 +11,11 @@ import 'package:flutter_exe/providers/selected_consents_provider.dart';
 import 'package:flutter_exe/utils/dummy_data.dart';
 
 class PatientInfo extends Info {
-  PatientInfo({super.key}) : super(card: _PatientInfoCard(
-        header: _PatientInfoHeader(title: '환자정보'),
-        body: _PatientInfoList(patients: patientData.map(Patient.fromJson).toList()),
+  PatientInfo({super.key}) : super(
+    card: _PatientInfoCard(
+      header: _PatientInfoHeader(title: '환자정보'),
+      body: _PatientInfoList(
+        patients: patientData.map(Patient.fromJson).toList(),
       ),
     ),
   );
