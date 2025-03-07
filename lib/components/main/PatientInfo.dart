@@ -8,13 +8,12 @@ import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
+import 'package:flutter_exe/utils/dummy_data.dart';
 
 class PatientInfo extends Info {
-  PatientInfo({super.key}) : super(
-    card: _PatientInfoCard(
-      header: _PatientInfoHeader(title: '환자정보'),
-      body: _PatientInfoList(
-        patients: _patientData.map(Patient.fromJson).toList(),
+  PatientInfo({super.key}) : super(card: _PatientInfoCard(
+        header: _PatientInfoHeader(title: '환자정보'),
+        body: _PatientInfoList(patients: patientData.map(Patient.fromJson).toList()),
       ),
     ),
   );
@@ -160,57 +159,6 @@ class _PatientAlert extends StatelessWidget {
     );
   }
 }
-
-const _patientData = <Map<String, String>>[
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  },
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  },
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  },
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  }
-];
 
 
 

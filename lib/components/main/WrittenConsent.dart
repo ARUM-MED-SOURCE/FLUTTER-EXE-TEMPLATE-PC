@@ -5,13 +5,16 @@ import 'package:flutter_exe/components/common/container/InfoCard.dart';
 import 'package:flutter_exe/components/common/container/InfoHeader.dart';
 import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
+import 'package:flutter_exe/utils/dummy_data.dart';
+import 'package:flutter_exe/model/writtenscription_consent_data.dart';
+
 
 class WrittenConsent extends Info {
-  const WrittenConsent({super.key}) : super(
-    card: const _WrittenConsentCard(
+  WrittenConsent({super.key}) : super(
+    card: _WrittenConsentCard(
         header: _WrittenConsentHeader(title: '작성동의서'),
         body: _WrittenConsentList(
-          consents: _consentData,
+          consents: writtenConsentData.map(WrittenConsentData.fromJson).toList(),
         ),
       ),
     );
@@ -34,25 +37,23 @@ class _WrittenConsentHeader extends InfoHeader {
 
 
 
-class _WrittenConsentList extends InfoList<Map<String, String>> {
-  final List<Map<String, String>>? consents;
+class _WrittenConsentList extends InfoList<WrittenConsentData> {
+  final List<WrittenConsentData> consents;
   const _WrittenConsentList({
-    this.consents,
+    required this.consents,
     super.key,
-  }) : super(items: const []);
+  }) : super(items: consents);
 
-  @override
-  List<Map<String, String>> get items => consents ?? const [];
 
   @override
   Widget build(BuildContext context) {
-    if (consents == null) {
+    if (consents.isEmpty) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
 
-    if (consents!.isEmpty) {
+    if (consents.isEmpty) {
       return const Center(
         child: Text('작성동의서가 없습니다.',
           style: TextStyle(
@@ -66,48 +67,17 @@ class _WrittenConsentList extends InfoList<Map<String, String>> {
     return super.build(context);
   }
 
-  Widget buildItem(Map<String, String> consent) {
+  Widget buildItem(WrittenConsentData consent) {
     return TaggedConsentItem(
-      type: consent['type'] ?? '',
-      date: consent['date'] ?? '',
-      name: consent['name'] ?? '',
+      type: consent.type,
+      date: consent.date,
+      name: consent.name,
       id: '',
     );
   }
 }
 
-const _consentData = <Map<String, String>>[
-  {
-    'type': '임시',
-    'date': '2025-03-04',
-    'name': '제왕절개술 동의서'
-  },
-  {
-    'type': '임시',
-    'date': '2025-03-04',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'type': '임시',
-    'date': '2025-03-04',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'type': '임시',
-    'date': '2025-03-04',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'type': '임시',
-    'date': '2025-03-04',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'type': '임시',
-    'date': '2025-03-04',
-    'name': '척추 신경 차단술 동의서'
-  },
-];
+
 
 
  
