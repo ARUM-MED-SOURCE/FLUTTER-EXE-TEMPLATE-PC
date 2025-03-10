@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
-
+import 'package:flutter_exe/components/navigation/enum/HospitalSection.dart';
 class TopBar extends StatefulWidget {
   const TopBar({super.key});
 
@@ -9,7 +9,7 @@ class TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<TopBar> {
-  String selectedButton = '입원';
+  String selectedButton = HospitalSection.inpatient.label;
 
   @override
   Widget build(BuildContext context) {
@@ -38,22 +38,22 @@ class _TopBarState extends State<TopBar> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ...['입원', '외래', '응급', '수술', '검사실', '검색', '빠른조회'].map((e) => Padding(
+                      ...HospitalSection.values.map((section) => Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: SizedBox(
                           height: 40,
                           child: ElevatedButton(
-                            onPressed: () => setState(() => selectedButton = e),
-                            child: Text(
-                              e,
+                            onPressed: () => setState(() => selectedButton = section.label),
+                            child: Text(  
+                              section.label,
                               style: TextStyle(
-                                color: selectedButton == e ? AppColors.white : AppColors.gray200,
+                                color: selectedButton == section.label ? AppColors.white : AppColors.gray200,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: selectedButton == e ? AppColors.blue400 : AppColors.blue500,
+                              backgroundColor: selectedButton == section.label ? AppColors.blue400 : AppColors.blue500,
                               foregroundColor: Colors.white,
-                              elevation: selectedButton == e ? 10 : 0,
+                              elevation: selectedButton == section.label ? 10 : 0,
                               padding: const EdgeInsets.symmetric(horizontal: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
