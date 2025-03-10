@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:intl/intl.dart';  // intl 패키지 import
 import 'package:flutter_exe/components/common/DatePickerField.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
+
 
 // 드롭다운 타입을 위한 enum
 enum DropdownType {
@@ -19,14 +22,14 @@ class DropdownOptions {
   // static const List<String> tests = ['처방동의서', '작성동의서'];
 }
 
-class MainHeader extends StatefulWidget {
+class MainHeader extends ConsumerStatefulWidget {
   const MainHeader({super.key});
 
   @override
-  State<MainHeader> createState() => _MainHeaderState();
+  ConsumerState<MainHeader> createState() => _MainHeaderState();
 }
 
-class _MainHeaderState extends State<MainHeader> {
+class _MainHeaderState extends ConsumerState<MainHeader> {
   DateTime? selectedDate;
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd', 'ko_KR');
   
@@ -175,7 +178,9 @@ class _MainHeaderState extends State<MainHeader> {
           
           const Spacer(),
           
-          _buildIconButton(Icons.search, () {}),
+          _buildIconButton(Icons.search, () {
+            ref.read(patientInfoLoaderProvider.future);
+          }),
           _buildIconButton(Icons.refresh, () {}),
         ],
       ),
