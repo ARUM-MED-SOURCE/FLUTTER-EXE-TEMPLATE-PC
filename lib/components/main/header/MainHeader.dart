@@ -195,19 +195,4 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
       onPressed: onPressed,
     );
   }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final currentDate = ref.read(selectedDateProvider);
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: currentDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2030, 12, 31),
-      locale: const Locale('ko', 'KR'),
-    );
-
-    if (picked != null) {
-      ref.read(selectedDateProvider.notifier).setDate(picked);
-    }
-  }
 }
