@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 // 드롭다운 타입을 위한 enum
 enum DropdownType {
   department,
@@ -17,5 +19,13 @@ class DropdownOptions {
   static List<String> getItemsForType(DropdownType type) {
     return items[type]!;
   }
+
+  static final Map<DropdownType, String> selectedValues = Map.fromEntries(
+    DropdownType.values.map((dropdownType) => MapEntry(dropdownType, getItemsForType(dropdownType)[0])),
+  );
+  
+  static final Map<DropdownType, LayerLink> layerLinks = Map.fromEntries(
+    DropdownType.values.map((dropdownType) => MapEntry(dropdownType, LayerLink()))
+  );
 }
 

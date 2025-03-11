@@ -5,7 +5,7 @@ import 'package:flutter_exe/components/common/DatePickerField.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
 import 'package:flutter_exe/components/main/header/DropdownOptions.dart';
-
+import 'package:flutter_exe/providers/selected_date_provider.dart';
 
 
 
@@ -17,24 +17,9 @@ class MainHeader extends ConsumerStatefulWidget {
 }
 
 class _MainHeaderState extends ConsumerState<MainHeader> {
-  DateTime? selectedDate;
-  final DateFormat dateFormat = DateFormat('yyyy-MM-dd', 'ko_KR');
-  
-  
-  final Map<DropdownType, String> selectedValues = Map.fromEntries(
-    DropdownType.values.map((dropdownType) => MapEntry(dropdownType, DropdownOptions.getItemsForType(dropdownType)[0]))
-  );
-
-  
-
   OverlayEntry? _overlayEntry;
   DropdownType? _activeDropdown;
-
-  // LayerLink를 Map으로 관리
-  final Map<DropdownType, LayerLink> _layerLinks = Map.fromEntries(
-    DropdownType.values.map((dropdownType) => MapEntry(dropdownType, LayerLink()))
-  );
-
+  
   @override
   void dispose() {
     _removeOverlay();
@@ -57,8 +42,8 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
 
   OverlayEntry _createOverlayEntry(DropdownType type) {
     final items = DropdownOptions.getItemsForType(type);
-    final selectedValue = selectedValues[type];
-    final layerLink = _layerLinks[type];
+    final selectedValue = DropdownOptions.selectedValues[type];
+    final layerLink = DropdownOptions.layerLinks[type];
 
     return OverlayEntry(
       builder: (context) => Positioned(
@@ -86,12 +71,16 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
     );
   }
 
-  Widget _buildDropdownItem(String item, String? selectedValue, DropdownType type) {
+  Widget _buildDropdownItem(
+    String item,
+    String? selectedValue,
+    DropdownType type,
+  ) {
     final isSelected = item == selectedValue;
     return InkWell(
       onTap: () {
         setState(() {
-          selectedValues[type] = item;
+          DropdownOptions.selectedValues[type] = item;
         });
         _removeOverlay();
       },
@@ -115,6 +104,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedDate = ref.watch(selectedDateProvider);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 60,
@@ -133,16 +123,16 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
           DatePickerField(
             selectedDate: selectedDate,
             dateFormat: dateFormat,
-            onDateSelected: _selectDate,
+            onDateSelected: (date) => ref.read(selectedDateProvider.notifier).setDate(date),
           ),
           const SizedBox(width: 8),
           
           ...DropdownType.values.map((type) => Padding(
             padding: const EdgeInsets.only(right: 8),
             child: CompositedTransformTarget(
-              link: _layerLinks[type]!,
+              link: DropdownOptions.layerLinks[type]!,
               child: _buildDropdownButton(
-                selectedValues[type]!,
+                DropdownOptions.selectedValues[type]!,
                 type,
               ),
             ),
@@ -207,18 +197,17 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    final currentDate = ref.read(selectedDateProvider);
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate ?? DateTime.now(),
+      initialDate: currentDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2030, 12, 31),
       locale: const Locale('ko', 'KR'),
     );
 
     if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-      });
+      ref.read(selectedDateProvider.notifier).setDate(picked);
     }
   }
 }

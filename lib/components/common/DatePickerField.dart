@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/providers/selected_date_provider.dart';
 
-class DatePickerField extends StatelessWidget {
+final DateFormat dateFormat = DateFormat('yyyy-MM-dd', 'ko_KR');
+
+class DatePickerField extends ConsumerWidget {
   final DateTime? selectedDate;
   final DateFormat dateFormat;
-  final Function(BuildContext) onDateSelected;
+  final Function(DateTime) onDateSelected;
   final String? label;
   final double width;
 
@@ -19,7 +23,8 @@ class DatePickerField extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedDate = ref.watch(selectedDateProvider);
     return Row(
       children: [
         if (label != null) ...[
@@ -27,7 +32,18 @@ class DatePickerField extends StatelessWidget {
           const SizedBox(width: 8),
         ],
         GestureDetector(
-          onTap: () => onDateSelected(context),
+          onTap: () async {
+            final DateTime? picked = await showDatePicker(
+              context: context,
+              initialDate: selectedDate,
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2030, 12, 31),
+              locale: const Locale('ko', 'KR'),
+            );
+            if (picked != null) {
+              onDateSelected(picked);
+            }
+          },
           child: Container(
             width: width,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -39,7 +55,7 @@ class DatePickerField extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  dateFormat.format(selectedDate ?? DateTime.now()),
+                  dateFormat.format(selectedDate),
                   style: const TextStyle(fontSize: 14),
                 ),
                 const Icon(
@@ -60,8 +76,8 @@ class DateRangePickerField extends StatelessWidget {
   final DateTime? startDate;
   final DateTime? endDate;
   final DateFormat dateFormat;
-  final Function(BuildContext) onStartDateSelected;
-  final Function(BuildContext) onEndDateSelected;
+  final Function(DateTime) onStartDateSelected;
+  final Function(DateTime) onEndDateSelected;
 
   const DateRangePickerField({
     required this.startDate,
