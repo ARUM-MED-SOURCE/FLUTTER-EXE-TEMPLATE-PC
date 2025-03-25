@@ -4,10 +4,12 @@ import 'package:flutter_exe/components/main/MainComponent.dart';
 import 'package:flutter_exe/components/search/ConsentSearch.dart';
 import 'package:flutter_exe/components/Topbar.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/model/prescription_consent_data.dart';
+import 'package:flutter_exe/utils/dummy_data.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
@@ -24,7 +26,11 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 1,
-                  child: ConsentSearch(),
+                  child: ConsentSearch(
+                    searchResults: prescriptionConsentData
+                        .map(PrescriptionConsentData.fromJson)
+                        .toList(),
+                  ),
                 ),
               ],
             ),
