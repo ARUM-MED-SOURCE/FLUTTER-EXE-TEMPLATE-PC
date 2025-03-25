@@ -22,6 +22,8 @@ class ConsentSearch extends StatelessWidget {
       card: InfoCard(
         header: _ConsentSearchHeader(title: "동의서 검색"),
         body: InfoList<PrescriptionConsentData>(
+          shrinkWrap: false,
+          physics: const BouncingScrollPhysics(),
           items: searchResults,
           buildItem: (consent) => Consumer(
             builder: (context, ref, _) {
@@ -56,6 +58,8 @@ class ConsentSearch extends StatelessWidget {
         backgroundColor: Colors.white,
         isRound: true,
         showBorder: false,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
       ),
     );
   }

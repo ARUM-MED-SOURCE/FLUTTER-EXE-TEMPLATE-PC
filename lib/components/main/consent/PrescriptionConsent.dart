@@ -21,9 +21,11 @@ class PrescriptionConsent extends StatelessWidget {
           title: '처방동의서',
           titleStyle: Theme.of(context).textTheme.titleLarge,
         ),
-        body: InfoList<PrescriptionConsentData>(
-          items: prescriptions,
-          buildItem: (prescription) => Consumer(
+        body:  InfoList<PrescriptionConsentData>(
+            shrinkWrap: false,
+            physics: const BouncingScrollPhysics(),
+            items: prescriptions,
+            buildItem: (prescription) => Consumer(
             builder: (context, ref, _) {
               return CheckableConsentItem(
                 name: prescription.name,
@@ -44,6 +46,8 @@ class PrescriptionConsent extends StatelessWidget {
         backgroundColor: Colors.white,
         isRound: true,
         showBorder: false,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
       ),
     );
   }

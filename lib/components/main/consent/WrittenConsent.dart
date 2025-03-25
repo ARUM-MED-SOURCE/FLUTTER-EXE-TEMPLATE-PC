@@ -21,6 +21,8 @@ class WrittenConsent extends StatelessWidget {
           titleStyle: Theme.of(context).textTheme.titleLarge,
         ),
         body: InfoList<WrittenConsentData>(
+            shrinkWrap: false,
+            physics: const ClampingScrollPhysics(),
           items: consents.isEmpty
               ? [WrittenConsentData(type: '', date: '', name: '', id: '')]
               : consents,
@@ -38,6 +40,8 @@ class WrittenConsent extends StatelessWidget {
         backgroundColor: Colors.white,
         isRound: true,
         showBorder: false,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
       ),
     );
   }

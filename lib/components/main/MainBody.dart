@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/components/main/PatientInfo.dart';
-import 'package:flutter_exe/components/main/PrescriptionConsent.dart';
-import 'package:flutter_exe/components/main/WrittenConsent.dart';
+import 'package:flutter_exe/components/main/consent/PatientInfo.dart';
+import 'package:flutter_exe/components/main/consent/PrescriptionConsent.dart';
+import 'package:flutter_exe/components/main/consent/WrittenConsent.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/model/written_consent.dart';
 import 'package:flutter_exe/utils/dummy_data.dart';
 
-class MainContent extends StatelessWidget {
-  const MainContent({super.key});
+class MainBody extends StatelessWidget {
+  const MainBody({super.key});
 
   @override
   Widget build(BuildContext context) {

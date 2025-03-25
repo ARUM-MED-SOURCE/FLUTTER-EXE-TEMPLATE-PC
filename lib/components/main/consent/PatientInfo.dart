@@ -12,18 +12,19 @@ class PatientInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Info(
       card: InfoCard(
-        header:
-        InfoHeader(
+        header: InfoHeader(
           title: '환자정보',
           titleStyle: Theme.of(context).textTheme.titleLarge,
           backgroundColor: Colors.white,
           padding: const EdgeInsets.all(16.0),
         ),
         body: InfoList<Patient>(
-          items: patientData.map(Patient.fromJson).toList(),
-          buildItem: (patient) => _PatientInfoItem(patient: patient),
-          backgroundColor: Colors.white,
-          contentPadding: EdgeInsets.zero,
+            shrinkWrap: false,
+            physics: const BouncingScrollPhysics(),
+            items: patientData.map(Patient.fromJson).toList(),
+            buildItem: (patient) => _PatientInfoItem(patient: patient),
+            backgroundColor: Colors.white,
+            contentPadding: EdgeInsets.zero,
           itemDecoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(color: AppColors.gray100),
@@ -33,6 +34,8 @@ class PatientInfo extends StatelessWidget {
         backgroundColor: Colors.white,
         isRound: true,
         showBorder: false,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
       ),
     );
   }
