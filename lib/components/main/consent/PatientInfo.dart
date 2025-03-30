@@ -16,22 +16,23 @@ class PatientInfo extends StatelessWidget {
           title: '환자정보',
           titleStyle: Theme.of(context).textTheme.titleLarge,
           backgroundColor: Colors.white,
-          padding: const EdgeInsets.all(16.0),
         ),
         body: InfoList<Patient>(
-            shrinkWrap: false,
-            physics: const BouncingScrollPhysics(),
-            items: patientData.map(Patient.fromJson).toList(),
-            buildItem: (patient) => _PatientInfoItem(patient: patient),
-            backgroundColor: Colors.white,
-            contentPadding: EdgeInsets.zero,
-          itemDecoration: BoxDecoration(
+          shrinkWrap: false,
+          physics: const BouncingScrollPhysics(),
+          items: patientData.map(Patient.fromJson).toList(),
+          buildItem: (patient) => _PatientInfoItem(patient: patient),
+          backgroundColor: AppColors.white,
+          contentPadding: EdgeInsets.zero,
+          itemDecoration: const BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: AppColors.gray100),
+              bottom: BorderSide(
+                color: AppColors.gray100,
+              ),
             ),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         isRound: true,
         showBorder: false,
         padding: EdgeInsets.zero,
@@ -51,6 +52,7 @@ class _PatientInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       child: Column(
@@ -140,7 +142,7 @@ class _PatientAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
+        const Text(
           'ALERT',
           style: PatientStyles.alertStyle,
         ),

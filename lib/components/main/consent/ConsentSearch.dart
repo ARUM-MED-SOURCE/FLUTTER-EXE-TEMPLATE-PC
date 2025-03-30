@@ -20,7 +20,7 @@ class ConsentSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Info(
       card: InfoCard(
-        header: _ConsentSearchHeader(title: "동의서 검색"),
+        header: const _ConsentSearchHeader(title: "동의서 검색"),
         body: InfoList<PrescriptionConsentData>(
           shrinkWrap: false,
           physics: const BouncingScrollPhysics(),
@@ -76,7 +76,7 @@ class _ConsentSearchHeader extends InfoHeader {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(color: AppColors.gray100),
         ),
@@ -89,7 +89,7 @@ class _ConsentSearchHeader extends InfoHeader {
             title,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          _ConsentSearchOptions(),
+          const _ConsentSearchOptions(),
           const _ConsentSearchBar(),
         ],
       ),
@@ -144,7 +144,7 @@ class _ConsentSearchBar extends StatelessWidget {
       child: TextField(
         decoration: InputDecoration(
           hintText: '동의서 검색',
-          hintStyle: TextStyle(color: AppColors.gray500),
+          hintStyle: const TextStyle(color: AppColors.gray500),
           filled: true,
           fillColor: AppColors.blue150,
           border: OutlineInputBorder(
@@ -152,7 +152,7 @@ class _ConsentSearchBar extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          suffixIcon: Icon(Icons.search, color: AppColors.blue300),
+          suffixIcon: const Icon(Icons.search, color: AppColors.blue300),
         ),
       ),
     );

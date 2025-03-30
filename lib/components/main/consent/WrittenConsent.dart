@@ -24,7 +24,7 @@ class WrittenConsent extends StatelessWidget {
             shrinkWrap: false,
             physics: const ClampingScrollPhysics(),
           items: consents.isEmpty
-              ? [WrittenConsentData(type: '', date: '', name: '', id: '')]
+              ? [const WrittenConsentData(type: '', date: '', name: '', id: '')]
               : consents,
           buildItem: (consent) => consents.isEmpty
               ? _EmptyConsentItem()

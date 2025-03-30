@@ -16,7 +16,7 @@ class MainBody extends StatelessWidget {
       color: AppColors.blue50,
       child: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: PatientInfo(),
           ),
           Expanded(
