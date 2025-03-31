@@ -1,50 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/components/common/container/Info.dart';
-import 'package:flutter_exe/components/common/container/InfoCard.dart';
-import 'package:flutter_exe/components/common/container/InfoHeader.dart';
-import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exe/providers/selected_consents_provider.dart';
 import 'package:flutter_exe/utils/dummy_data.dart';
+import 'package:flutter_list_ui/flutter_list_ui.dart';
 
-class PatientInfo extends Info {
-  PatientInfo({super.key}) : super(
-    card: _PatientInfoCard(
-      header: _PatientInfoHeader(title: '환자정보'),
-      body: _PatientInfoList(
-        patients: patientData.map(Patient.fromJson).toList(),
-      ),
-    ),
-  );
-}
-
-class _PatientInfoCard extends InfoCard {
-  const _PatientInfoCard({
-    required InfoHeader header,
-    required InfoList body,
-    super.key,
-  }) : super(header: header, body: body);
-}
-
-class _PatientInfoHeader extends InfoHeader {
-  const _PatientInfoHeader({
-    required String title,
-    super.key,
-  }) : super(title: title);
-}
-
-class _PatientInfoList extends InfoList<Patient> {
-  const _PatientInfoList({
-    required List<Patient> patients,
-    super.key,
-  }) : super(items: patients);
+class PatientInfo extends StatelessWidget {
+  const PatientInfo({super.key});
 
   @override
-  Widget buildItem(Patient patient) {
-    return _PatientInfoItem(patient: patient);
+  Widget build(BuildContext context) {
+    return Info(
+      card: InfoCard(
+        header: InfoHeader(
+          title: '환자정보',
+          titleStyle: Theme.of(context).textTheme.titleLarge,
+          backgroundColor: Colors.white,
+        ),
+        body: InfoList<Patient>(
+          shrinkWrap: false,
+          physics: const BouncingScrollPhysics(),
+          items: patientData.map(Patient.fromJson).toList(),
+          buildItem: (patient) => _PatientInfoItem(patient: patient),
+          backgroundColor: AppColors.white,
+          contentPadding: EdgeInsets.zero,
+          itemDecoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: AppColors.gray100,
+              ),
+            ),
+          ),
+        ),
+        backgroundColor: AppColors.white,
+        isRound: true,
+        showBorder: false,
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+      ),
+    );
   }
 }
 
@@ -58,11 +52,9 @@ class _PatientInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: AppColors.gray100)),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -108,11 +100,13 @@ class _PatientDetail extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(bottom: 4),
           child: Row(
-            children: row.map((widget) => 
-              Expanded(
-                child: widget,
-              ),
-            ).toList(),
+            children: row
+                .map(
+                  (widget) => Expanded(
+                    child: widget,
+                  ),
+                )
+                .toList(),
           ),
         );
       }).toList(),
@@ -148,7 +142,7 @@ class _PatientAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
+        const Text(
           'ALERT',
           style: PatientStyles.alertStyle,
         ),
@@ -161,7 +155,3 @@ class _PatientAlert extends StatelessWidget {
     );
   }
 }
-
-
-
-

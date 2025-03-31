@@ -1,32 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/layout/default_layout.dart';
 import 'package:flutter_exe/components/main/MainComponent.dart';
-import 'package:flutter_exe/components/search/ConsentSearch.dart';
-import 'package:flutter_exe/components/navigation/Topbar.dart';
+
+import 'package:flutter_exe/components/main/consent/ConsentSearch.dart';
+import 'package:flutter_exe/components/Topbar.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/model/prescription_consent_data.dart';
+import 'package:flutter_exe/utils/dummy_data.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
+    return const DefaultLayout(
       child: Column(
         children: [
           TopBar(),
+          _Body(),
+        ],
+      ),
+    );
+  }
+}
+
+class _Body extends StatelessWidget {
+  const _Body({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Expanded(
+            flex: 2,
+            child: MainComponent(),
+          ),
           Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: MainComponent(),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: ConsentSearch(),
-                ),
-              ],
+            flex: 1,
+            child: ConsentSearch(
+              searchResults: prescriptionConsentData
+                  .map(PrescriptionConsentData.fromJson)
+                  .toList(),
             ),
           ),
         ],
