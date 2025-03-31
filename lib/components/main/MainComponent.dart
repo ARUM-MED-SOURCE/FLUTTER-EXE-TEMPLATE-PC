@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exe/components/main/header/MainHeader.dart';
 import 'package:flutter_exe/constants/colors.dart';
 
-import 'package:flutter_exe/components/main/MainHeader.dart';
 import 'package:flutter_exe/components/main/MainBody.dart';
 
 class MainComponent extends StatelessWidget {
