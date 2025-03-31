@@ -1,152 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/components/common/container/Info.dart';
+import 'package:flutter_exe/components/common/container/InfoCard.dart';
+import 'package:flutter_exe/components/common/container/InfoHeader.dart';
+import 'package:flutter_exe/components/common/container/InfoList.dart';
 import 'package:flutter_exe/model/patient.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/providers/selected_consents_provider.dart';
+import 'package:flutter_exe/utils/dummy_data.dart';
 
-const _patientData = [
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  },
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  },
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  },
-  {
-    'name': '김영진',
-    'id': '00000010',
-    'type': 'OS',
-    'ward': 'A5 / 85',
-    'ageGender': '32 / 여',
-    'admissionDate': '2023/07/31 / B7 / 14',
-    'doctor': '장준혁',
-    'attendingDoctor': '최준영',
-    'diagnosis': '발목 골절',
-    'alert': 'BSA : FM90.00, 혈액형 : O+'
-  }
-];
-
-class PatientInfo extends StatelessWidget {
-  const PatientInfo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.blue50,
-      padding: const EdgeInsets.all(8.0),
-      child: PatientInfoCard(
-        header: const PatientInfoHeader(),
-        body: PatientInfoList(patients: _patientData.map(Patient.fromJson).toList()),
+class PatientInfo extends Info {
+  PatientInfo({super.key}) : super(
+    card: _PatientInfoCard(
+      header: _PatientInfoHeader(title: '환자정보'),
+      body: _PatientInfoList(
+        patients: patientData.map(Patient.fromJson).toList(),
       ),
-    );
-  }
+    ),
+  );
 }
 
-class PatientInfoCard extends StatelessWidget {
-  final Widget header;
-  final Widget body;
-
-  const PatientInfoCard({
-    required this.header,
-    required this.body,
+class _PatientInfoCard extends InfoCard {
+  const _PatientInfoCard({
+    required InfoHeader header,
+    required InfoList body,
     super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [header, body],
-      ),
-    );
-  }
+  }) : super(header: header, body: body);
 }
 
-class PatientInfoHeader extends StatelessWidget {
-  const PatientInfoHeader({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.gray100),
-        ),
-      ),
-      width: double.infinity,
-      child: Text(
-        '환자정보',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-}
-
-class PatientInfoList extends StatelessWidget {
-  final List<Patient> patients;
-
-  const PatientInfoList({
-    required this.patients,
+class _PatientInfoHeader extends InfoHeader {
+  const _PatientInfoHeader({
+    required String title,
     super.key,
-  });
+  }) : super(title: title);
+}
+
+class _PatientInfoList extends InfoList<Patient> {
+  const _PatientInfoList({
+    required List<Patient> patients,
+    super.key,
+  }) : super(items: patients);
 
   @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: ListView.builder(
-          itemCount: patients.length,
-          itemBuilder: (context, index) {
-            final patient = patients[index];
-            return PatientInfoItem(patient: patient);
-          },
-        ),
-      ),
-    );
+  Widget buildItem(Patient patient) {
+    return _PatientInfoItem(patient: patient);
   }
 }
 
-class PatientInfoItem extends StatelessWidget {
+class _PatientInfoItem extends StatelessWidget {
   final Patient patient;
 
-  const PatientInfoItem({
+  const _PatientInfoItem({
     required this.patient,
     super.key,
   });
@@ -161,57 +66,40 @@ class PatientInfoItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PatientDetailInfo(patient: patient),
-          PatientAlertInfo(
-            alert: patient.alert,
-            allergies: patient.allergies,
-          ),
+          _PatientDetail(patient: patient),
+          _PatientAlert(patient: patient),
         ],
       ),
     );
   }
 }
 
-class PatientDetailInfo extends StatelessWidget {
+class _PatientDetail extends StatelessWidget {
   final Patient patient;
 
-  const PatientDetailInfo({
+  const _PatientDetail({
     required this.patient,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return _buildInfoGrid(
-      patient.ward,
-      patient.ageGender,
-      patient.admissionDate,
-      patient.doctor,
-      patient.attendingDoctor,
-      patient.diagnosis,
-    );
+    return _buildInfoGrid();
   }
 
-  Widget _buildInfoGrid(
-    String ward,
-    String ageGender,
-    String admissionDate,
-    String doctor,
-    String attendingDoctor,
-    String diagnosis,
-  ) {
+  Widget _buildInfoGrid() {
     final infoRows = [
       [
-        _buildInfoItem('병동/병실: ', ward),
-        _buildInfoItem('나이/성별: ', ageGender),
+        _buildInfoItem('병동/병실: ', patient.ward),
+        _buildInfoItem('나이/성별: ', patient.ageGender),
       ],
       [
-        _buildInfoItem('입원일: ', admissionDate),
-        _buildInfoItem('지정의: ', doctor),
+        _buildInfoItem('입원일: ', patient.admissionDate),
+        _buildInfoItem('지정의: ', patient.doctor),
       ],
       [
-        _buildInfoItem('주치의: ', attendingDoctor),
-        _buildInfoItem('진단명: ', diagnosis),
+        _buildInfoItem('주치의: ', patient.attendingDoctor),
+        _buildInfoItem('진단명: ', patient.diagnosis),
       ],
     ];
 
@@ -248,13 +136,11 @@ class PatientDetailInfo extends StatelessWidget {
   }
 }
 
-class PatientAlertInfo extends StatelessWidget {
-  final String alert;
-  final List<String> allergies;
+class _PatientAlert extends StatelessWidget {
+  final Patient patient;
 
-  const PatientAlertInfo({
-    required this.alert,
-    required this.allergies,
+  const _PatientAlert({
+    required this.patient,
     super.key,
   });
 
@@ -268,10 +154,14 @@ class PatientAlertInfo extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          alert,
+          patient.alert,
           style: PatientStyles.alertStyle,
         ),
       ],
     );
   }
 }
+
+
+
+

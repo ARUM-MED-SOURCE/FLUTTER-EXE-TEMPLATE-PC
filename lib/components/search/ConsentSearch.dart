@@ -1,76 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/providers/selected_option_provider.dart';
+import 'package:flutter_exe/components/common/container/Info.dart';
+import 'package:flutter_exe/components/common/container/InfoCard.dart';
+import 'package:flutter_exe/components/common/container/InfoHeader.dart';
+import 'package:flutter_exe/components/common/container/InfoList.dart';
+import 'package:flutter_exe/components/common/ConsentItem.dart';
+import 'package:flutter_exe/providers/selected_consents_provider.dart';
+import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/utils/dummy_data.dart';
+import 'package:flutter_exe/model/prescription_consent_data.dart';
 
-class ConsentSearch extends StatefulWidget {
-  const ConsentSearch({super.key});
-
-  @override
-  State<ConsentSearch> createState() => _ConsentSearchState();
-}
-
-class _ConsentSearchState extends State<ConsentSearch> {
-  String selectedOption = 'all';
-  final Set<String> selectedConsents = {};
-  final Set<String> favoriteConsents = {};
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: ConsentSearchCard(
-        header: ConsentSearchHeader(
-          options: ConsentSearchOptions(
-            selectedOption: selectedOption,
-            onOptionChanged: (value) => setState(() => selectedOption = value),
-          ),
-          searchBar: const ConsentSearchBar(),
-        ),
-        body: ConsentSearchList(
-          consents: _consentData,
-          selectedConsents: selectedConsents,
-          favoriteConsents: favoriteConsents,
-          onConsentSelected: (consentId) => setState(() => selectedConsents.add(consentId)),
-          onFavoriteToggled: (consentId) => setState(() => favoriteConsents.add(consentId)),
-        ),
+class ConsentSearch extends Info {
+  ConsentSearch({super.key}) : super(
+    card: _ConsentSearchCard(
+      header: const _ConsentSearchHeader(title: '동의서 검색'),
+      body: _ConsentSearchList(
+        consents: prescriptionConsentData.map(PrescriptionConsentData.fromJson).toList(),
       ),
-    );
-  }
+    ),
+    paddingOption: 'symmetric',
+    paddingVertical: 0.0,
+    paddingHorizontal: 0.0,
+  );
 }
 
-class ConsentSearchCard extends StatelessWidget {
-  final Widget header;
-  final Widget body;
-
-  const ConsentSearchCard({ 
-    required this.header,
-    required this.body,
+class _ConsentSearchCard extends InfoCard {
+  const _ConsentSearchCard({
+    required InfoHeader header,
+    required InfoList body,
     super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        // borderRadius: BorderRadius.circular(20),
-        // border: Border.all(color: AppColors.gray100.withOpacity(0.5)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [header,  body],
-      ),
-    );
-  }
+  }) : super(header: header, body: body, isRound: false);
 }
 
-class ConsentSearchHeader extends StatelessWidget {
-  final Widget options;
-  final Widget searchBar;
-  const ConsentSearchHeader({
-    super.key, 
-    required this.options, 
-    required this.searchBar,
-  });
+class _ConsentSearchHeader extends InfoHeader {
+  const _ConsentSearchHeader({
+    required String title,
+    super.key,
+  }) : super(title: title);
 
   @override
   Widget build(BuildContext context) {
@@ -86,27 +54,20 @@ class ConsentSearchHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '동의서 검색',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          options,
-          searchBar,
+          _ConsentSearchOptions(),
+          const _ConsentSearchBar(),
         ],
       ),
     );
   }
 }
 
+class _ConsentSearchOptions extends StatelessWidget {
 
-
-
-class ConsentSearchOptions extends StatelessWidget {
-  final String selectedOption;
-  final Function(String) onOptionChanged;
-
-  const ConsentSearchOptions({
-    required this.selectedOption,
-    required this.onOptionChanged,
+  const _ConsentSearchOptions({
     super.key,
   });
 
@@ -122,26 +83,30 @@ class ConsentSearchOptions extends StatelessWidget {
   }
 
   Widget _buildRadioOption(String value, String label) {
-    return Row(
-      children: [
-        Transform.scale(
-          scale: 0.8,
+    return Consumer(
+      builder: (context, ref, _) {
+        return Row(
+          children: [
+            Transform.scale(
+              scale: 0.8,
           child: Radio(
             value: value,
-            groupValue: selectedOption,
-            onChanged: (value) => onOptionChanged(value!),
+            groupValue: ref.watch(selectedOptionProvider),
+            onChanged: (value) => ref.read(selectedOptionProvider.notifier).setOption(value!),
             activeColor: AppColors.blue300,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
           ),
-        ),
-        Text(label, style: const TextStyle(fontSize: 12)),
-      ],
+          Text(label, style: const TextStyle(fontSize: 12)),
+        ],
+      );
+      },
     );
   }
 }
 
-class ConsentSearchBar extends StatelessWidget {
-  const ConsentSearchBar({super.key});
+class _ConsentSearchBar extends StatelessWidget {
+  const _ConsentSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -165,133 +130,64 @@ class ConsentSearchBar extends StatelessWidget {
   }
 }
 
-class ConsentSearchList extends StatelessWidget {
-  final List<Map<String, String>> consents;
-  final Set<String> selectedConsents;
-  final Set<String> favoriteConsents;
-  final Function(String) onConsentSelected;
-  final Function(String) onFavoriteToggled;
+class _ConsentSearchList extends InfoList<PrescriptionConsentData> {
+  final List<PrescriptionConsentData> consents;
 
-  const ConsentSearchList({
+  const _ConsentSearchList({
     required this.consents,
-    required this.selectedConsents,
-    required this.favoriteConsents,
-    required this.onConsentSelected,
-    required this.onFavoriteToggled,
     super.key,
-  });
+  }) : super(items: consents);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        itemCount: consents.length,
-        separatorBuilder: (context, index) => const Divider(
-          height: 1,
-        color: AppColors.gray100,
-      ),
-      itemBuilder: (context, index) {
-        final consent = consents[index];
-        return ConsentSearchItem(
-          name: consent['name'] ?? '',
-          id: consent['id'] ?? '',
-          isSelected: selectedConsents.contains(consent['id']),
-          isFavorite: favoriteConsents.contains(consent['id']),
-          onSelected: () => onConsentSelected(consent['id']!),
-          onFavoriteToggled: () => onFavoriteToggled(consent['id']!),
+    if (consents.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (consents.isEmpty) {
+      return const Center(
+        child: Text(
+          '검색 결과가 없습니다.',
+          style: TextStyle(
+            color: AppColors.gray500,
+            fontSize: 14,
+          ),
+        ),
+      );
+    }
+
+    return super.build(context);
+  }
+
+  @override
+  Widget buildItem(PrescriptionConsentData consent) {
+    return Consumer(
+      builder: (context, ref, _) {
+        final id = consent.id;
+        final name = consent.name;
+        
+        // 필수 데이터가 없는 경우 처리
+        if (id == null || name == null) {
+          return const SizedBox.shrink();
+        }
+
+        return FavoriteConsentItem(
+          name: name,
+          id: id,
+          isSelected: ref.watch(selectedConsentsProvider).contains(id),
+          isFavorite: ref.watch(selectedFavoriteConsentsProvider).contains(id),
+          onSelected: () {
+            final notifier = ref.read(selectedConsentsProvider.notifier);
+            notifier.toggleConsent(id);
+          },
+          onFavoriteToggled: () {
+            final notifier = ref.read(selectedFavoriteConsentsProvider.notifier);
+            notifier.toggleConsent(id);
+          },
         );
       },
-      ),
-    );  
-  }
-}
-
-class ConsentSearchItem extends StatelessWidget {
-  final String name;
-  final String id;
-  final bool isSelected;
-  final bool isFavorite;
-  final VoidCallback onSelected;
-  final VoidCallback onFavoriteToggled;
-
-  const ConsentSearchItem({
-    required this.name,
-    required this.id,
-    required this.isSelected,
-    required this.isFavorite,
-    required this.onSelected,
-    required this.onFavoriteToggled,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 24,
-            child: Text(
-              '$id.',
-              style: const TextStyle(fontSize: 14, color: AppColors.black),
-            ),
-          ),
-          Checkbox(
-            value: isSelected,
-            onChanged: (_) => onSelected(),
-            activeColor: AppColors.blue300,
-            side: BorderSide(color: AppColors.gray200),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              name,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
-          IconButton(
-            icon: Icon(
-              isFavorite ? Icons.star : Icons.star_border,
-              color: isFavorite ? AppColors.blue300 : AppColors.gray200,
-            ),
-            onPressed: onFavoriteToggled,
-          ),
-        ],
-      ),
     );
   }
 }
-
-const _consentData = [
-  {
-    'id': '1',
-    'name': '제왕절개술 동의서'
-  },
-  {
-    'id': '2',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '3',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '4',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '5',
-    'name': '척추 신경 차단술 동의서'
-  },
-  {
-    'id': '6',
-    'name': '척추 신경 차단술 동의서'
-  },
-];
-
-
- 
