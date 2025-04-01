@@ -46,13 +46,15 @@ jobs:
           channel: stable
           flutter-version: '3.19.4'
           architecture: x64
+          cache: true
           
       - name: Windows Setup
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
           flutter config --enable-windows-desktop
-          Remove-Item -Path "$env:LOCALAPPDATA\Pub\Cache" -Recurse -Force -ErrorAction SilentlyContinue
+          $env:PUB_CACHE = "${{ github.workspace }}/.pub-cache"
+          mkdir -Force $env:PUB_CACHE
           Remove-Item -Path ".dart_tool" -Recurse -Force -ErrorAction SilentlyContinue
           Remove-Item -Path "build" -Recurse -Force -ErrorAction SilentlyContinue
           Remove-Item -Path "pubspec.lock" -Force -ErrorAction SilentlyContinue
@@ -67,14 +69,14 @@ jobs:
         shell: pwsh
         run: |
           flutter clean
-          dart pub cache repair
+          Start-Sleep -Seconds 5
           flutter pub get
+          Start-Sleep -Seconds 5
           
       - name: Install dependencies (macOS)
         if: matrix.os == 'macos-latest'
         run: |
           flutter clean
-          flutter pub cache repair
           flutter pub get
         
       - name: Run build_runner (Windows)
@@ -82,7 +84,6 @@ jobs:
         shell: pwsh
         run: |
           Start-Sleep -Seconds 5
-          dart pub get
           dart run build_runner clean
           Start-Sleep -Seconds 5
           dart run build_runner build --delete-conflicting-outputs
