@@ -5,6 +5,7 @@ import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
+import 'package:flutter_exe/dataloaders/consent_dataloader.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
@@ -59,7 +60,7 @@ class PatientInfo extends ConsumerWidget {
   }
 }
 
-class _PatientInfoItem extends StatelessWidget {
+class _PatientInfoItem extends ConsumerWidget {
   final PatientInfoResultData patient;
 
   const _PatientInfoItem({
@@ -68,21 +69,27 @@ class _PatientInfoItem extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    
+  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       onTap: () {
-       print(patient.patientCode);
+        // 환자 상세 클릭 시 동의서 데이터 로드
+        ref.read(consentDataLoaderProvider.notifier).getWrittenConsent(
+          userId: 'userId', // TODO: 실제 사용자 ID로 변경 필요
+          userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필요
+          patientCode: patient.patientCode,
+          startDate: '20250301', // TODO: 실제 날짜로 변경 필요
+          endDate: '20250331', // TODO: 실제 날짜로 변경 필요
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _PatientDetail(patient: patient),
-          _PatientAlert(patient: patient),
-        ],
-      ),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _PatientDetail(patient: patient),
+            _PatientAlert(patient: patient),
+          ],
+        ),
       ),
     );
   }

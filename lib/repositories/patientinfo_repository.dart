@@ -11,7 +11,7 @@ part 'patientinfo_repository.g.dart';
 abstract class PatientInfoRepository {
   factory PatientInfoRepository(Dio dio, {String? baseUrl}) = _PatientInfoRepository;
 
-  @POST('/')
+  @POST('/HospitalSvc.aspx')
   @FormUrlEncoded()
   Future<PatientInfoResponse> getPatientInfo(
     @Field('methodName') String methodName,   

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:flutter_exe/model/prescription_consent_data.dart';
+import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_exe/api/dio/dio.dart';
@@ -11,9 +11,9 @@ part 'consent_repository.g.dart';
 abstract class ConsentRepository {
   factory ConsentRepository(Dio dio, {String? baseUrl}) = _ConsentRepository;
 
-  @POST('/')
+  @POST('/ConsentSvc.aspx')
   @FormUrlEncoded()
-  Future<PrescriptionConsentData> getPrescriptionConsentData(
+  Future<WrittenConsentResponse> getWrittenConsentData(
     @Field('methodName') String methodName,
     @Field('params') String params,
     @Field('userId') String userId,
@@ -25,7 +25,7 @@ abstract class ConsentRepository {
 }
 
 @riverpod
-ConsentRepository consentRepository(ConsentRepositoryRef ref) {
+ConsentRepository consentRepository(Ref ref) {
   final dio = ref.watch(dioClientProvider);
   dio.interceptors.add(InterceptorsWrapper(
     onResponse: (response, handler) {

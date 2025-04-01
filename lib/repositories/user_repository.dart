@@ -15,7 +15,7 @@ final logger = Logger();
 abstract class UserRepository {
   factory UserRepository(Dio dio, {String baseUrl}) = _UserRepository;
 
-  @POST('/')
+  @POST('/HospitalSvc.aspx')
   @FormUrlEncoded()
   Future<LoginResponse> login(
     @Field('methodName') String methodName,
