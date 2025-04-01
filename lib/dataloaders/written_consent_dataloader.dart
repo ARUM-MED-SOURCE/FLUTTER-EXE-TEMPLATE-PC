@@ -2,15 +2,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/repositories/consent_repository.dart';
 import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_exe/constants/api_constants.dart';
 import 'dart:convert';
 import 'package:logging/logging.dart';
 
-part 'consent_dataloader.g.dart';   
+part 'written_consent_dataloader.g.dart';
 
-final logger = Logger('ConsentDataLoader');
+final logger = Logger('WrittenConsentDataLoader');
 
 @riverpod
-class ConsentDataLoader extends AutoDisposeAsyncNotifier<WrittenConsentResponse?> {
+class WrittenConsentDataLoader
+    extends AutoDisposeAsyncNotifier<WrittenConsentResponse?> {
   @override
   Future<WrittenConsentResponse?> build() async => null;
 
@@ -24,6 +26,7 @@ class ConsentDataLoader extends AutoDisposeAsyncNotifier<WrittenConsentResponse?
     state = const AsyncValue.loading();
     
     final consentRepository = ref.read(consentRepositoryProvider);
+
     final data = {
       "UserId": userId,
       "UserPassword": userPassword,
@@ -37,13 +40,12 @@ class ConsentDataLoader extends AutoDisposeAsyncNotifier<WrittenConsentResponse?
         'GetConsents',
         json.encode(data),
         userId,
-        'AND',
-        'Chrome',
-        '172.17.200.48',
-        'E0AA96DEBD0A',
+        ApiConstants.searchType,
+        ApiConstants.browserType,
+        ApiConstants.ipAddress,
+        ApiConstants.deviceId,
       );
 
-      logger.info('API Response: $response');
       state = AsyncValue.data(response);
     } catch (e) {
       logger.severe('Error fetching written consent: $e');
@@ -51,8 +53,4 @@ class ConsentDataLoader extends AutoDisposeAsyncNotifier<WrittenConsentResponse?
       throw e;
     }
   }
-}
-
-
-  
-  
+} 

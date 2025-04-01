@@ -5,8 +5,8 @@ import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:convert';
 
-part 'auth_cubit.freezed.dart';
-part 'auth_cubit.g.dart';
+part 'auth.freezed.dart';
+part 'auth.g.dart';
 
 final logger = Logger();
 

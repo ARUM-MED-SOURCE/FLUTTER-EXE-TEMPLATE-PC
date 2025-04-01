@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/components/navigation/Topbar.dart';
 import 'package:flutter_exe/components/common/CustomTextFormField.dart';
 import 'package:flutter_exe/layout/default_layout.dart';
-import 'package:flutter_exe/cubit/auth/auth_cubit.dart';
 import 'package:flutter_exe/constants/index.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_exe/screens/main_screen.dart';
+
+import '../auth/auth.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});

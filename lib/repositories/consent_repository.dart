@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,6 +11,19 @@ part 'consent_repository.g.dart';
 @RestApi()
 abstract class ConsentRepository {
   factory ConsentRepository(Dio dio, {String? baseUrl}) = _ConsentRepository;
+
+
+  @POST('/HospitalSvc.aspx')
+  @FormUrlEncoded()
+  Future<PrescriptionConsentResponse> getPrescriptionConsentData(
+    @Field('methodName') String methodName,
+    @Field('params') String params,
+    @Field('userId') String userId,
+    @Field('deviceType') String deviceType,
+    @Field('deviceIdentName') String deviceIdentName,
+    @Field('deviceIdentIP') String deviceIdentIP,
+    @Field('deviceIdentMac') String deviceIdentMac,
+  );
 
   @POST('/ConsentSvc.aspx')
   @FormUrlEncoded()
