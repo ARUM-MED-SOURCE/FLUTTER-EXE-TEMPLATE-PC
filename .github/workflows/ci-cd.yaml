@@ -55,28 +55,82 @@ jobs:
           flutter config --enable-windows-desktop
           $env:PUB_CACHE = "${{ github.workspace }}/.pub-cache"
           mkdir -Force $env:PUB_CACHE
-          # Kill any potential Flutter/Dart processes
-          Get-Process -Name "dart" -ErrorAction SilentlyContinue | Stop-Process -Force
-          Get-Process -Name "flutter" -ErrorAction SilentlyContinue | Stop-Process -Force
-          # Clean up directories with retry mechanism
+          
+          # Kill any potential Flutter/Dart processes with more thorough cleanup
+          Get-Process -Name "dart" -ErrorAction SilentlyContinue | ForEach-Object { 
+            try { 
+              Stop-Process -Id $_.Id -Force -ErrorAction Stop
+              Start-Sleep -Seconds 1
+            } catch { 
+              Write-Host "Failed to stop process $($_.Id): $_"
+            }
+          }
+          
+          Get-Process -Name "flutter" -ErrorAction SilentlyContinue | ForEach-Object { 
+            try { 
+              Stop-Process -Id $_.Id -Force -ErrorAction Stop
+              Start-Sleep -Seconds 1
+            } catch { 
+              Write-Host "Failed to stop process $($_.Id): $_"
+            }
+          }
+          
+          # Additional cleanup for any remaining processes
+          Get-Process | Where-Object { $_.ProcessName -like "*dart*" -or $_.ProcessName -like "*flutter*" } | 
+            ForEach-Object { 
+              try { 
+                Stop-Process -Id $_.Id -Force -ErrorAction Stop
+                Start-Sleep -Seconds 1
+              } catch { 
+                Write-Host "Failed to stop process $($_.Id): $_"
+              }
+            }
+          
+          # Wait for processes to fully terminate
+          Start-Sleep -Seconds 5
+          
+          # Clean up directories with improved retry mechanism
           $maxRetries = 3
           $retryCount = 0
+          $retryDelay = 5
+          
           while ($retryCount -lt $maxRetries) {
             try {
-              Remove-Item -Path ".dart_tool" -Recurse -Force -ErrorAction Stop
-              Remove-Item -Path "build" -Recurse -Force -ErrorAction Stop
-              Remove-Item -Path "pubspec.lock" -Force -ErrorAction Stop
+              Write-Host "Attempt $($retryCount + 1) of $maxRetries to clean directories"
+              
+              # Check if directories exist before trying to remove
+              if (Test-Path ".dart_tool") {
+                Remove-Item -Path ".dart_tool" -Recurse -Force -ErrorAction Stop
+                Write-Host "Successfully removed .dart_tool"
+              }
+              
+              if (Test-Path "build") {
+                Remove-Item -Path "build" -Recurse -Force -ErrorAction Stop
+                Write-Host "Successfully removed build directory"
+              }
+              
+              if (Test-Path "pubspec.lock") {
+                Remove-Item -Path "pubspec.lock" -Force -ErrorAction Stop
+                Write-Host "Successfully removed pubspec.lock"
+              }
+              
               break
             } catch {
               $retryCount++
+              Write-Host "Error during cleanup: $_"
+              
               if ($retryCount -eq $maxRetries) {
                 Write-Host "Failed to clean directories after $maxRetries attempts"
                 exit 1
               }
-              Write-Host "Retry $retryCount of $maxRetries"
-              Start-Sleep -Seconds 2
+              
+              Write-Host "Waiting $retryDelay seconds before retry..."
+              Start-Sleep -Seconds $retryDelay
+              $retryDelay *= 2  # Exponential backoff
             }
           }
+          
+          Write-Host "Directory cleanup completed successfully"
           
       - name: macOS Setup
         if: matrix.os == 'macos-latest'
