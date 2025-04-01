@@ -55,9 +55,28 @@ jobs:
           flutter config --enable-windows-desktop
           $env:PUB_CACHE = "${{ github.workspace }}/.pub-cache"
           mkdir -Force $env:PUB_CACHE
-          Remove-Item -Path ".dart_tool" -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item -Path "build" -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item -Path "pubspec.lock" -Force -ErrorAction SilentlyContinue
+          # Kill any potential Flutter/Dart processes
+          Get-Process -Name "dart" -ErrorAction SilentlyContinue | Stop-Process -Force
+          Get-Process -Name "flutter" -ErrorAction SilentlyContinue | Stop-Process -Force
+          # Clean up directories with retry mechanism
+          $maxRetries = 3
+          $retryCount = 0
+          while ($retryCount -lt $maxRetries) {
+            try {
+              Remove-Item -Path ".dart_tool" -Recurse -Force -ErrorAction Stop
+              Remove-Item -Path "build" -Recurse -Force -ErrorAction Stop
+              Remove-Item -Path "pubspec.lock" -Force -ErrorAction Stop
+              break
+            } catch {
+              $retryCount++
+              if ($retryCount -eq $maxRetries) {
+                Write-Host "Failed to clean directories after $maxRetries attempts"
+                exit 1
+              }
+              Write-Host "Retry $retryCount of $maxRetries"
+              Start-Sleep -Seconds 2
+            }
+          }
           
       - name: macOS Setup
         if: matrix.os == 'macos-latest'
@@ -68,9 +87,48 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
-          flutter clean
+          # Kill any potential Flutter/Dart processes before clean
+          Get-Process -Name "dart" -ErrorAction SilentlyContinue | Stop-Process -Force
+          Get-Process -Name "flutter" -ErrorAction SilentlyContinue | Stop-Process -Force
+          
+          # Run flutter clean with retry mechanism
+          $maxRetries = 3
+          $retryCount = 0
+          while ($retryCount -lt $maxRetries) {
+            try {
+              flutter clean
+              break
+            } catch {
+              $retryCount++
+              if ($retryCount -eq $maxRetries) {
+                Write-Host "Failed to run flutter clean after $maxRetries attempts"
+                exit 1
+              }
+              Write-Host "Retry $retryCount of $maxRetries"
+              Start-Sleep -Seconds 2
+            }
+          }
+          
           Start-Sleep -Seconds 5
-          flutter pub get
+          
+          # Run flutter pub get with retry mechanism
+          $maxRetries = 3
+          $retryCount = 0
+          while ($retryCount -lt $maxRetries) {
+            try {
+              flutter pub get
+              break
+            } catch {
+              $retryCount++
+              if ($retryCount -eq $maxRetries) {
+                Write-Host "Failed to run flutter pub get after $maxRetries attempts"
+                exit 1
+              }
+              Write-Host "Retry $retryCount of $maxRetries"
+              Start-Sleep -Seconds 2
+            }
+          }
+          
           Start-Sleep -Seconds 5
           
       - name: Install dependencies (macOS)
