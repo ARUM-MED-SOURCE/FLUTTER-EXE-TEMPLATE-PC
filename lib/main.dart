@@ -5,10 +5,8 @@ import 'package:flutter_exe/screens/main_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_exe/screens/login_screen.dart';
-import 'package:window_manager/window_manager.dart';
 
-void main() async {
-
+void main() {
 WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle('전자동의시스템');
@@ -20,11 +18,6 @@ WidgetsFlutterBinding.ensureInitialized();
       1920,
       1080,
     ));
-
-    // await windowManager.waitUntilReadyToShow(windowOptions,() async {
-    //   await windowManager.show();
-    //   await windowManager.focus();
-    // });
   }
 
   runApp(
