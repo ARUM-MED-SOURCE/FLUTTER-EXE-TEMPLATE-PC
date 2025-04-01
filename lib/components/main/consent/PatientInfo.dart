@@ -70,14 +70,19 @@ class _PatientInfoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      child: Column(
+    return InkWell(
+      onTap: () {
+       print(patient.patientCode);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _PatientDetail(patient: patient),
           _PatientAlert(patient: patient),
         ],
+      ),
       ),
     );
   }
