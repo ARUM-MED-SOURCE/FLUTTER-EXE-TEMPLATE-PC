@@ -1,49 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/model/patient.dart';
+import 'package:flutter_exe/model/patient_info_response.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
-import 'package:flutter_exe/utils/dummy_data.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
 
-class PatientInfo extends StatelessWidget {
+class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Info(
-      card: InfoCard(
-        header: InfoHeader(
-          title: '환자정보',
-          titleStyle: Theme.of(context).textTheme.titleLarge,
-          backgroundColor: Colors.white,
-        ),
-        body: InfoList<Patient>(
-          shrinkWrap: false,
-          physics: const BouncingScrollPhysics(),
-          items: patientData.map(Patient.fromJson).toList(),
-          buildItem: (patient) => _PatientInfoItem(patient: patient),
-          backgroundColor: AppColors.white,
-          contentPadding: EdgeInsets.zero,
-          itemDecoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: AppColors.gray100,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final patientData = ref.watch(patientInfoLoaderProvider);
+    
+    return patientData.when(
+      data: (response) => Info(
+        card: InfoCard(
+          header: InfoHeader(
+            title: '환자정보',
+            titleStyle: Theme.of(context).textTheme.titleLarge,
+            backgroundColor: Colors.white,
+          ),
+          body: InfoList<PatientInfoResultData>(
+            shrinkWrap: false,
+            physics: const BouncingScrollPhysics(),
+            items: response.resultData,
+            buildItem: (patient) => _PatientInfoItem(patient: patient),
+            backgroundColor: AppColors.white,
+            contentPadding: EdgeInsets.zero,
+            itemDecoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppColors.gray100,
+                ),
               ),
             ),
           ),
+          backgroundColor: AppColors.white,
+          isRound: true,
+          showBorder: false,
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
         ),
-        backgroundColor: AppColors.white,
-        isRound: true,
-        showBorder: false,
-        padding: EdgeInsets.zero,
-        margin: EdgeInsets.zero,
+      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(
+        child: SelectableText.rich(
+          TextSpan(
+            text: 'Error: ',
+            style: const TextStyle(color: Colors.red),
+            children: [
+              TextSpan(text: error.toString()),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
 class _PatientInfoItem extends StatelessWidget {
-  final Patient patient;
+  final PatientInfoResultData patient;
 
   const _PatientInfoItem({
     required this.patient,
@@ -67,7 +84,7 @@ class _PatientInfoItem extends StatelessWidget {
 }
 
 class _PatientDetail extends StatelessWidget {
-  final Patient patient;
+  final PatientInfoResultData patient;
 
   const _PatientDetail({
     required this.patient,
@@ -82,16 +99,16 @@ class _PatientDetail extends StatelessWidget {
   Widget _buildInfoGrid() {
     final infoRows = [
       [
-        _buildInfoItem('병동/병실: ', patient.ward),
-        _buildInfoItem('나이/성별: ', patient.ageGender),
+        _buildInfoItem('병동/병실: ', '${patient.ward}/${patient.room}'),
+        _buildInfoItem('나이/성별: ', '${patient.age}/${patient.sex}'),
       ],
       [
         _buildInfoItem('입원일: ', patient.admissionDate),
-        _buildInfoItem('지정의: ', patient.doctor),
+        _buildInfoItem('지정의: ', patient.doctorName),
       ],
       [
-        _buildInfoItem('주치의: ', patient.attendingDoctor),
-        _buildInfoItem('진단명: ', patient.diagnosis),
+        _buildInfoItem('주치의: ', patient.doctorName),
+        _buildInfoItem('진단명: ', patient.diagName),
       ],
     ];
 
@@ -131,7 +148,7 @@ class _PatientDetail extends StatelessWidget {
 }
 
 class _PatientAlert extends StatelessWidget {
-  final Patient patient;
+  final PatientInfoResultData patient;
 
   const _PatientAlert({
     required this.patient,
@@ -148,7 +165,7 @@ class _PatientAlert extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          patient.alert,
+          patient.alertBloodGroup ?? '',
           style: PatientStyles.alertStyle,
         ),
       ],
