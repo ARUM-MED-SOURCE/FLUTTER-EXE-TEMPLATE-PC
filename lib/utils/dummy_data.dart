@@ -88,7 +88,7 @@ const writtenConsentData = <Map<String, String>>[
     'name': '척추 신경 차단술 동의서'
   },
   {
-    'type': '임시',
+    'type': '인증',
     'date': '2025-03-04',
     'name': '척추 신경 차단술 동의서'
   },
