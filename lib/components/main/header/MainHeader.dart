@@ -141,7 +141,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
           const Spacer(),
           
           _buildIconButton(Icons.search, () {
-            ref.read(patientInfoLoaderProvider.future);
+            ref.invalidate(patientInfoLoaderProvider);
           }),
           _buildIconButton(Icons.refresh, () {}),
         ],
