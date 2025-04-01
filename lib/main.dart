@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter_exe/screens/MainScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
+import 'package:flutter_exe/screens/LoginScreen.dart';
 
 void main() {
 
@@ -43,7 +43,7 @@ class App extends StatelessWidget {
         Locale('ko', 'KR'),
         Locale('en', 'US'),
       ],
-      home: HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }
