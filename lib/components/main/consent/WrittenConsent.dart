@@ -1,73 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/model/written_consent.dart';
-import 'package:flutter_exe/model/writtenscription_consent_data.dart' as api;
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/dataloaders/consent_dataloader.dart';
+import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 
 class WrittenConsent extends ConsumerWidget {
-  final String userId;
-  final String userPassword;
-  final String patientCode;
-  final String startDate;
-  final String endDate;
 
   const WrittenConsent({
     super.key,
-    required this.userId,
-    required this.userPassword,
-    required this.patientCode,
-    required this.startDate,
-    required this.endDate,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final consentState = ref.watch(consentDataLoaderProvider);
+    final writtenScriptionConsentData = ref.watch(consentDataLoaderProvider);
 
-    return consentState.when(
-      data: (response) {
-        final apiConsents = response?.resultData ?? [];
-        final consents = apiConsents.map((apiConsent) => WrittenConsentData(
-          type: apiConsent.consentStateDisp,
-          date: apiConsent.createDateTime,
-          name: apiConsent.consentName,
-          id: apiConsent.consentMstRid.toString(),
-        )).toList();
-
-        return Info(
-          card: InfoCard(
-            header: InfoHeader(
-              title: '작성동의서',
-              titleStyle: Theme.of(context).textTheme.titleLarge,
-            ),
-            body: InfoList<WrittenConsentData>(
-              shrinkWrap: false,
-              physics: const ClampingScrollPhysics(),
-              items: consents.isEmpty
-                  ? [const WrittenConsentData(type: '', date: '', name: '', id: '')]
-                  : consents,
-              buildItem: (consent) => consents.isEmpty
-                  ? _EmptyConsentItem()
-                  : TaggedConsentItem(
-                      type: consent.type,
-                      date: consent.date,
-                      name: consent.name,
-                      id: consent.id,
-                    ),
-              backgroundColor: Colors.white,
-              contentPadding: EdgeInsets.zero,
+    return writtenScriptionConsentData.when(
+      data: (response) => Info(
+        card: InfoCard(
+          header: InfoHeader(
+            title: '작성동의서',
+            titleStyle: Theme.of(context).textTheme.titleLarge,
+          ),
+          body: InfoList<WrittenConsentData>(
+            shrinkWrap: false,
+            physics: const ClampingScrollPhysics(),
+            items: response?.resultData ?? [],
+            buildItem: (consent) => TaggedConsentItem(
+              type: consent.consentStateDisp,
+              date: consent.createDateTime,
+              name: consent.consentName,
+              id: consent.consentMstRid.toString(),
             ),
             backgroundColor: Colors.white,
-            isRound: true,
-            showBorder: false,
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
+            contentPadding: EdgeInsets.zero,
           ),
-        );
-      },
+          backgroundColor: Colors.white,
+          isRound: true,
+          showBorder: false,
+          padding: EdgeInsets.zero,
+          margin: EdgeInsets.zero,
+        ),
+      ),
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),
