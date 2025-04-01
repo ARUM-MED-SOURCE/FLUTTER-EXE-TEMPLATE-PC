@@ -6,9 +6,10 @@ import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
-
-import '../../../dataloaders/prescription_consent_dataloader.dart';
-import '../../../dataloaders/written_consent_dataloader.dart';
+import 'package:flutter_exe/providers/selected_date_provider.dart';
+import 'package:flutter_exe/utils/time.dart';
+import 'package:flutter_exe/dataloaders/prescription_consent_dataloader.dart';
+import 'package:flutter_exe/dataloaders/written_consent_dataloader.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
@@ -73,6 +74,8 @@ class _PatientInfoItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    final selectedDate = ref.watch(selectedDateProvider);
     return InkWell(
       onTap: () {
         ref.read(prescriptionConsentDataLoaderProvider.notifier).getPrescriptionConsent(
@@ -84,8 +87,8 @@ class _PatientInfoItem extends ConsumerWidget {
           userId: 'userId', // TODO: 실제 사용자 ID로 변경 필요
           userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필요
           patientCode: patient.patientCode,
-          startDate: '20250301', // TODO: 실제 날짜로 변경 필요
-          endDate: '20250331', // TODO: 실제 날짜로 변경 필요
+          startDate: formatToYYYYMMDD(selectedDate),
+          endDate: formatToYYYYMMDD(DateTime.now()),
         );
       },
       child: Container(
