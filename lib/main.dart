@@ -9,22 +9,20 @@ import 'package:flutter_exe/screens/login_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Must add this line for window_manager
   await windowManager.ensureInitialized();
 
-  // Configure window options
   WindowOptions windowOptions = const WindowOptions(
-    size: Size(1920, 1080),
-    minimumSize: Size(1920, 1080),
-    maximumSize: Size(2560, 1440),
+    size: Size(1280, 800),
+    minimumSize: Size(1024, 768),
+    maximumSize: Size(1920, 1080),
     center: true,
     title: '전자동의시스템',
   );
 
-  // Apply window options
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
     await windowManager.show();
     await windowManager.focus();
+    await windowManager.setResizable(true);
   });
 
   runApp(

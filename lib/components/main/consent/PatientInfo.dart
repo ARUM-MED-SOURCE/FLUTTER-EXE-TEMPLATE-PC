@@ -76,7 +76,6 @@ class _PatientInfoItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final selectedDate = ref.watch(selectedDateProvider);
     return InkWell(
       onTap: () {
