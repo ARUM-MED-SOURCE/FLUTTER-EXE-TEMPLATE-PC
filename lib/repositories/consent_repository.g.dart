@@ -22,6 +22,56 @@ class _ConsentRepository implements ConsentRepository {
   final ParseErrorLogger? errorLogger;
 
   @override
+  Future<PrescriptionConsentResponse> getPrescriptionConsentData(
+    String methodName,
+    String params,
+    String userId,
+    String deviceType,
+    String deviceIdentName,
+    String deviceIdentIP,
+    String deviceIdentMac,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'methodName': methodName,
+      'params': params,
+      'userId': userId,
+      'deviceType': deviceType,
+      'deviceIdentName': deviceIdentName,
+      'deviceIdentIP': deviceIdentIP,
+      'deviceIdentMac': deviceIdentMac,
+    };
+    final _options = _setStreamType<PrescriptionConsentResponse>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
+    )
+        .compose(
+          _dio.options,
+          '/HospitalSvc.aspx',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PrescriptionConsentResponse _value;
+    try {
+      _value = PrescriptionConsentResponse.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<WrittenConsentResponse> getWrittenConsentData(
     String methodName,
     String params,

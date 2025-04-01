@@ -23,11 +23,7 @@ class MainBody extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: PrescriptionConsent(
-                    prescriptions: prescriptionConsentData
-                        .map(PrescriptionConsentData.fromJson)
-                        .toList(),
-                  ),
+                  child: PrescriptionConsent(),
                 ),
                 Expanded(
                   flex: 1,

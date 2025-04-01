@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/dataloaders/written_consent_dataloader.dart';
+import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exe/dataloaders/consent_dataloader.dart';
-import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 
 class WrittenConsent extends ConsumerWidget {
-
   const WrittenConsent({
     super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final writtenScriptionConsentData = ref.watch(consentDataLoaderProvider);
+    final writtenScriptionConsentData =
+        ref.watch(writtenConsentDataLoaderProvider);
 
     return writtenScriptionConsentData.when(
       data: (response) => Info(

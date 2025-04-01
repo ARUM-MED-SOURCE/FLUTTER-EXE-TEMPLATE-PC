@@ -27,8 +27,8 @@ class ConsentSearch extends StatelessWidget {
           items: searchResults,
           buildItem: (consent) => Consumer(
             builder: (context, ref, _) {
-              final id = consent.id;
-              final name = consent.name;
+              final id = consent.formId.toString();
+              final name = consent.formName;
 
               if (id == null || name == null) {
                 return const SizedBox.shrink();

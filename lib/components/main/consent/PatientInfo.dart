@@ -5,7 +5,10 @@ import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
-import 'package:flutter_exe/dataloaders/consent_dataloader.dart';
+import 'package:flutter_exe/providers/selected_consents_provider.dart';
+
+import '../../../dataloaders/prescription_consent_dataloader.dart';
+import '../../../dataloaders/written_consent_dataloader.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
@@ -72,8 +75,12 @@ class _PatientInfoItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       onTap: () {
-        // 환자 상세 클릭 시 동의서 데이터 로드
-        ref.read(consentDataLoaderProvider.notifier).getWrittenConsent(
+        ref.read(prescriptionConsentDataLoaderProvider.notifier).getPrescriptionConsent(
+          userId: 'userId', // TODO: 실제 사용자 ID로 변경 필요
+          userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필요
+        );
+
+        ref.read(writtenConsentDataLoaderProvider.notifier).getWrittenConsent(
           userId: 'userId', // TODO: 실제 사용자 ID로 변경 필요
           userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필요
           patientCode: patient.patientCode,
