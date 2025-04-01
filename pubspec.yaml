@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.2 <4.0.0'
+  sdk: '>=3.19.4 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -33,17 +33,13 @@ dependencies:
   # 날짜 선택
   flutter_localizations:
     sdk: flutter
-  intl: ^0.18.1
-  # intl: ^0.19.0
+  intl: ^0.19.0
   # 서버 통신
   dio: ^5.8.0+1
   # 저장소
   flutter_secure_storage: ^9.2.4
   # 윈도우 사이즈 조절
-  window_size:
-    git:
-      url: https://github.com/google/flutter-desktop-embedding
-      path: plugins/window_size
+  window_manager: ^0.3.8  # window_size 대신 window_manager 사용
 
   # 모델 생성
   freezed_annotation: ^2.4.1
