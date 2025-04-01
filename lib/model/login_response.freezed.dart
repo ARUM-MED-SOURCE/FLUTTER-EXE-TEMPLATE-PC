@@ -14,6 +14,252 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) {
+  return _LoginResponse.fromJson(json);
+}
+
+/// @nodoc
+mixin _$LoginResponse {
+  @JsonKey(name: 'RESULT_CODE')
+  String get resultCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'RESULT_DATA')
+  LoginResultData get resultData => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ERROR_CODE')
+  String get errorCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ERROR_MESSAGE')
+  String get errorMessage => throw _privateConstructorUsedError;
+
+  /// Serializes this LoginResponse to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of LoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $LoginResponseCopyWith<LoginResponse> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LoginResponseCopyWith<$Res> {
+  factory $LoginResponseCopyWith(
+          LoginResponse value, $Res Function(LoginResponse) then) =
+      _$LoginResponseCopyWithImpl<$Res, LoginResponse>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'RESULT_CODE') String resultCode,
+      @JsonKey(name: 'RESULT_DATA') LoginResultData resultData,
+      @JsonKey(name: 'ERROR_CODE') String errorCode,
+      @JsonKey(name: 'ERROR_MESSAGE') String errorMessage});
+
+  $LoginResultDataCopyWith<$Res> get resultData;
+}
+
+/// @nodoc
+class _$LoginResponseCopyWithImpl<$Res, $Val extends LoginResponse>
+    implements $LoginResponseCopyWith<$Res> {
+  _$LoginResponseCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of LoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? resultCode = null,
+    Object? resultData = null,
+    Object? errorCode = null,
+    Object? errorMessage = null,
+  }) {
+    return _then(_value.copyWith(
+      resultCode: null == resultCode
+          ? _value.resultCode
+          : resultCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      resultData: null == resultData
+          ? _value.resultData
+          : resultData // ignore: cast_nullable_to_non_nullable
+              as LoginResultData,
+      errorCode: null == errorCode
+          ? _value.errorCode
+          : errorCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+
+  /// Create a copy of LoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $LoginResultDataCopyWith<$Res> get resultData {
+    return $LoginResultDataCopyWith<$Res>(_value.resultData, (value) {
+      return _then(_value.copyWith(resultData: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$LoginResponseImplCopyWith<$Res>
+    implements $LoginResponseCopyWith<$Res> {
+  factory _$$LoginResponseImplCopyWith(
+          _$LoginResponseImpl value, $Res Function(_$LoginResponseImpl) then) =
+      __$$LoginResponseImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'RESULT_CODE') String resultCode,
+      @JsonKey(name: 'RESULT_DATA') LoginResultData resultData,
+      @JsonKey(name: 'ERROR_CODE') String errorCode,
+      @JsonKey(name: 'ERROR_MESSAGE') String errorMessage});
+
+  @override
+  $LoginResultDataCopyWith<$Res> get resultData;
+}
+
+/// @nodoc
+class __$$LoginResponseImplCopyWithImpl<$Res>
+    extends _$LoginResponseCopyWithImpl<$Res, _$LoginResponseImpl>
+    implements _$$LoginResponseImplCopyWith<$Res> {
+  __$$LoginResponseImplCopyWithImpl(
+      _$LoginResponseImpl _value, $Res Function(_$LoginResponseImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of LoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? resultCode = null,
+    Object? resultData = null,
+    Object? errorCode = null,
+    Object? errorMessage = null,
+  }) {
+    return _then(_$LoginResponseImpl(
+      resultCode: null == resultCode
+          ? _value.resultCode
+          : resultCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      resultData: null == resultData
+          ? _value.resultData
+          : resultData // ignore: cast_nullable_to_non_nullable
+              as LoginResultData,
+      errorCode: null == errorCode
+          ? _value.errorCode
+          : errorCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$LoginResponseImpl implements _LoginResponse {
+  const _$LoginResponseImpl(
+      {@JsonKey(name: 'RESULT_CODE') required this.resultCode,
+      @JsonKey(name: 'RESULT_DATA') required this.resultData,
+      @JsonKey(name: 'ERROR_CODE') required this.errorCode,
+      @JsonKey(name: 'ERROR_MESSAGE') required this.errorMessage});
+
+  factory _$LoginResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LoginResponseImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'RESULT_CODE')
+  final String resultCode;
+  @override
+  @JsonKey(name: 'RESULT_DATA')
+  final LoginResultData resultData;
+  @override
+  @JsonKey(name: 'ERROR_CODE')
+  final String errorCode;
+  @override
+  @JsonKey(name: 'ERROR_MESSAGE')
+  final String errorMessage;
+
+  @override
+  String toString() {
+    return 'LoginResponse(resultCode: $resultCode, resultData: $resultData, errorCode: $errorCode, errorMessage: $errorMessage)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoginResponseImpl &&
+            (identical(other.resultCode, resultCode) ||
+                other.resultCode == resultCode) &&
+            (identical(other.resultData, resultData) ||
+                other.resultData == resultData) &&
+            (identical(other.errorCode, errorCode) ||
+                other.errorCode == errorCode) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, resultCode, resultData, errorCode, errorMessage);
+
+  /// Create a copy of LoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoginResponseImplCopyWith<_$LoginResponseImpl> get copyWith =>
+      __$$LoginResponseImplCopyWithImpl<_$LoginResponseImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$LoginResponseImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _LoginResponse implements LoginResponse {
+  const factory _LoginResponse(
+      {@JsonKey(name: 'RESULT_CODE') required final String resultCode,
+      @JsonKey(name: 'RESULT_DATA') required final LoginResultData resultData,
+      @JsonKey(name: 'ERROR_CODE') required final String errorCode,
+      @JsonKey(name: 'ERROR_MESSAGE')
+      required final String errorMessage}) = _$LoginResponseImpl;
+
+  factory _LoginResponse.fromJson(Map<String, dynamic> json) =
+      _$LoginResponseImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'RESULT_CODE')
+  String get resultCode;
+  @override
+  @JsonKey(name: 'RESULT_DATA')
+  LoginResultData get resultData;
+  @override
+  @JsonKey(name: 'ERROR_CODE')
+  String get errorCode;
+  @override
+  @JsonKey(name: 'ERROR_MESSAGE')
+  String get errorMessage;
+
+  /// Create a copy of LoginResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LoginResponseImplCopyWith<_$LoginResponseImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 LoginResultData _$LoginResultDataFromJson(Map<String, dynamic> json) {
   return _LoginResultData.fromJson(json);
 }

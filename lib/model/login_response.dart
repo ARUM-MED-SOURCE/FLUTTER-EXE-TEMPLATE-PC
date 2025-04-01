@@ -4,6 +4,19 @@ part 'login_response.freezed.dart';
 part 'login_response.g.dart';
 
 @freezed
+class LoginResponse with _$LoginResponse {
+  const factory LoginResponse({
+    @JsonKey(name: 'RESULT_CODE') required String resultCode,
+    @JsonKey(name: 'RESULT_DATA') required LoginResultData resultData,
+    @JsonKey(name: 'ERROR_CODE') required String errorCode,
+    @JsonKey(name: 'ERROR_MESSAGE') required String errorMessage,
+  }) = _LoginResponse;
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseFromJson(json);
+}
+
+@freezed
 class LoginResultData with _$LoginResultData {
   const factory LoginResultData({
     @JsonKey(name: 'Status') required String? status,

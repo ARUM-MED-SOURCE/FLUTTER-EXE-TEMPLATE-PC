@@ -1,64 +1,85 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter_exe/repositories/user_repository.dart';
+import 'package:flutter_exe/model/login_response.dart';
+import 'package:logger/logger.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'dart:convert';
 
 part 'auth_cubit.freezed.dart';
+part 'auth_cubit.g.dart';
+
+final logger = Logger();
 
 @freezed
 class AuthState with _$AuthState {
   const factory AuthState({
-    @Default('') String email,
-    @Default('') String password,
+    @Default('') String userId,
+    @Default('') String userPassword,
     @Default(false) bool isLoading,
     @Default(false) bool showPassword,
     String? errorMessage,
   }) = _AuthState;
 }
 
-class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(const AuthState());
+@riverpod
+class AuthNotifier extends _$AuthNotifier {
+  @override
+  AuthState build() {
+    return const AuthState();
+  }
 
-  void onEmailChanged(String value) {
-    emit(state.copyWith(
-      email: value,
+  void onUserIdChanged(String value) {
+    state = state.copyWith(
+      userId: value,
       errorMessage: null,
-    ));
+    );
   }
 
   void onPasswordChanged(String value) {
-    emit(state.copyWith(
-      password: value,
+    state = state.copyWith(
+      userPassword: value,
       errorMessage: null,
-    ));
+    );
   }
 
   void togglePasswordVisibility() {
-    emit(state.copyWith(showPassword: !state.showPassword));
+    state = state.copyWith(showPassword: !state.showPassword);
   }
 
   Future<void> login() async {
-    if (state.email.isEmpty || state.password.isEmpty) {
-      emit(state.copyWith(
-        errorMessage: '이메일과 비밀번호를 모두 입력해주세요.',
-      ));
+    if (state.userId.isEmpty || state.userPassword.isEmpty) {
+      state = state.copyWith(
+        errorMessage: '아이디와 비밀번호를 모두 입력해주세요.',
+      );
       return;
     }
 
-    emit(state.copyWith(isLoading: true, errorMessage: null));
+    state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      // TODO: Implement your login API call here
-      await Future.delayed(const Duration(seconds: 1)); // Simulated API call
-      
-      // Simulate successful login
-      emit(state.copyWith(isLoading: false));
-      
-      // TODO: Navigate to home screen or handle successful login
-      
+      final data = {
+        'userId': state.userId,
+        'userPassword': state.userPassword,
+      };
+
+      final response = await ref.read(userRepositoryProvider).login(
+        'Login',
+        json.encode(data),
+        state.userId,
+        'AND',
+        'Chrome',
+        '172.17.200.48',
+        'E0AA96DEBD0A',
+      );
+
+      state = state.copyWith(isLoading: false);
+      // Navigation will be handled by the UI layer using ref.listen
     } catch (e) {
-      emit(state.copyWith(
+      logger.e('Login error: $e');
+      state = state.copyWith(
         isLoading: false,
         errorMessage: '로그인에 실패했습니다. 다시 시도해주세요.',
-      ));
+      );
     }
   }
 } 

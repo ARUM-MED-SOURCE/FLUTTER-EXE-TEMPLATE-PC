@@ -11,7 +11,7 @@ final logger = Logger();
 
 @riverpod
 Future<PatientInfoResponse> patientInfoLoader(PatientInfoLoaderRef ref) async {
-  final repository = ref.watch(patientInfoRepositoryProvider);
+  final repository = ref.read(patientInfoRepositoryProvider);
   final data = {
       "UserID": 'userOd',
       "UserPassword": 'userPw',

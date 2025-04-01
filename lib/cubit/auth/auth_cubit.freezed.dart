@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AuthState {
-  String get email => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
+  String get userPassword => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get showPassword => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
@@ -35,8 +35,8 @@ abstract class $AuthStateCopyWith<$Res> {
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
   $Res call(
-      {String email,
-      String password,
+      {String userId,
+      String userPassword,
       bool isLoading,
       bool showPassword,
       String? errorMessage});
@@ -57,20 +57,20 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = null,
-    Object? password = null,
+    Object? userId = null,
+    Object? userPassword = null,
     Object? isLoading = null,
     Object? showPassword = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
+      userPassword: null == userPassword
+          ? _value.userPassword
+          : userPassword // ignore: cast_nullable_to_non_nullable
               as String,
       isLoading: null == isLoading
           ? _value.isLoading
@@ -97,8 +97,8 @@ abstract class _$$AuthStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String email,
-      String password,
+      {String userId,
+      String userPassword,
       bool isLoading,
       bool showPassword,
       String? errorMessage});
@@ -117,20 +117,20 @@ class __$$AuthStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = null,
-    Object? password = null,
+    Object? userId = null,
+    Object? userPassword = null,
     Object? isLoading = null,
     Object? showPassword = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_$AuthStateImpl(
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
+      userPassword: null == userPassword
+          ? _value.userPassword
+          : userPassword // ignore: cast_nullable_to_non_nullable
               as String,
       isLoading: null == isLoading
           ? _value.isLoading
@@ -152,18 +152,18 @@ class __$$AuthStateImplCopyWithImpl<$Res>
 
 class _$AuthStateImpl implements _AuthState {
   const _$AuthStateImpl(
-      {this.email = '',
-      this.password = '',
+      {this.userId = '',
+      this.userPassword = '',
       this.isLoading = false,
       this.showPassword = false,
       this.errorMessage});
 
   @override
   @JsonKey()
-  final String email;
+  final String userId;
   @override
   @JsonKey()
-  final String password;
+  final String userPassword;
   @override
   @JsonKey()
   final bool isLoading;
@@ -175,7 +175,7 @@ class _$AuthStateImpl implements _AuthState {
 
   @override
   String toString() {
-    return 'AuthState(email: $email, password: $password, isLoading: $isLoading, showPassword: $showPassword, errorMessage: $errorMessage)';
+    return 'AuthState(userId: $userId, userPassword: $userPassword, isLoading: $isLoading, showPassword: $showPassword, errorMessage: $errorMessage)';
   }
 
   @override
@@ -183,9 +183,9 @@ class _$AuthStateImpl implements _AuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthStateImpl &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.userPassword, userPassword) ||
+                other.userPassword == userPassword) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.showPassword, showPassword) ||
@@ -196,7 +196,7 @@ class _$AuthStateImpl implements _AuthState {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, email, password, isLoading, showPassword, errorMessage);
+      runtimeType, userId, userPassword, isLoading, showPassword, errorMessage);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -209,16 +209,16 @@ class _$AuthStateImpl implements _AuthState {
 
 abstract class _AuthState implements AuthState {
   const factory _AuthState(
-      {final String email,
-      final String password,
+      {final String userId,
+      final String userPassword,
       final bool isLoading,
       final bool showPassword,
       final String? errorMessage}) = _$AuthStateImpl;
 
   @override
-  String get email;
+  String get userId;
   @override
-  String get password;
+  String get userPassword;
   @override
   bool get isLoading;
   @override

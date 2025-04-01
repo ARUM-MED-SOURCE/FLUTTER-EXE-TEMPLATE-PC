@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_exe/screens/LoginScreen.dart';
-import 'package:flutter_exe/screens/MainScreen.dart';
+import 'package:flutter_exe/screens/login_screen.dart';
+import 'package:flutter_exe/screens/main_screen.dart';
 
 final router = GoRouter(
   initialLocation: '/login',

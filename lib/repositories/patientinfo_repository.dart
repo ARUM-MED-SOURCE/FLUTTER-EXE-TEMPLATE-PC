@@ -25,7 +25,7 @@ abstract class PatientInfoRepository {
 }
 
 @riverpod
-PatientInfoRepository patientInfoRepository(PatientInfoRepositoryRef ref) {
+PatientInfoRepository patientInfoRepository(Ref ref) {
    final dio = ref.watch(dioClientProvider);
   dio.interceptors.add(InterceptorsWrapper(
     onResponse: (response, handler) {
