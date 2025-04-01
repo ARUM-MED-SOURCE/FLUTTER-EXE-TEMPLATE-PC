@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:window_size/window_size.dart';
 import 'dart:io';
-import 'package:flutter_exe/screens/main_screen.dart';
+import 'package:flutter_exe/screens/MainScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_exe/screens/login_screen.dart';
