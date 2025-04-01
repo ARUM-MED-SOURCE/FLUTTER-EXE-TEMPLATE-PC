@@ -10,13 +10,15 @@ import 'package:flutter_exe/providers/selected_date_provider.dart';
 import 'package:flutter_exe/utils/time.dart';
 import 'package:flutter_exe/dataloaders/prescription_consent_dataloader.dart';
 import 'package:flutter_exe/dataloaders/written_consent_dataloader.dart';
+import 'package:flutter_exe/providers/hospital_section_provider.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final patientData = ref.watch(patientInfoLoaderProvider);
+    final hospitalSection = ref.watch(hospitalSectionProvider);
+    final patientData = ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
     
     return patientData.when(
       data: (response) => Info(

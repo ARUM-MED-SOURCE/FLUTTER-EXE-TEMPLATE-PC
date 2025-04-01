@@ -10,20 +10,25 @@ part 'patientinfo_dataloader.g.dart';
 final logger = Logger();
 
 @riverpod
-Future<PatientInfoResponse> patientInfoLoader(PatientInfoLoaderRef ref) async {
+Future<PatientInfoResponse> patientInfoLoader(
+  PatientInfoLoaderRef ref,
+  String methodName,
+) async {
   final repository = ref.read(patientInfoRepositoryProvider);
   final data = {
-      "UserID": 'userOd',
-      "UserPassword": 'userPw',
-      "CLN_DATE": 'clnDate',
-      "WARD": 'ward',
-      "DOCTOR_ID": 'docName',
-      "CLN_DEPT_CODE": 'dept'
-    };
+    "UserID": 'userOd',
+    "UserPassword": 'userPw',
+    "CLN_DATE": 'clnDate',
+    "WARD": 'ward',
+    "DOCTOR_ID": 'docName',
+    "CLN_DEPT_CODE": 'dept'
+  };
+
+  print('methodName: $methodName');
 
   try {
     final response = await repository.getPatientInfo(
-      'GetInpatientSearch',
+      methodName,
       json.encode(data),
       'userOd',
       'AND',
