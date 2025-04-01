@@ -33,6 +33,8 @@ ConsentRepository consentRepository(ConsentRepositoryRef ref) {
         response.data = json.decode(response.data as String);
       }
       return handler.next(response);
+    },
+  ));
   return ConsentRepository(dio);
 }
 
