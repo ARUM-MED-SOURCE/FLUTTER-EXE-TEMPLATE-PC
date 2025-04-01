@@ -7,8 +7,8 @@ import 'package:flutter_exe/components/main/consent/ConsentSearch.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/utils/dummy_data.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

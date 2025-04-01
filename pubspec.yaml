@@ -49,6 +49,9 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
 
+  # 라우팅
+  go_router: ^13.2.0
+
   # 서버 통신
   retrofit: ^4.4.0
   logger: ^2.4.0
