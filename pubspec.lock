@@ -327,10 +327,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_list_ui
-      sha256: "09ffc2fc2ed8f3fe066c5cd41feee7932d7ce62ee1e8b46a9f37f19c4bd4863f"
+      sha256: "85eca8dfa27f3c7fa6c30850ae23e22f0cdb50a38d8ad3ed578a5c67cac26779"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.7"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
