@@ -51,7 +51,7 @@ class _PatientInfoRepository implements PatientInfoRepository {
     )
         .compose(
           _dio.options,
-          '/',
+          '/HospitalSvc.aspx',
           queryParameters: queryParameters,
           data: _data,
         )

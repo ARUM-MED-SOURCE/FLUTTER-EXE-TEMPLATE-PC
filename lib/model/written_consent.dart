@@ -1,22 +1,16 @@
-class WrittenConsentData {
-  final String type;
-  final String date;
-  final String name;
-  final String id;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const WrittenConsentData({
-    required this.type,
-    required this.date,
-    required this.name,
-    required this.id,
-  });
+part 'written_consent.freezed.dart';
+part 'written_consent.g.dart';
 
-  factory WrittenConsentData.fromJson(Map<String, String> json) {
-    return WrittenConsentData(
-      type: json['type'] ?? '',
-      date: json['date'] ?? '',
-      name: json['name'] ?? '',
-      id: json['id'] ?? '',
-    );
-  }
+@freezed
+class WrittenConsentData with _$WrittenConsentData {
+  const factory WrittenConsentData({
+    @Default('') String type,
+    @Default('') String date,
+    @Default('') String name,
+    @Default('') String id,
+  }) = _WrittenConsentData;
+
+  factory WrittenConsentData.fromJson(Map<String, dynamic> json) => _$WrittenConsentDataFromJson(json);
 } 

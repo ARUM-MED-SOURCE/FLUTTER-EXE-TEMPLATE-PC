@@ -44,7 +44,8 @@ dependencies:
     git:
       url: https://github.com/google/flutter-desktop-embedding
       path: plugins/window_size
-
+  # 윈도우 사이즈 조절
+  window_manager: ^0.3.8
   # 모델 생성
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
