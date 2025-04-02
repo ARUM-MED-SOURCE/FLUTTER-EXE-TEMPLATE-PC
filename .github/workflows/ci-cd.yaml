@@ -44,14 +44,17 @@ jobs:
           channel: stable
           flutter-version: '3.19.4'
           
-      - name: Clean pub cache
+      - name: Clean pub cache (Windows)
+        if: matrix.os == 'windows-latest'
         run: |
           flutter clean
-          if (${{ matrix.os }} -eq "windows-latest") {
-            Remove-Item -Recurse -Force $env:USERPROFILE\.pub-cache
-          } else {
-            rm -rf ~/.pub-cache
-          }
+          Remove-Item -Recurse -Force $env:USERPROFILE\.pub-cache
+          
+      - name: Clean pub cache (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          flutter clean
+          rm -rf ~/.pub-cache
           
       - name: Install dependencies
         run: |
