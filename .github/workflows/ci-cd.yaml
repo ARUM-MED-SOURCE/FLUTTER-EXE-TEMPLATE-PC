@@ -47,11 +47,11 @@ jobs:
       - name: Clean pub cache
         run: |
           flutter clean
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          if (${{ matrix.os }} -eq "windows-latest") {
             Remove-Item -Recurse -Force $env:USERPROFILE\.pub-cache
-          else
+          } else {
             rm -rf ~/.pub-cache
-          fi
+          }
           
       - name: Install dependencies
         run: |
