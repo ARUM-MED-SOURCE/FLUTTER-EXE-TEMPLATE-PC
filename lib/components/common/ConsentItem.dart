@@ -18,26 +18,32 @@ class BaseConsentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(color: AppColors.gray100),
         ),
       ),
-      child: Row(
-        children: [
-          ...buildLeadingWidgets(context),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 16,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ...buildLeadingWidgets(context),
+            IntrinsicWidth(
               child: Text(
                 name,
-                style: const TextStyle(fontSize: 14),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                    ),
               ),
             ),
-          ),
-          ...buildTrailingWidgets(context),
-        ],
+            ...buildTrailingWidgets(context),
+          ],
+        ),
       ),
     );
   }
@@ -63,12 +69,20 @@ class CheckableConsentItem extends StatelessWidget {
       id: id,
       name: name,
       buildLeadingWidgets: (context) => [
-        Text('$id.', style: const TextStyle(fontSize: 14)),
+        Text(
+          '$id.',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 14,
+              ),
+        ),
         Checkbox(
           value: isSelected,
           onChanged: (_) => onSelected(),
           activeColor: AppColors.blue300,
           side: BorderSide(color: AppColors.gray150),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
         ),
         const SizedBox(width: 8),
       ],
