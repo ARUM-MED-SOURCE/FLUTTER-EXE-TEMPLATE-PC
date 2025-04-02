@@ -44,46 +44,39 @@ jobs:
         with:
           channel: stable
           flutter-version: '3.19.4'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
           
       - name: Clean pub cache (Windows)
         if: matrix.os == 'windows-latest'
         run: |
           flutter clean
-          if (Test-Path $env:USERPROFILE\.pub-cache) {
-            Remove-Item -Recurse -Force $env:USERPROFILE\.pub-cache
-          }
-          if (Test-Path $env:LOCALAPPDATA\Pub\Cache) {
-            Remove-Item -Recurse -Force $env:LOCALAPPDATA\Pub\Cache
-          }
+          flutter pub cache repair
+          Remove-Item -Recurse -Force $env:LOCALAPPDATA\Pub\Cache -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force $env:APPDATA\.pub-cache -ErrorAction SilentlyContinue
           
       - name: Clean pub cache (macOS)
         if: matrix.os == 'macos-latest'
         run: |
           flutter clean
-          rm -rf ~/.pub-cache
+          flutter pub cache repair
           rm -rf ~/Library/Caches/pub
+          rm -rf ~/.pub-cache
           
       - name: Install dependencies (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          flutter pub cache repair
+          flutter config --no-analytics
+          dart pub get --verbose
           flutter pub get --verbose
-          if ($LASTEXITCODE -ne 0) {
-            Write-Host "Failed to get dependencies. Trying alternative approach..."
-            flutter pub cache repair --force
-            flutter pub get --verbose
-          }
           
       - name: Install dependencies (macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          flutter pub cache repair
+          flutter config --no-analytics
+          dart pub get --verbose
           flutter pub get --verbose
-          if [ $? -ne 0 ]; then
-            echo "Failed to get dependencies. Trying alternative approach..."
-            flutter pub cache repair --force
-            flutter pub get --verbose
-          fi
         
       - name: Run build_runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
