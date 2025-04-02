@@ -61,8 +61,10 @@ jobs:
         run: |
           flutter clean
           rm -rf ~/.pub-cache
+          rm -rf ~/Library/Caches/pub
           
-      - name: Install dependencies
+      - name: Install dependencies (Windows)
+        if: matrix.os == 'windows-latest'
         run: |
           flutter pub cache repair
           flutter pub get --verbose
@@ -71,6 +73,17 @@ jobs:
             flutter pub cache repair --force
             flutter pub get --verbose
           }
+          
+      - name: Install dependencies (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          flutter pub cache repair
+          flutter pub get --verbose
+          if [ $? -ne 0 ]; then
+            echo "Failed to get dependencies. Trying alternative approach..."
+            flutter pub cache repair --force
+            flutter pub get --verbose
+          fi
         
       - name: Run build_runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
