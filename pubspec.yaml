@@ -65,6 +65,7 @@ dependencies:
   cupertino_icons: ^1.0.8
 
   provider: ^6.1.1
+  source_span: ^1.8.1
 
 dev_dependencies:
   flutter_test:
