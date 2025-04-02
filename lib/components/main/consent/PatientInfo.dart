@@ -81,7 +81,7 @@ class _PatientInfoItem extends ConsumerWidget {
       onTap: () {
         ref.read(prescriptionConsentDataLoaderProvider.notifier).getPrescriptionConsent(
           userId: 'userId', // TODO: 실제 사용자 ID로 변경 필요
-          userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필요
+          userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필
         );
 
         ref.read(writtenConsentDataLoaderProvider.notifier).getWrittenConsent(
