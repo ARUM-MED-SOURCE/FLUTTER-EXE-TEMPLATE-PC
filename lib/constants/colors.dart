@@ -11,6 +11,9 @@ class AppColors {
   static const Color blue70 = Color(0xFFECF6FF);
   static const Color blue50 = Color(0xFFEFF3FA);
 
+  // 레드
+  static const Color red500 = Color(0xFFF80421);
+
   // 핑크
   static const Color pink500 = Color(0xFFFF6767);
 
