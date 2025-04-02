@@ -28,9 +28,12 @@ class BaseConsentItem extends StatelessWidget {
         children: [
           ...buildLeadingWidgets(context),
           Expanded(
-            child: Text(
-              name,
-              style: const TextStyle(fontSize: 14),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                name,
+                style: const TextStyle(fontSize: 14),
+              ),
             ),
           ),
           ...buildTrailingWidgets(context),
@@ -161,10 +164,16 @@ class TaggedConsentItem extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        Text('[$date]', style: const TextStyle(fontSize: 14)),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Text(
+            '[$date]',
+            style: const TextStyle(fontSize: 14),
+          ),
+        ),
         const SizedBox(width: 8),
       ],
       buildTrailingWidgets: (_) => const [],
     );
   }
-} 
+}

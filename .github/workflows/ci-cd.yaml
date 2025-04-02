@@ -50,13 +50,13 @@ jobs:
           
       - name: Clean pub cache (Windows)
         if: matrix.os == 'windows-latest'
+        shell: pwsh
         run: |
-          taskkill /F /IM dart.exe /T
-          taskkill /F /IM pub.exe /T
+          Get-Process | Where-Object {$_.ProcessName -match 'dart|pub|flutter'} | Stop-Process -Force -ErrorAction SilentlyContinue
           flutter clean
-          Remove-Item -Path "$env:LOCALAPPDATA\Pub\Cache" -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item -Path "$env:APPDATA\.pub-cache" -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item -Path "$env:USERPROFILE\.pub-cache" -Recurse -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Seconds 2
+          Get-ChildItem -Path "$env:LOCALAPPDATA\Pub\Cache","$env:APPDATA\.pub-cache","$env:USERPROFILE\.pub-cache" -Recurse -ErrorAction SilentlyContinue | 
+            Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
           
       - name: Clean pub cache (macOS)
         if: matrix.os == 'macos-latest'
@@ -68,12 +68,17 @@ jobs:
           
       - name: Install dependencies (Windows)
         if: matrix.os == 'windows-latest'
+        shell: pwsh
         run: |
+          $env:PUB_CACHE = Join-Path $env:RUNNER_TEMP ".pub-cache"
+          New-Item -Path $env:PUB_CACHE -ItemType Directory -Force
           flutter config --no-analytics
-          $env:PUB_CACHE = "$env:USERPROFILE\.pub-cache"
+          flutter pub cache repair
+          Start-Sleep -Seconds 2
           flutter pub get --verbose
         env:
           PUB_CACHE: ${{ runner.temp }}\.pub-cache
+          FLUTTER_CACHE_DIR: ${{ runner.temp }}\.flutter-cache
           
       - name: Install dependencies (macOS)
         if: matrix.os == 'macos-latest'
