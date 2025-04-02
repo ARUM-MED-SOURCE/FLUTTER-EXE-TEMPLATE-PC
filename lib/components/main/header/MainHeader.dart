@@ -118,33 +118,63 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          DatePickerField(
-            selectedDate: selectedDate,
-            dateFormat: dateFormat,
-            onDateSelected: (date) => ref.read(selectedDateProvider.notifier).setDate(date),
-          ),
-          const SizedBox(width: 8),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth > 800;
           
-          ...DropdownType.values.map((type) => Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: CompositedTransformTarget(
-              link: DropdownOptions.layerLinks[type]!,
-              child: _buildDropdownButton(
-                DropdownOptions.selectedValues[type]!,
-                type,
+          return Row(
+            children: [
+              if (isWideScreen) ...[
+                DatePickerField(
+                  selectedDate: selectedDate,
+                  dateFormat: dateFormat,
+                  onDateSelected: (date) => ref.read(selectedDateProvider.notifier).setDate(date),
+                ),
+                const SizedBox(width: 8),
+              ],
+              
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (!isWideScreen) ...[
+                        DatePickerField(
+                          selectedDate: selectedDate,
+                          dateFormat: dateFormat,
+                          onDateSelected: (date) => ref.read(selectedDateProvider.notifier).setDate(date),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      
+                      ...DropdownType.values.map((type) => Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: CompositedTransformTarget(
+                          link: DropdownOptions.layerLinks[type]!,
+                          child: _buildDropdownButton(
+                            DropdownOptions.selectedValues[type]!,
+                            type,
+                          ),
+                        ),
+                      )),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          )),
-          
-          const Spacer(),
-          
-          _buildIconButton(Icons.search, () {
-            ref.invalidate(patientInfoLoaderProvider);
-          }),
-          _buildIconButton(Icons.refresh, () {}),
-        ],
+              
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildIconButton(Icons.search, () {
+                    ref.invalidate(patientInfoLoaderProvider);
+                  }),
+                  _buildIconButton(Icons.refresh, () {}),
+                ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -154,7 +184,10 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
     return InkWell(
       onTap: () => _showOverlay(type),
       child: Container(
-        width: 150,
+        constraints: const BoxConstraints(
+          minWidth: 120,
+          maxWidth: 150,
+        ),
         height: 38,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
@@ -167,11 +200,14 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 14,
-                color: isActive ? AppColors.blue300 : AppColors.gray300,
+            Flexible(
+              child: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: isActive ? AppColors.blue300 : AppColors.gray300,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             Icon(

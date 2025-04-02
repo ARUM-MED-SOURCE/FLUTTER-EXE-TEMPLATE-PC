@@ -7,10 +7,72 @@ import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_skeleton_ui/flutter_skeleton_ui.dart';
 
+/// 스켈레톤 UI에 사용되는 상수 값들
+class SkeletonConstants {
+  static const double avatarSize = 40.0;
+  static const double mainLineHeight = 16.0;
+  static const double subLineHeight = 12.0;
+  static const double subLineWidth = 100.0;
+  static const double borderRadius = 4.0;
+  static const double horizontalPadding = 16.0;
+  static const double verticalPadding = 12.0;
+  static const double spacing = 16.0;
+  static const double subLineSpacing = 8.0;
+  static const int skeletonItemCount = 4;
+}
+
+/// 스켈레톤 UI에 사용되는 스타일들
+class SkeletonStyles {
+  static final avatarStyle = SkeletonAvatarStyle(
+    width: SkeletonConstants.avatarSize,
+    height: SkeletonConstants.avatarSize,
+    shape: BoxShape.rectangle,
+    borderRadius: BorderRadius.all(Radius.circular(SkeletonConstants.borderRadius)),
+  );
+
+  static final mainLineStyle = SkeletonLineStyle(
+    height: SkeletonConstants.mainLineHeight,
+    width: double.infinity,
+    borderRadius: BorderRadius.all(Radius.circular(SkeletonConstants.borderRadius)),
+  );
+
+  static final subLineStyle = SkeletonLineStyle(
+    height: SkeletonConstants.subLineHeight,
+    width: SkeletonConstants.subLineWidth,
+    borderRadius: BorderRadius.all(Radius.circular(SkeletonConstants.borderRadius)),
+  );
+}
+
 class WrittenConsent extends ConsumerWidget {
   const WrittenConsent({
     super.key,
   });
+
+  InfoList<WrittenConsentData> _buildSkeletonList() {
+    return InfoList<WrittenConsentData>(
+      items: List.generate(
+        SkeletonConstants.skeletonItemCount,
+        (index) => WrittenConsentData(
+          consentMstRid: 0,
+          consentName: '',
+          consentStateDisp: '',
+          createDateTime: '',
+        ),
+      ),
+      shrinkWrap: false,
+      physics: const ClampingScrollPhysics(),
+      buildItem: (consent) => const _ConsentSkeletonItem(),
+      backgroundColor: AppColors.white,
+      contentPadding: EdgeInsets.zero,
+      itemDecoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +87,7 @@ class WrittenConsent extends ConsumerWidget {
             titleStyle: Theme.of(context).textTheme.titleLarge,
           ),
           body: InfoList<WrittenConsentData>(
-            items: data?.resultData ?? [], // 빈 리스트로 변경
+            items: data?.resultData ?? [],
             shrinkWrap: false,
             physics: const ClampingScrollPhysics(),
             buildItem: (consent) => TaggedConsentItem(
@@ -55,7 +117,7 @@ class WrittenConsent extends ConsumerWidget {
                 ],
               ),
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.white,
             contentPadding: EdgeInsets.zero,
             itemDecoration: const BoxDecoration(
               border: Border(
@@ -65,7 +127,7 @@ class WrittenConsent extends ConsumerWidget {
               ),
             ),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.white,
           isRound: true,
           showBorder: false,
           padding: EdgeInsets.zero,
@@ -92,27 +154,8 @@ class WrittenConsent extends ConsumerWidget {
             title: '작성동의서',
             titleStyle: Theme.of(context).textTheme.titleLarge,
           ),
-          body: InfoList<WrittenConsentData>(
-            items: List.generate(4, (index) => WrittenConsentData(
-              consentMstRid: 0,
-              consentName: '',
-              consentStateDisp: '',
-              createDateTime: '',
-            )),
-            shrinkWrap: false,
-            physics: const ClampingScrollPhysics(),
-            buildItem: (consent) => const _ConsentSkeletonItem(),
-            backgroundColor: Colors.white,
-            contentPadding: EdgeInsets.zero,
-            itemDecoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-          ),
-          backgroundColor: Colors.white,
+          body: _buildSkeletonList(),
+          backgroundColor: AppColors.white,
           isRound: true,
           showBorder: false,
           padding: EdgeInsets.zero,
@@ -129,38 +172,22 @@ class _ConsentSkeletonItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SkeletonItem(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: SkeletonConstants.horizontalPadding,
+          vertical: SkeletonConstants.verticalPadding,
+        ),
         child: Row(
           children: [
-            SkeletonAvatar(
-              style: SkeletonAvatarStyle(
-                width: 40,
-                height: 40,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-            const SizedBox(width: 16),
+            SkeletonAvatar(style: SkeletonStyles.avatarStyle),
+            SizedBox(width: SkeletonConstants.spacing),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SkeletonLine(
-                    style: SkeletonLineStyle(
-                      height: 16,
-                      width: double.infinity,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  SkeletonLine(
-                    style: SkeletonLineStyle(
-                      height: 12,
-                      width: 100,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
+                  SkeletonLine(style: SkeletonStyles.mainLineStyle),
+                  SizedBox(height: SkeletonConstants.subLineSpacing),
+                  SkeletonLine(style: SkeletonStyles.subLineStyle),
                 ],
               ),
             ),
