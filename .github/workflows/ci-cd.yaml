@@ -44,8 +44,15 @@ jobs:
           channel: stable
           flutter-version: '3.19.4'
           
+      - name: Clean pub cache
+        run: |
+          flutter clean
+          rm -rf ~/.pub-cache
+          
       - name: Install dependencies
-        run: flutter pub get
+        run: |
+          flutter pub cache repair
+          flutter pub get --verbose
         
       - name: Run build_runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
