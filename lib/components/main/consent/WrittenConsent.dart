@@ -25,7 +25,7 @@ class WrittenConsent extends ConsumerWidget {
             titleStyle: Theme.of(context).textTheme.titleLarge,
           ),
           body: InfoList<WrittenConsentData>(
-            items: data?.resultData ?? [],
+            items: data?.resultData ?? [], // 빈 리스트로 변경
             shrinkWrap: false,
             physics: const ClampingScrollPhysics(),
             buildItem: (consent) => TaggedConsentItem(
@@ -33,6 +33,27 @@ class WrittenConsent extends ConsumerWidget {
               date: consent.createDateTime,
               name: consent.consentName,
               id: consent.consentMstRid.toString(),
+            ),
+            buildEmptyItem: (context, items) => Container(
+              padding: const EdgeInsets.symmetric(vertical: 32),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Icon(
+                    Icons.description_outlined,
+                    size: 48,
+                    color: AppColors.gray400,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '작성동의서가 없습니다',
+                    style: TextStyle(
+                      color: AppColors.gray500,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
             ),
             backgroundColor: Colors.white,
             contentPadding: EdgeInsets.zero,
@@ -144,26 +165,6 @@ class _ConsentSkeletonItem extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _EmptyConsentItem extends StatelessWidget {
-  const _EmptyConsentItem();
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      width: double.infinity,
-      child: Center(
-        child: Text(
-          '작성동의서가 없습니다.',
-          style: TextStyle(
-            color: AppColors.gray500,
-            fontSize: 14,
-          ),
         ),
       ),
     );
