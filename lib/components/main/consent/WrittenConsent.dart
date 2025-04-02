@@ -121,7 +121,7 @@ class WrittenConsent extends ConsumerWidget {
           margin: EdgeInsets.zero,
         ),
       ),
-    )
+    );
   }
 }
 
