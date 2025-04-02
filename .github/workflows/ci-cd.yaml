@@ -51,10 +51,12 @@ jobs:
       - name: Clean pub cache (Windows)
         if: matrix.os == 'windows-latest'
         run: |
+          taskkill /F /IM dart.exe /T
+          taskkill /F /IM pub.exe /T
           flutter clean
-          flutter pub cache repair
-          Remove-Item -Recurse -Force $env:LOCALAPPDATA\Pub\Cache -ErrorAction SilentlyContinue
-          Remove-Item -Recurse -Force $env:APPDATA\.pub-cache -ErrorAction SilentlyContinue
+          Remove-Item -Path "$env:LOCALAPPDATA\Pub\Cache" -Recurse -Force -ErrorAction SilentlyContinue
+          Remove-Item -Path "$env:APPDATA\.pub-cache" -Recurse -Force -ErrorAction SilentlyContinue
+          Remove-Item -Path "$env:USERPROFILE\.pub-cache" -Recurse -Force -ErrorAction SilentlyContinue
           
       - name: Clean pub cache (macOS)
         if: matrix.os == 'macos-latest'
@@ -68,8 +70,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           flutter config --no-analytics
-          dart pub get --verbose
+          $env:PUB_CACHE = "$env:USERPROFILE\.pub-cache"
           flutter pub get --verbose
+        env:
+          PUB_CACHE: ${{ runner.temp }}\.pub-cache
           
       - name: Install dependencies (macOS)
         if: matrix.os == 'macos-latest'
