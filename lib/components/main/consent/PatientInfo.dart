@@ -165,11 +165,37 @@ class _PatientInfoItem extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _PatientName(patient: patient),
             _PatientDetail(patient: patient),
             _PatientAlert(patient: patient),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _PatientName extends StatelessWidget {
+  final PatientInfoResultData patient;
+
+  const _PatientName({
+    required this.patient,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          patient.patientName,
+          style: PatientStyles.nameStyle,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          patient.patientCode,
+          style: PatientStyles.nameStyle,
+        ),
+      ],
     );
   }
 }

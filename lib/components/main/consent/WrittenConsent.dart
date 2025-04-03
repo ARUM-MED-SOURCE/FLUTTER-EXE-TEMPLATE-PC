@@ -6,6 +6,7 @@ import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/components/common/Skeleton.dart';
+import 'package:flutter_exe/utils/time.dart';
 
 class WrittenConsent extends ConsumerWidget {
   const WrittenConsent({
@@ -31,7 +32,7 @@ class WrittenConsent extends ConsumerWidget {
             separatorBuilder: (context, index) => const SizedBox(height: 0),
             buildItem: (consent) => TaggedConsentItem(
               type: consent.consentStateDisp,
-              date: consent.createDateTime,
+              date: formatToYYYY_MM_DD(DateTime.parse(consent.createDateTime)),
               name: consent.consentName,
               id: consent.consentMstRid.toString(),
             ),
