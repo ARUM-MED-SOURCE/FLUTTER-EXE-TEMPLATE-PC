@@ -70,28 +70,25 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
-          $env:PUB_CACHE = Join-Path $env:RUNNER_TEMP ".pub-cache"
-          New-Item -Path $env:PUB_CACHE -ItemType Directory -Force
           flutter config --no-analytics
-          flutter pub cache repair
-          Start-Sleep -Seconds 2
-          flutter pub get --verbose
-        env:
-          PUB_CACHE: ${{ runner.temp }}\.pub-cache
-          FLUTTER_CACHE_DIR: ${{ runner.temp }}\.flutter-cache
+          flutter pub get
           
       - name: Install dependencies (macOS)
         if: matrix.os == 'macos-latest'
         run: |
           flutter config --no-analytics
-          dart pub get --verbose
-          flutter pub get --verbose
+          flutter pub get
         
       - name: Run build_runner
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: |
+          dart pub global activate flutter_gen
+          flutter pub run build_runner build --delete-conflicting-outputs
         
       - name: Build desktop app
-        run: flutter build ${{ matrix.build }} --release
+        run: |
+          flutter config --enable-windows-desktop
+          flutter config --enable-macos-desktop
+          flutter build ${{ matrix.build }} --release
         
       - name: Upload Windows artifact
         if: matrix.os == 'windows-latest'
