@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exe/components/navigation/Topbar.dart';
 import 'package:flutter_exe/components/common/CustomTextFormField.dart';
-import 'package:flutter_exe/layout/default_layout.dart';
 import 'package:flutter_exe/constants/index.dart';
+import 'package:flutter_exe/layout/default_layout.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_exe/screens/main_screen.dart';
 
 import '../auth/auth.dart';
 
@@ -47,9 +45,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         // Hide loading indicator
         if (next.errorMessage == null) {
           // Navigate to main screen on success
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const MainScreen()),
-          );
+          context.go('/main');
         }
       }
     });
@@ -59,8 +55,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 1024;
           final leftWidth = isSmallScreen ? 0.0 : constraints.maxWidth * 0.4;
-          final formWidth = isSmallScreen ? constraints.maxWidth : constraints.maxWidth * 0.6;
-          
+          final formWidth =
+              isSmallScreen ? constraints.maxWidth : constraints.maxWidth * 0.6;
+
           return Row(
             children: [
               if (!isSmallScreen)
