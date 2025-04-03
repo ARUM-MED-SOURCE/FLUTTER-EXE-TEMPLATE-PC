@@ -275,14 +275,68 @@ class _PatientAlert extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Text(
-          'ALERT',
-          style: PatientStyles.alertStyle,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: AppColors.blue400,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Row(
+            children: [
+          Text(
+            "임시",
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.white,
+            ),
+              ),
+              const SizedBox(width: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Text(
+                  "1",
+                  style: const TextStyle(
+                    fontSize: 8,
+                    color: AppColors.blue400,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(width: 8),
-        Text(
-          patient.alertBloodGroup ?? '',
-          style: PatientStyles.alertStyle,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: AppColors.gray100,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Text(
+            "진행",
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.gray500,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: AppColors.gray100,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Text(
+            "완료",
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.gray500,
+            ),
+          ),
         ),
       ],
     );
