@@ -10,7 +10,7 @@ part 'user_dataloader.g.dart';
 final logger = Logger();
 
 @riverpod
-Future<LoginResponse> userLoader(UserLoaderRef ref) async {
+Future<LoginResponse> userLoader(Ref ref) async {
     final repository = ref.read(userRepositoryProvider);
     final data = {
         'userId': 'userId',

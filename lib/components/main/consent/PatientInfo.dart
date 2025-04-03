@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exe/components/common/Skeleton.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/model/patient_info_response.dart';
-import 'package:flutter_exe/styles/patient_styles.dart';
-import 'package:flutter_list_ui/flutter_list_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
-import 'package:flutter_exe/providers/selected_consents_provider.dart';
-import 'package:flutter_exe/providers/selected_date_provider.dart';
-import 'package:flutter_exe/utils/time.dart';
 import 'package:flutter_exe/dataloaders/prescription_consent_dataloader.dart';
 import 'package:flutter_exe/dataloaders/written_consent_dataloader.dart';
+import 'package:flutter_exe/model/patient_info_response.dart';
 import 'package:flutter_exe/providers/hospital_section_provider.dart';
-import 'package:flutter_exe/components/common/Skeleton.dart';
+import 'package:flutter_exe/providers/selected_date_provider.dart';
+import 'package:flutter_exe/styles/patient_styles.dart';
+import 'package:flutter_exe/utils/time.dart';
+import 'package:flutter_list_ui/flutter_list_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
@@ -121,7 +120,7 @@ class PatientInfo extends ConsumerWidget {
         child: SelectableText.rich(
           TextSpan(
             text: 'Error: ',
-            style: const TextStyle(color: Colors.red),
+            style: const TextStyle(color: AppColors.red500),
             children: [
               TextSpan(text: error.toString()),
             ],
@@ -137,7 +136,6 @@ class _PatientInfoItem extends ConsumerWidget {
 
   const _PatientInfoItem({
     required this.patient,
-    super.key,
   });
 
   @override
@@ -181,7 +179,6 @@ class _PatientDetail extends StatelessWidget {
 
   const _PatientDetail({
     required this.patient,
-    super.key,
   });
 
   @override

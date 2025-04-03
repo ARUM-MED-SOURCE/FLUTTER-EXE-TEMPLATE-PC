@@ -65,7 +65,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   width: leftWidth,
                   height: constraints.maxHeight,
                   clipBehavior: Clip.none,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(AppImages.loginLeftBackground),
                       fit: BoxFit.fill,

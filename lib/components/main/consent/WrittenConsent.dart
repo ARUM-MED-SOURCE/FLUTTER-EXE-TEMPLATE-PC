@@ -77,11 +77,11 @@ class WrittenConsent extends ConsumerWidget {
         child: SelectableText.rich(
           TextSpan(
             text: 'Error: ',
-            style: const TextStyle(color: Colors.red),
+            style: const TextStyle(color: AppColors.red500),
             children: [
               TextSpan(
                 text: error.toString(),
-                style: const TextStyle(color: Colors.red),
+                style: const TextStyle(color: AppColors.red500),
               ),
             ],
           ),

@@ -70,6 +70,7 @@ class _ConsentSearchHeader extends InfoHeader {
     required this.title,
   }) : super(title: title);
 
+  @override
   final String title;
 
   @override
