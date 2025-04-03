@@ -14,7 +14,6 @@ class WrittenConsent extends ConsumerWidget {
     super.key,
   });
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final writtenScriptionConsentData =
@@ -31,6 +30,7 @@ class WrittenConsent extends ConsumerWidget {
             items: data?.resultData ?? [],
             shrinkWrap: false,
             physics: const ClampingScrollPhysics(),
+            separatorBuilder: (context, index) => const SizedBox(height: 0),
             buildItem: (consent) => TaggedConsentItem(
               type: consent.consentStateDisp,
               date: consent.createDateTime,
@@ -124,4 +124,3 @@ class WrittenConsent extends ConsumerWidget {
     );
   }
 }
-
