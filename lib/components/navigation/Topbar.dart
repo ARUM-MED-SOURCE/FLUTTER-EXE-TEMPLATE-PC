@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/constants/index.dart';
 import 'package:flutter_exe/components/navigation/enum/HospitalSection.dart';
 import 'package:flutter_exe/providers/hospital_section_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +13,7 @@ class TopBar extends ConsumerWidget {
 
     return Container(
       height: 80,
-      color: AppColors.blue500,
+      color: AppColors.blue400,
       child: Row(
         children: [
           // Logo section - Left aligned
@@ -51,7 +51,7 @@ class TopBar extends ConsumerWidget {
     return SizedBox(
       height: 30,
       child: Image.asset(
-        'assets/images/company-logo-color-white.png', 
+        AppImages.companyLogoColorWhite, 
         fit: BoxFit.contain,
       ),
     );
@@ -73,7 +73,7 @@ class TopBar extends ConsumerWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: selectedSection == section ? AppColors.blue400 : AppColors.blue500,
+            backgroundColor: selectedSection == section ? AppColors.blue500 : AppColors.blue400,
             foregroundColor: Colors.white,
             elevation: selectedSection == section ? 10 : 0,
             padding: const EdgeInsets.symmetric(horizontal: 16),

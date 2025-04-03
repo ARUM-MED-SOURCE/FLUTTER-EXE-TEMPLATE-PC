@@ -5,9 +5,7 @@ import 'package:flutter_exe/dataloaders/written_consent_dataloader.dart';
 import 'package:flutter_exe/model/writtenscription_consent_data.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_skeleton_ui/flutter_skeleton_ui.dart';
-
-import '../../common/Skeleton.dart';
+import 'package:flutter_exe/components/common/Skeleton.dart';
 
 class WrittenConsent extends ConsumerWidget {
   const WrittenConsent({
@@ -63,7 +61,7 @@ class WrittenConsent extends ConsumerWidget {
             itemDecoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey,
+                  color: AppColors.gray100,
                 ),
               ),
             ),
@@ -79,11 +77,11 @@ class WrittenConsent extends ConsumerWidget {
         child: SelectableText.rich(
           TextSpan(
             text: 'Error: ',
-            style: const TextStyle(color: Colors.red),
+            style: const TextStyle(color: AppColors.red500),
             children: [
               TextSpan(
                 text: error.toString(),
-                style: const TextStyle(color: Colors.red),
+                style: const TextStyle(color: AppColors.red500),
               ),
             ],
           ),
@@ -109,7 +107,7 @@ class WrittenConsent extends ConsumerWidget {
             itemDecoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey,
+                  color: AppColors.gray100,
                 ),
               ),
             ),

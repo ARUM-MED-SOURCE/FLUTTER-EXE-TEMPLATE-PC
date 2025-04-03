@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // 블루
-  static const Color blue500 = Color(0xFF353B55);
+  static const Color blue500 = Color(0xFF4C60B0);
   static const Color blue400 = Color(0xFF738CF3);
   static const Color blue300 = Color(0xFF738CF1);
   static const Color blue200 = Color(0xFF359EFF);

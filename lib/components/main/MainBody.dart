@@ -13,9 +13,9 @@ class MainBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.blue50,
-      child: Row(
+      child: const Row(
         children: [
-          const Expanded(
+          Expanded(
             child: PatientInfo(),
           ),
           Expanded(

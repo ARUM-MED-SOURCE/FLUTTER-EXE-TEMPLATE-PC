@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exe/constants/colors.dart';
-import 'package:intl/intl.dart';  // intl 패키지 import
 import 'package:flutter_exe/components/common/DatePickerField.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
 import 'package:flutter_exe/components/main/header/DropdownOptions.dart';
+import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
 import 'package:flutter_exe/providers/selected_date_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 
@@ -57,7 +56,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
             borderRadius: BorderRadius.circular(4),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Column(
@@ -108,11 +107,11 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
+      decoration: const BoxDecoration(
+        color: AppColors.white,
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.withOpacity(0.2),
+            color: AppColors.gray100,
             width: 1,
           ),
         ),
@@ -195,7 +194,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
             color: isActive ? AppColors.blue300 : AppColors.gray100,
           ),
           borderRadius: BorderRadius.circular(4),
-          color: isActive ? AppColors.blue50 : Colors.white,
+          color: isActive ? AppColors.blue50 : AppColors.white,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

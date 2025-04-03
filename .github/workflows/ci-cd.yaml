@@ -52,11 +52,31 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
+          # Kill any running dart/flutter processes
           Get-Process | Where-Object {$_.ProcessName -match 'dart|pub|flutter'} | Stop-Process -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Seconds 5
+          
+          # Clean Flutter
           flutter clean
           Start-Sleep -Seconds 2
-          Get-ChildItem -Path "$env:LOCALAPPDATA\Pub\Cache","$env:APPDATA\.pub-cache","$env:USERPROFILE\.pub-cache" -Recurse -ErrorAction SilentlyContinue | 
-            Remove-Item -Force -Recurse -ErrorAction SilentlyContinue
+          
+          # Remove pub cache directories with retry logic
+          $retryCount = 3
+          $retryDelay = 5
+          
+          for ($i = 1; $i -le $retryCount; $i++) {
+              try {
+                  Get-ChildItem -Path "$env:LOCALAPPDATA\Pub\Cache","$env:APPDATA\.pub-cache","$env:USERPROFILE\.pub-cache" -Recurse -ErrorAction SilentlyContinue | 
+                      Remove-Item -Force -Recurse -ErrorAction Stop
+                  break
+              } catch {
+                  if ($i -eq $retryCount) {
+                      Write-Error "Failed to clean pub cache after $retryCount attempts"
+                      throw
+                  }
+                  Start-Sleep -Seconds $retryDelay
+              }
+          }
           
       - name: Clean pub cache (macOS)
         if: matrix.os == 'macos-latest'

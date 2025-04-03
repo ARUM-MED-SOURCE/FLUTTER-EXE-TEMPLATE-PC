@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
+import 'package:flutter_exe/constants/index.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
@@ -45,10 +46,10 @@ class PrescriptionConsent extends ConsumerWidget {
                       );
                     },
                   ),
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColors.white,
                   contentPadding: EdgeInsets.zero,
                 ),
-                backgroundColor: Colors.white,
+                backgroundColor: AppColors.white,
                 isRound: true,
                 showBorder: false,
                 padding: EdgeInsets.zero,
