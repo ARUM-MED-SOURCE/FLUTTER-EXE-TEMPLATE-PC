@@ -4,7 +4,7 @@ import 'package:flutter_exe/model/login_response.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:convert';
-
+import 'package:flutter_exe/constants/api_method.dart';
 part 'auth.freezed.dart';
 part 'auth.g.dart';
 
@@ -63,7 +63,7 @@ class AuthNotifier extends _$AuthNotifier {
       };
 
       final response = await ref.read(userRepositoryProvider).login(
-        'Login',
+        ApiMethod.login,
         json.encode(data),
         state.userId,
         'AND',
@@ -71,7 +71,6 @@ class AuthNotifier extends _$AuthNotifier {
         '172.17.200.48',
         'E0AA96DEBD0A',
       );
-
       state = state.copyWith(isLoading: false);
       // Navigation will be handled by the UI layer using ref.listen
     } catch (e) {
