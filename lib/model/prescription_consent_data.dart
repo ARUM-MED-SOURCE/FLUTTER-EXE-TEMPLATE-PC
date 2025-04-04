@@ -54,7 +54,7 @@ class PrescriptionConsentData with _$PrescriptionConsentData {
     @JsonKey(name: 'ConsentState') String? consentState,
     @JsonKey(name: 'RecordCnt') String? recordCnt,
     @JsonKey(name: 'Test') String? test,
-    @JsonKey(name: 'Image') dynamic? image,
+    @JsonKey(name: 'Image') dynamic image,
     @JsonKey(name: 'UseYN') String? useYn,
     @JsonKey(name: 'ConsentFolderRid') int? consentFolderRid,
     @JsonKey(name: 'ConsentListRid') int? consentListRid,
