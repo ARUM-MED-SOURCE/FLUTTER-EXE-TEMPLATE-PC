@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/constants/index.dart';
 import 'package:flutter_exe/components/navigation/enum/HospitalSection.dart';
-class TopBar extends StatefulWidget {
+import 'package:flutter_exe/providers/hospital_section_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class TopBar extends ConsumerWidget {
   const TopBar({super.key});
 
   @override
-  State<TopBar> createState() => _TopBarState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedSection = ref.watch(hospitalSectionProvider);
 
-class _TopBarState extends State<TopBar> {
-  String selectedButton = HospitalSection.inpatient.label;
-
-  @override
-  Widget build(BuildContext context) {
     return Container(
       height: 80,
-      color: AppColors.blue500,
+      color: AppColors.blue400,
       child: Row(
         children: [
           // Logo section - Left aligned
@@ -31,7 +29,7 @@ class _TopBarState extends State<TopBar> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: _buildNavigationButtons(),
+                    children: _buildNavigationButtons(context, ref),
                   ),
                 ),
               ),
@@ -53,29 +51,31 @@ class _TopBarState extends State<TopBar> {
     return SizedBox(
       height: 30,
       child: Image.asset(
-        'assets/images/company-logo-color-white.png', 
+        AppImages.companyLogoColorWhite, 
         fit: BoxFit.contain,
       ),
     );
   }
 
-  List<Widget> _buildNavigationButtons() {
+  List<Widget> _buildNavigationButtons(BuildContext context, WidgetRef ref) {
+    final selectedSection = ref.watch(hospitalSectionProvider);
+    
     return HospitalSection.values.map((section) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: SizedBox(
         height: 40,
         child: ElevatedButton(
-          onPressed: () => setState(() => selectedButton = section.label),
+          onPressed: () => ref.read(hospitalSectionProvider.notifier).state = section,
           child: Text(
             section.label,
             style: TextStyle(
-              color: selectedButton == section.label ? AppColors.white : AppColors.gray200,
+              color: selectedSection == section ? AppColors.white : AppColors.gray200,
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: selectedButton == section.label ? AppColors.blue400 : AppColors.blue500,
+            backgroundColor: selectedSection == section ? AppColors.blue500 : AppColors.blue400,
             foregroundColor: Colors.white,
-            elevation: selectedButton == section.label ? 10 : 0,
+            elevation: selectedSection == section ? 10 : 0,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:window_size/window_size.dart';
-import 'dart:io';
-import 'package:flutter_exe/screens/HomeScreen.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/router/router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:window_manager/window_manager.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await windowManager.ensureInitialized();
 
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1280, 800),
+    minimumSize: Size(1024, 768),
+    maximumSize: Size(1920, 1080),
+    center: true,
+    title: '전자동의시스템',
+  );
 
-void main() {
-
-WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    setWindowTitle('전자동의시스템');
-    setWindowMinSize(const Size(1920, 1080));
-    setWindowMaxSize(const Size(2560, 1440));
-    setWindowFrame(Rect.fromLTWH(
-      0,
-      0,
-      1920,
-      1080,
-    ));
-  }
+  await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+    await windowManager.setResizable(true);
+  });
 
   runApp(
     const ProviderScope(
@@ -33,7 +34,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -43,7 +45,6 @@ class App extends StatelessWidget {
         Locale('ko', 'KR'),
         Locale('en', 'US'),
       ],
-      home: HomeScreen(),
     );
   }
 }

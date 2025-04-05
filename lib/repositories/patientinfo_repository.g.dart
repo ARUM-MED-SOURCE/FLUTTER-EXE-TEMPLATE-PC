@@ -22,7 +22,7 @@ class _PatientInfoRepository implements PatientInfoRepository {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<Patient>> getPatientInfo(
+  Future<PatientInfoResponse> getPatientInfo(
     String methodName,
     String params,
     String userId,
@@ -43,7 +43,7 @@ class _PatientInfoRepository implements PatientInfoRepository {
       'deviceIdentIP': deviceIdentIP,
       'deviceIdentMac': deviceIdentMac,
     };
-    final _options = _setStreamType<List<Patient>>(Options(
+    final _options = _setStreamType<PatientInfoResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -51,7 +51,7 @@ class _PatientInfoRepository implements PatientInfoRepository {
     )
         .compose(
           _dio.options,
-          '/',
+          '/HospitalSvc.aspx',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -60,12 +60,10 @@ class _PatientInfoRepository implements PatientInfoRepository {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Patient> _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late PatientInfoResponse _value;
     try {
-      _value = _result.data!
-          .map((dynamic i) => Patient.fromJson(i as Map<String, dynamic>))
-          .toList();
+      _value = PatientInfoResponse.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -109,7 +107,7 @@ class _PatientInfoRepository implements PatientInfoRepository {
 // **************************************************************************
 
 String _$patientInfoRepositoryHash() =>
-    r'3b8171c4b8c8b41195544aad1b1bbeb5fbfe4bc9';
+    r'35e380e65fa58468872f98c8e4255239790e4ca1';
 
 /// See also [patientInfoRepository].
 @ProviderFor(patientInfoRepository)
