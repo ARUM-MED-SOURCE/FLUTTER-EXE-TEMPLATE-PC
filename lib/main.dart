@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/router/router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -5,22 +7,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 윈도우 앱일 때만 windowManager 작동
+  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    await windowManager.ensureInitialized();
+    
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(1280, 800),
+      minimumSize: Size(1024, 768),
+      maximumSize: Size(1920, 1080),
+      center: true,
+      title: '전자동의시스템',
+    );
+
+    await windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+      await windowManager.setResizable(true);
+    });
+  }
   
-  await windowManager.ensureInitialized();
-
-  WindowOptions windowOptions = const WindowOptions(
-    size: Size(1280, 800),
-    minimumSize: Size(1024, 768),
-    maximumSize: Size(1920, 1080),
-    center: true,
-    title: '전자동의시스템',
-  );
-
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-    await windowManager.setResizable(true);
-  });
 
   runApp(
     const ProviderScope(
