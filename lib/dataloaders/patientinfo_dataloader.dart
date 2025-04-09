@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:convert';
 import 'package:flutter_exe/model/patient_info_response.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_exe/constants/api_method.dart';
 
 part 'patientinfo_dataloader.g.dart';
 
@@ -14,6 +15,11 @@ Future<PatientInfoResponse> patientInfoLoader(
   Ref ref,
   String methodName,
 ) async {
+  // quickView일 경우 빈 응답 반환
+  if (methodName == ApiMethod.quickView) {
+    return PatientInfoResponse.empty();
+  }
+
   final repository = ref.read(patientInfoRepositoryProvider);
   final data = {
     "UserID": 'userOd',

@@ -15,6 +15,13 @@ class PatientInfoResponse with _$PatientInfoResponse {
 
   factory PatientInfoResponse.fromJson(Map<String, dynamic> json) =>
       _$PatientInfoResponseFromJson(json);
+
+  factory PatientInfoResponse.empty() => const PatientInfoResponse(
+        resultCode: '0',
+        resultData: [],
+        errorCode: '0',
+        errorMessage: '',
+      );
 }
 
 @freezed
