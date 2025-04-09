@@ -11,6 +11,7 @@ import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_exe/utils/time.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_exe/constants/api_method.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
@@ -18,8 +19,7 @@ class PatientInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hospitalSection = ref.watch(hospitalSectionProvider);
-    final patientData =
-        ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
+    final patientData = ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
 
     return patientData.when(
       data: (response) => Info(
