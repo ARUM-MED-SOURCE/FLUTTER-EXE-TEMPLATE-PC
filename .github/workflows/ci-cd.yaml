@@ -114,7 +114,7 @@ jobs:
       #   run: flutter test
         
       - name: Build mobile app
-        run: flutter build ${{ matrix.build }} --release --build-name=1.0.0 --build-number=1
+        run: flutter build ios --release --allowProvisioningUpdates
         
       - name: Upload Android artifact
         if: matrix.os == 'ubuntu-latest'
