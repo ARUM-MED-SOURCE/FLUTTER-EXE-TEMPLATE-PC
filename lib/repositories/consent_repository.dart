@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_exe/api/dio/dio.dart';
 import 'dart:convert';
+
+import '../model/search_consent_data.dart';
 part 'consent_repository.g.dart';
 
 @RestApi()
@@ -39,7 +41,7 @@ abstract class ConsentRepository {
 
   @POST('/HospitalSvc.aspx')
   @FormUrlEncoded()
-  Future<WrittenConsentResponse> getSearchConsentData(
+  Future<SearchConsentResponse> getSearchConsentData(
       @Field('methodName') String methodName,
       @Field('params') String params,
       @Field('userId') String userId,

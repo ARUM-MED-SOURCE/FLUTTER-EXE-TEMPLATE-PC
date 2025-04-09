@@ -6,15 +6,17 @@ import 'package:flutter_exe/constants/api_constants.dart';
 import 'dart:convert';
 import 'package:logging/logging.dart';
 
+import '../model/search_consent_data.dart';
+
 part 'search_consent_dataloader.g.dart';
 
 final logger = Logger('SearchConsentDataLoader');
 
 @riverpod
 class SearchConsentDataLoader
-    extends AutoDisposeAsyncNotifier<WrittenConsentResponse?> {
+    extends AutoDisposeAsyncNotifier<SearchConsentResponse?> {
   @override
-  Future<WrittenConsentResponse?> build() async => null;
+  Future<SearchConsentResponse?> build() async => null;
 
   Future<void> getSearchConsent({
     required String userId,
@@ -39,7 +41,7 @@ class SearchConsentDataLoader
         ApiConstants.ipAddress,
         ApiConstants.deviceId,
       );
-      print("############################");
+
       state = AsyncValue.data(response);
     } catch (e) {
       logger.severe('Error fetching written consent: $e');
