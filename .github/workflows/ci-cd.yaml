@@ -114,7 +114,7 @@ jobs:
       #   run: flutter test
         
       - name: Build mobile app
-        run: flutter build ${{ matrix.build }} --release --build-name=1.0.0 --build-number=1
+        run: flutter build ios --release --allowProvisioningUpdates
         
       - name: Upload Android artifact
         if: matrix.os == 'ubuntu-latest'
@@ -139,6 +139,52 @@ jobs:
           payload: |
             {
               "text": "${{ job.status == 'success' && '✅' || '❌' }} Flutter Mobile ${{ matrix.build }} 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ job.status }}\nOS: ${{ matrix.os }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING-WEBHOOK
+
+  build-android:
+    environment: ${{ needs.set-environment.outputs.environment }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            build: android
+    runs-on: ${{ matrix.os }}
+    needs: [set-environment]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.19.4'
+      
+      - name: Install dependencies
+        run: flutter pub get
+        
+      - name: Run build_runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+        
+      - name: Build Android app
+        run: flutter build apk --release
+        
+      - name: Upload Android artifact
+        id: upload-android-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Notify Slack on Success
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "${{ job.status == 'success' && '✅' || '❌' }} Flutter Android 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ job.status }}\nOS: ${{ matrix.os }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
