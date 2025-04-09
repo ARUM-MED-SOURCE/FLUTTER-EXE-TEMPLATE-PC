@@ -36,6 +36,18 @@ abstract class ConsentRepository {
     @Field('deviceIdentIP') String deviceIdentIP,
     @Field('deviceIdentMac') String deviceIdentMac,
   );
+
+  @POST('/HospitalSvc.aspx')
+  @FormUrlEncoded()
+  Future<WrittenConsentResponse> getSearchConsentData(
+      @Field('methodName') String methodName,
+      @Field('params') String params,
+      @Field('userId') String userId,
+      @Field('deviceType') String deviceType,
+      @Field('deviceIdentName') String deviceIdentName,
+      @Field('deviceIdentIP') String deviceIdentIP,
+      @Field('deviceIdentMac') String deviceIdentMac,
+      );
 }
 
 @riverpod
