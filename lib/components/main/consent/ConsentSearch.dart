@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/dataloaders/search_consent_dataloader.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
 import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
@@ -38,15 +39,13 @@ class ConsentSearch extends StatelessWidget {
                 name: name,
                 id: id,
                 isSelected: ref.watch(selectedConsentsProvider).contains(id),
-                isFavorite:
-                    ref.watch(selectedFavoriteConsentsProvider).contains(id),
+                isFavorite: ref.watch(selectedFavoriteConsentsProvider).contains(id),
                 onSelected: () {
                   final notifier = ref.read(selectedConsentsProvider.notifier);
                   notifier.toggleConsent(id);
                 },
                 onFavoriteToggled: () {
-                  final notifier =
-                      ref.read(selectedFavoriteConsentsProvider.notifier);
+                  final notifier = ref.read(selectedFavoriteConsentsProvider.notifier);
                   notifier.toggleConsent(id);
                 },
               );
@@ -122,8 +121,7 @@ class _ConsentSearchOptions extends StatelessWidget {
               child: Radio(
                 value: value,
                 groupValue: ref.watch(selectedOptionProvider),
-                onChanged: (value) =>
-                    ref.read(selectedOptionProvider.notifier).setOption(value!),
+                onChanged: (value) => ref.read(selectedOptionProvider.notifier).setOption(value!),
                 activeColor: AppColors.blue300,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
@@ -136,11 +134,11 @@ class _ConsentSearchOptions extends StatelessWidget {
   }
 }
 
-class _ConsentSearchBar extends StatelessWidget {
+class _ConsentSearchBar extends ConsumerWidget {
   const _ConsentSearchBar();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       child: TextField(
         decoration: InputDecoration(
@@ -153,7 +151,14 @@ class _ConsentSearchBar extends StatelessWidget {
             borderSide: BorderSide.none,
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          suffixIcon: const Icon(Icons.search, color: AppColors.blue300),
+          suffixIcon: IconButton(
+              onPressed: () {
+                ref
+                    .read(searchConsentDataLoaderProvider.notifier)
+                    .getSearchConsent(userId: 'userId', // TODO:: userId를 실제 아이디로 변경해야함
+                    userPassword: 'userPassword');  // TODO :: userPassword를 실제 비밀번호로 변경해야함
+              },
+              icon: const Icon(Icons.search, color: AppColors.blue300)),
         ),
       ),
     );
