@@ -80,3 +80,60 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_WEBHOOK_TYPE: INCOMING-WEBHOOK
+
+  build-mobile:
+    environment: ${{ needs.set-environment.outputs.environment }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            build: android
+          - os: macos-latest
+            build: ios
+    runs-on: ${{ matrix.os }}
+    needs: [set-environment]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.19.4'
+      
+      - name: Install dependencies
+        run: flutter pub get
+        
+      - name: Run build_runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+        
+      - name: Build mobile app
+        run: flutter build ${{ matrix.build }} --release
+        
+      - name: Upload Android artifact
+        if: matrix.os == 'ubuntu-latest'
+        id: upload-android-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+          
+      - name: Upload iOS artifact
+        if: matrix.os == 'macos-latest'
+        id: upload-ios-artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-release
+          path: build/ios/ipa/
+
+      - name: Notify Slack on Success
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "${{ job.status == 'success' && '✅' || '❌' }} Flutter Mobile ${{ matrix.build }} 빌드\n배포환경: ${{ needs.set-environment.outputs.environment }}\n성공 유무: ${{ job.status }}\nOS: ${{ matrix.os }}\n저장소: ${{ github.repository }}\n브랜치: ${{ github.ref }}\n\n아티팩트 다운로드: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING-WEBHOOK
