@@ -91,6 +91,8 @@ class CheckableConsentItem extends StatelessWidget {
   }
 }
 
+/// 즐겨찾기 달린 동의서 아이템
+//  주로 검색동의서 항목으로 쓰임
 class FavoriteConsentItem extends StatelessWidget {
   final String id;
   final String name;
@@ -116,7 +118,7 @@ class FavoriteConsentItem extends StatelessWidget {
       name: name,
       buildLeadingWidgets: (context) => [
         SizedBox(
-          width: 24,
+          width: 40,
           child: Text(
             '$id.',
             style: const TextStyle(fontSize: 14, color: AppColors.black),
