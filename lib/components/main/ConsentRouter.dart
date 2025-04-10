@@ -41,11 +41,7 @@ class _BasicConsentComponent extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: ConsentSearch(
-            searchResults: prescriptionConsentData
-                .map(PrescriptionConsentData.fromJson)
-                .toList(),
-          ),
+          child: ConsentSearch(),
         ),
       ],
     );
