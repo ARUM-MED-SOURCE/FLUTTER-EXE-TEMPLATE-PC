@@ -44,7 +44,7 @@ class SearchConsentDataLoader
 
       state = AsyncValue.data(response);
     } catch (e) {
-      logger.severe('Error fetching written consent: $e');
+      logger.severe('Error fetching search consent: $e');
       state = AsyncValue.error(e, StackTrace.current);
       throw e;
     }

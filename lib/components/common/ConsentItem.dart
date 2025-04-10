@@ -41,7 +41,7 @@ class BaseConsentItem extends StatelessWidget {
                     ),
               ),
             ),
-            ...buildTrailingWidgets(context),
+            ...buildTrailingWidgets(context), // TODO :: 검색동의서 별 아이콘을 맨 뒤에 붙여야함, 트레일러 위젯의 구조 자체를 바꿔야 할 듯
           ],
         ),
       ),
