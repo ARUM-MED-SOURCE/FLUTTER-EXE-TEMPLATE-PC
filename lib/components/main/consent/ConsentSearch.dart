@@ -4,6 +4,7 @@ import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/dataloaders/search_consent_dataloader.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/model/search_consent_data.dart';
+import 'package:flutter_exe/providers/search_consent_keyword_provider.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
 import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
 import 'package:flutter_exe/providers/selected_option_provider.dart';
@@ -59,8 +60,21 @@ class ConsentSearch extends ConsumerWidget {
 
           /// ERROR CASE
           error: (error, stackTrace) => InfoList(
-            items: [],
-            buildItem: (item) => Text('a'),
+            items: const ['empty'],
+            buildItem: (item) => Center(
+              child: SelectableText.rich(
+                TextSpan(
+                  text: 'Error: ',
+                  style: const TextStyle(color: AppColors.red500),
+                  children: [
+                    TextSpan(
+                      text: error.toString(),
+                      style: const TextStyle(color: AppColors.red500),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
 
           /// LOADING CASE
@@ -187,6 +201,9 @@ class _ConsentSearchBar extends ConsumerWidget {
               },
               icon: const Icon(Icons.search, color: AppColors.blue300)),
         ),
+        onChanged: (value) {
+          ref.read(searchConsentKeywordProvider.notifier).update(value);
+        },
       ),
     );
   }
