@@ -8,7 +8,8 @@ import '../../model/prescription_consent_data.dart';
 import '../../utils/dummy_data.dart';
 import 'MainComponent.dart';
 import 'consent/ConsentSearch.dart';
-
+import 'consent/QuickViewUI.dart';
+import 'consent/quickview/Sidebar.dart';
 class ConsentRouter extends ConsumerWidget {
   const ConsentRouter({super.key});
 
@@ -57,19 +58,18 @@ class _QuickViewComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Info(
-      card: InfoCard(
-        header: InfoHeader(
-          title: '빠른조회',
-          titleStyle: Theme.of(context).textTheme.titleLarge,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Expanded(
+          flex: 1,
+          child: Sidebar(),
         ),
-        body: InfoList(
-          items: ['1', '2', '3'],
-          buildItem: (item) => ListTile(
-            title: Text(item),
-          ),
+        Expanded(
+          flex: 2,
+          child: const QuickViewUI(),
         ),
-      ),
+      ],
     );
   }
 }
