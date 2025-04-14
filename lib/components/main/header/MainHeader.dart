@@ -4,6 +4,7 @@ import 'package:flutter_exe/components/main/header/DropdownOptions.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
 import 'package:flutter_exe/providers/selected_date_provider.dart';
+import 'package:flutter_exe/providers/hospital_section_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
@@ -40,8 +41,8 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
   
 
   OverlayEntry _createOverlayEntry(DropdownType type) {
-    final items = DropdownOptions.getItemsForType(type);
-    final selectedValue = DropdownOptions.selectedValues[type];
+    final items = DropdownOptions.getOptions(type);
+    final selectedValue = DropdownOptions.getSelectedValue(type);
     final layerLink = DropdownOptions.layerLinks[type];
 
     return OverlayEntry(
@@ -72,14 +73,14 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
 
   Widget _buildDropdownItem(
     String item,
-    String? selectedValue,
+    String selectedValue,
     DropdownType type,
   ) {
     final isSelected = item == selectedValue;
     return InkWell(
       onTap: () {
         setState(() {
-          DropdownOptions.selectedValues[type] = item;
+          DropdownOptions.setSelectedValue(type, item);
         });
         _removeOverlay();
       },
@@ -104,6 +105,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
   @override
   Widget build(BuildContext context) {
     final selectedDate = ref.watch(selectedDateProvider);
+    final hospitalSection = ref.watch(hospitalSectionProvider);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 60,
@@ -147,12 +149,12 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
                         const SizedBox(width: 8),
                       ],
                       
-                      ...DropdownType.values.map((type) => Padding(
+                      ...DropdownOptions.getVisibleTypes(hospitalSection).map((type) => Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: CompositedTransformTarget(
                           link: DropdownOptions.layerLinks[type]!,
                           child: _buildDropdownButton(
-                            DropdownOptions.selectedValues[type]!,
+                            DropdownOptions.getSelectedValue(type),
                             type,
                           ),
                         ),
@@ -184,8 +186,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
       onTap: () => _showOverlay(type),
       child: Container(
         constraints: const BoxConstraints(
-          minWidth: 120,
-          maxWidth: 150,
+          minWidth: 100,
         ),
         height: 38,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -197,18 +198,16 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
           color: isActive ? AppColors.blue50 : AppColors.white,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Flexible(
-              child: Text(
-                value,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: isActive ? AppColors.blue300 : AppColors.gray300,
-                ),
-                overflow: TextOverflow.ellipsis,
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 14,
+                color: isActive ? AppColors.blue300 : AppColors.gray300,
               ),
             ),
+            const SizedBox(width: 4),
             Icon(
               Icons.arrow_drop_down,
               size: 20,
