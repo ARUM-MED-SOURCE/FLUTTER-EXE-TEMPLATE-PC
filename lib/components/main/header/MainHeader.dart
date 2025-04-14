@@ -29,6 +29,9 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
   void _removeOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = null;
+    setState(() {
+      _activeDropdown = null;
+    });
   }
 
   void _showOverlay(DropdownType type) {
@@ -95,6 +98,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
       onTap: () {
         setState(() {
           DropdownOptions.setSelectedValue(type, item);
+          _activeDropdown = null;
         });
         _removeOverlay();
       },
