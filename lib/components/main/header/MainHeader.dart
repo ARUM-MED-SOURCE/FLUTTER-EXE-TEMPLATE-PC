@@ -46,27 +46,41 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
     final layerLink = DropdownOptions.layerLinks[type];
 
     return OverlayEntry(
-      builder: (context) => Positioned(
-        width: 150,
-        child: CompositedTransformFollower(
-          link: layerLink!,
-          showWhenUnlinked: false,
-          offset: const Offset(0, 40),
-          child: Material(
-            elevation: 4,
-            borderRadius: BorderRadius.circular(4),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: items.map((item) => _buildDropdownItem(item, selectedValue, type)).toList(),
+      builder: (context) => Stack(
+        children: [
+          // 배경 클릭 감지용 GestureDetector
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _removeOverlay,
+              child: Container(
+                color: Colors.transparent,
               ),
             ),
           ),
-        ),
+          // 드롭다운 메뉴
+          Positioned(
+            width: 150,
+            child: CompositedTransformFollower(
+              link: layerLink!,
+              showWhenUnlinked: false,
+              offset: const Offset(0, 40),
+              child: Material(
+                elevation: 4,
+                borderRadius: BorderRadius.circular(4),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: items.map((item) => _buildDropdownItem(item, selectedValue, type)).toList(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
