@@ -7,6 +7,7 @@ enum DropdownType {
   project,
   confirm,
   consentType,
+  consentType2,
 }
 
 // 드롭다운 옵션을 위한 상수 클래스
@@ -14,7 +15,7 @@ class DropdownOptions {
   // 각 섹션별로 보여줄 드롭다운 타입 정의
   static final Map<HospitalSection, List<DropdownType>> sectionDropdowns = {
     HospitalSection.inpatient: [DropdownType.department, DropdownType.project, DropdownType.confirm],
-    HospitalSection.outpatient: [DropdownType.department, DropdownType.project, DropdownType.confirm, DropdownType.consentType],
+    HospitalSection.outpatient: [DropdownType.department, DropdownType.project, DropdownType.confirm, DropdownType.consentType, DropdownType.consentType2],
     HospitalSection.emergency: [DropdownType.department, DropdownType.project, DropdownType.confirm],
     HospitalSection.surgery: [DropdownType.department, DropdownType.project, DropdownType.confirm],
     HospitalSection.laboratory: [DropdownType.department, DropdownType.project, DropdownType.confirm],
@@ -28,6 +29,7 @@ class DropdownOptions {
     DropdownType.project: ['신경과', '내과', '외과', '소아과'],
     DropdownType.confirm: ['담당의사', '전공의', '전문의'],
     DropdownType.consentType: ['전체', '세트동의서', '개인동의서'],
+    DropdownType.consentType2: ['임시저장', '인증저장', '구두동의', '응급동의'],
   };
 
   // 선택된 값들을 저장하는 Map
