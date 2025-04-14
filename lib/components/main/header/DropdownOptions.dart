@@ -35,6 +35,13 @@ class DropdownOptions {
     DropdownType.values.map((type) => MapEntry(type, options[type]![0])),
   );
 
+  // 모든 드롭다운 값을 기본값으로 초기화
+  static void resetToDefaults() {
+    for (final type in DropdownType.values) {
+      selectedValues[type] = options[type]![0];
+    }
+  }
+
   // 섹션에 따라 보여줄 드롭다운 타입 목록 반환
   static List<DropdownType> getVisibleTypes(HospitalSection section) {
     return sectionDropdowns[section] ?? [];
