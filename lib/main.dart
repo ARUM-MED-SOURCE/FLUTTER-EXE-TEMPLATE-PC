@@ -55,6 +55,7 @@ class App extends StatelessWidget {
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         dragDevices: {
           PointerDeviceKind.mouse,
+          PointerDeviceKind.trackpad,
         },
       ),
     );
