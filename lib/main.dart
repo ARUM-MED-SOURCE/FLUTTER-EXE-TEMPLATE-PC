@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/router/router.dart';
@@ -51,6 +52,12 @@ class App extends StatelessWidget {
         Locale('ko', 'KR'),
         Locale('en', 'US'),
       ],
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.trackpad,
+        },
+      ),
     );
   }
 }

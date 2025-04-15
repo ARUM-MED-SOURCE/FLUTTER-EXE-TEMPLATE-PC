@@ -8,6 +8,9 @@ import '../../model/prescription_consent_data.dart';
 import '../../utils/dummy_data.dart';
 import 'MainComponent.dart';
 import 'consent/ConsentSearch.dart';
+import 'consent/QuickViewUI.dart';
+import 'consent/quickview/Sidebar.dart';
+import 'package:flutter_exe/constants/colors.dart';
 
 class ConsentRouter extends ConsumerWidget {
   const ConsentRouter({super.key});
@@ -57,18 +60,26 @@ class _QuickViewComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Info(
-      card: InfoCard(
-        header: InfoHeader(
-          title: '빠른조회',
-          titleStyle: Theme.of(context).textTheme.titleLarge,
-        ),
-        body: InfoList(
-          items: ['1', '2', '3'],
-          buildItem: (item) => ListTile(
-            title: Text(item),
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              color: AppColors.blue50,
+              child: Sidebar(),
+            ),
           ),
-        ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              color: AppColors.white,
+              child: const QuickViewUI(),
+            ),
+          ),
+        ],
       ),
     );
   }
