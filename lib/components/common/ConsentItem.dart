@@ -191,3 +191,58 @@ class TaggedConsentItem extends StatelessWidget {
     );
   }
 }
+
+class QuickViewConsentItem extends StatelessWidget {
+  final String id;
+  final String type;
+  final String number;
+  final String os;
+  final String doctor;
+  final String printDateTime;
+  final String writer;
+  final String consentName;
+
+  const QuickViewConsentItem({
+    required this.id,
+    required this.type,
+    required this.number,
+    required this.os,
+    required this.doctor,
+    required this.printDateTime,
+    required this.writer,
+    required this.consentName,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseConsentItem(
+      id: id,
+      name: consentName,
+      buildLeadingWidgets: (context) => [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: AppColors.blue100,
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Text(
+            type,
+            style: const TextStyle(fontSize: 14, color: AppColors.blue300),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(number),
+        const SizedBox(width: 8),
+        Text(os),
+        const SizedBox(width: 8),
+        Text(doctor),
+        const SizedBox(width: 8),
+        Text(printDateTime),
+        const SizedBox(width: 8),
+        Text(writer),
+      ],
+      buildTrailingWidgets: (_) => const [],
+    );
+  }
+}

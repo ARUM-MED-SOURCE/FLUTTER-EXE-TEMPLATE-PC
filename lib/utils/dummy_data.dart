@@ -108,3 +108,47 @@ const writtenConsentData = <Map<String, String>>[
     'name': '척추 신경 차단술 동의서'
   },
 ];
+
+const quickViewData = <Map<String, String>>[
+  {
+    'id': '1',
+    'type': '임시',
+    'number': '00000011',
+    'os': 'IMG',
+    'doctor':'노민국',
+    'printDateTime':'2024-03-05 12:15:07',
+    'writer':'신짱구',
+    'consentName':'(수술, 시술, 검사) 설명 및 동의서'
+  },
+  {
+    'id': '2',
+    'type': '임시',
+    'number': '00000011',
+    'os': 'IMG',
+    'doctor':'노민국',
+    'printDateTime':'2024-03-05 12:15:07',
+    'writer':'신짱구',
+    'consentName':'(수술, 시술, 검사) 설명 및 동의서'
+  },
+  {
+    'id': '3',
+    'type': '임시',
+    'number': '00000011',
+    'os': 'IMG',
+    'doctor':'노민국',
+    'printDateTime':'2024-03-05 12:15:07',
+    'writer':'신짱구',
+    'consentName':'(수술, 시술, 검사) 설명 및 동의서'
+  },
+  {
+    'id': '4',
+    'type': '임시',
+    'number': '00000011',
+    'os': 'IMG',
+    'doctor':'노민국',
+    'printDateTime':'2024-03-05 12:15:07',
+    'writer':'신짱구',
+    'consentName':'(수술, 시술, 검사) 설명 및 동의서'
+  },
+  
+];
