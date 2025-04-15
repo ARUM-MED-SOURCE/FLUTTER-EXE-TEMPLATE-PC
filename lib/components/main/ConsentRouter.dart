@@ -61,18 +61,23 @@ class _QuickViewComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: const EdgeInsets.all(16),
-      color: AppColors.blue50,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Expanded(
-          flex: 1,
-          child: Sidebar(),
-        ),
-        Expanded(
+          Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              color: AppColors.blue50,
+              child: Sidebar(),
+            ),
+          ),
+          Expanded(
             flex: 2,
-            child: const QuickViewUI(),
+            child: Container(
+              color: AppColors.white,
+              child: const QuickViewUI(),
+            ),
           ),
         ],
       ),

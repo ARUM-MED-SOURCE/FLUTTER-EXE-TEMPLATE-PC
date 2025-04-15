@@ -42,3 +42,33 @@ class QuickViewUI extends StatelessWidget {
     );
   }
 } 
+
+class _QuickViewHeader extends InfoHeader {
+  const _QuickViewHeader({
+    required this.title,
+  }) : super(title: title);
+  
+  @override
+  final String title;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: AppColors.gray100),
+        ),
+      ),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title),
+          // const _QuickViewOptions(),
+          // const _QuickViewBar(),
+        ],
+      ),
+    );
+  }
+} 
