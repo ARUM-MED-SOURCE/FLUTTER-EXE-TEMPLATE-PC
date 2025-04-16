@@ -3,6 +3,9 @@ import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/utils/dummy_data.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class QuickViewItem extends InfoItemBase {
   final String id;
@@ -73,7 +76,7 @@ class QuickViewUI extends StatelessWidget {
                 cursor: SystemMouseCursors.click,
                 child: GestureDetector(
                   onTap: () {
-                    debugPrint('Selected Item ID: ${items[index].id}');
+                    logger.d('Selected Item ID: ${items[index].id}');
                   },
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
