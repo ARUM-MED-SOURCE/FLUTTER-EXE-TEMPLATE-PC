@@ -10,6 +10,8 @@ class CustomTextFormField extends StatelessWidget {
   final IconData? suffixIcon;
   final Function(String)? onChanged;
   final Function()? onSuffixIconPressed;
+  final EdgeInsetsGeometry? contentPadding;
+  final bool isDense;
 
   const CustomTextFormField({
     required this.hintText,
@@ -20,6 +22,8 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.onChanged,
     this.onSuffixIconPressed,
+    this.contentPadding,
+    this.isDense = false,
   });
 
   @override
@@ -30,6 +34,8 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hintText,
+        isDense: isDense,
+        contentPadding: contentPadding ?? EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.gray200) : null,
         suffixIcon: suffixIcon != null ? IconButton(
           onPressed: onSuffixIconPressed,

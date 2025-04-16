@@ -348,7 +348,7 @@ mixin _$PrescriptionConsentData {
   @JsonKey(name: 'Test')
   String? get test => throw _privateConstructorUsedError;
   @JsonKey(name: 'Image')
-  dynamic? get image => throw _privateConstructorUsedError;
+  dynamic get image => throw _privateConstructorUsedError;
   @JsonKey(name: 'UseYN')
   String? get useYn => throw _privateConstructorUsedError;
   @JsonKey(name: 'ConsentFolderRid')
@@ -418,7 +418,7 @@ abstract class $PrescriptionConsentDataCopyWith<$Res> {
       @JsonKey(name: 'ConsentState') String? consentState,
       @JsonKey(name: 'RecordCnt') String? recordCnt,
       @JsonKey(name: 'Test') String? test,
-      @JsonKey(name: 'Image') dynamic? image,
+      @JsonKey(name: 'Image') dynamic image,
       @JsonKey(name: 'UseYN') String? useYn,
       @JsonKey(name: 'ConsentFolderRid') int? consentFolderRid,
       @JsonKey(name: 'ConsentListRid') int? consentListRid,
@@ -634,7 +634,7 @@ class _$PrescriptionConsentDataCopyWithImpl<$Res,
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as dynamic?,
+              as dynamic,
       useYn: freezed == useYn
           ? _value.useYn
           : useYn // ignore: cast_nullable_to_non_nullable
@@ -716,7 +716,7 @@ abstract class _$$PrescriptionConsentDataImplCopyWith<$Res>
       @JsonKey(name: 'ConsentState') String? consentState,
       @JsonKey(name: 'RecordCnt') String? recordCnt,
       @JsonKey(name: 'Test') String? test,
-      @JsonKey(name: 'Image') dynamic? image,
+      @JsonKey(name: 'Image') dynamic image,
       @JsonKey(name: 'UseYN') String? useYn,
       @JsonKey(name: 'ConsentFolderRid') int? consentFolderRid,
       @JsonKey(name: 'ConsentListRid') int? consentListRid,
@@ -931,7 +931,7 @@ class __$$PrescriptionConsentDataImplCopyWithImpl<$Res>
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as dynamic?,
+              as dynamic,
       useYn: freezed == useYn
           ? _value.useYn
           : useYn // ignore: cast_nullable_to_non_nullable
@@ -1127,7 +1127,7 @@ class _$PrescriptionConsentDataImpl implements _PrescriptionConsentData {
   final String? test;
   @override
   @JsonKey(name: 'Image')
-  final dynamic? image;
+  final dynamic image;
   @override
   @JsonKey(name: 'UseYN')
   final String? useYn;
@@ -1343,7 +1343,7 @@ abstract class _PrescriptionConsentData implements PrescriptionConsentData {
           @JsonKey(name: 'ConsentState') final String? consentState,
           @JsonKey(name: 'RecordCnt') final String? recordCnt,
           @JsonKey(name: 'Test') final String? test,
-          @JsonKey(name: 'Image') final dynamic? image,
+          @JsonKey(name: 'Image') final dynamic image,
           @JsonKey(name: 'UseYN') final String? useYn,
           @JsonKey(name: 'ConsentFolderRid') final int? consentFolderRid,
           @JsonKey(name: 'ConsentListRid') final int? consentListRid,
@@ -1464,7 +1464,7 @@ abstract class _PrescriptionConsentData implements PrescriptionConsentData {
   String? get test;
   @override
   @JsonKey(name: 'Image')
-  dynamic? get image;
+  dynamic get image;
   @override
   @JsonKey(name: 'UseYN')
   String? get useYn;

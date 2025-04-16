@@ -22,11 +22,15 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
   
   @override
   void dispose() {
-    _removeOverlay();
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+    _activeDropdown = null;
     super.dispose();
   }
 
   void _removeOverlay() {
+    if (!mounted) return;  // mounted 체크를 먼저 수행
+    
     _overlayEntry?.remove();
     _overlayEntry = null;
     setState(() {
