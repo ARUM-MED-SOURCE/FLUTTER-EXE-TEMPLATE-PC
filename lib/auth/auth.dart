@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:convert';
 import 'package:flutter_exe/constants/api_method.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 part 'auth.freezed.dart';
 part 'auth.g.dart';
 
@@ -23,6 +24,8 @@ class AuthState with _$AuthState {
 
 @riverpod
 class AuthNotifier extends _$AuthNotifier {
+  late final _secureStorage = const FlutterSecureStorage();
+
   @override
   AuthState build() {
     return const AuthState();
@@ -71,6 +74,9 @@ class AuthNotifier extends _$AuthNotifier {
         '172.17.200.48',
         'E0AA96DEBD0A',
       );
+
+      await _secureStorage.write(key: 'userId', value: state.userId);
+
       state = state.copyWith(isLoading: false);
       // Navigation will be handled by the UI layer using ref.listen
     } catch (e) {
@@ -81,4 +87,8 @@ class AuthNotifier extends _$AuthNotifier {
       );
     }
   }
-} 
+
+  Future<void> logout() async {
+    await _secureStorage.delete(key: 'userId');
+  }
+}
