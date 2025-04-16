@@ -3,6 +3,7 @@ import 'package:flutter_exe/auth/auth.dart';
 import 'package:flutter_exe/constants/index.dart';
 import 'package:flutter_exe/components/navigation/enum/HospitalSection.dart';
 import 'package:flutter_exe/providers/hospital_section_provider.dart';
+import 'package:flutter_exe/providers/dropdown_options_provider.dart';
 import 'package:flutter_exe/components/main/header/DropdownOptions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -70,7 +71,7 @@ class TopBar extends ConsumerWidget {
         child: ElevatedButton(
           onPressed: () {
             ref.read(hospitalSectionProvider.notifier).state = section;
-            DropdownOptions.resetToDefaults();
+            ref.read(dropdownOptionsProvider.notifier).resetToDefaults();
           },
           child: Text(
             section.label,

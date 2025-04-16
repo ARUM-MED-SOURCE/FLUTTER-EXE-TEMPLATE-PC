@@ -19,14 +19,10 @@ class ConsentRouter extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final hospitalSection = ref.watch(hospitalSectionProvider);
 
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
-      child: switch (hospitalSection.methodName) {
-        ApiMethod.quickView =>
-          const _QuickViewComponent(key: ValueKey('quickView')),
-        _ => const _BasicConsentComponent(key: ValueKey('patientInfo')),
-      },
-    );
+    return switch (hospitalSection.methodName) {
+      ApiMethod.quickView => const _QuickViewComponent(key: ValueKey('quickView')),
+      _ => const _BasicConsentComponent(key: ValueKey('patientInfo'))
+    };
   }
 }
 
@@ -61,6 +57,7 @@ class _QuickViewComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: AppColors.blue50,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -75,7 +72,6 @@ class _QuickViewComponent extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Container(
-              color: AppColors.white,
               child: const QuickViewUI(),
             ),
           ),
