@@ -5,6 +5,7 @@ import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
 import 'package:flutter_exe/providers/selected_date_provider.dart';
 import 'package:flutter_exe/providers/hospital_section_provider.dart';
+import 'package:flutter_exe/providers/dropdown_options_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Constants
@@ -32,13 +33,15 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
   
   @override
   void dispose() {
-    _removeOverlay();
+    if (mounted) {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    }
     super.dispose();
   }
 
   void _removeOverlay() {
     if (!mounted) return;
-    
     _overlayEntry?.remove();
     _overlayEntry = null;
     setState(() => _activeDropdown = null);
@@ -46,14 +49,14 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
 
   void _showOverlay(DropdownType type) {
     _removeOverlay();
-    _activeDropdown = type;
+    setState(() => _activeDropdown = type);
     _overlayEntry = _createOverlayEntry(type);
     Overlay.of(context).insert(_overlayEntry!);
   }
 
   OverlayEntry _createOverlayEntry(DropdownType type) {
     final items = DropdownOptions.getOptions(type);
-    final selectedValue = DropdownOptions.getSelectedValue(type);
+    final selectedValue = ref.read(dropdownOptionsProvider.notifier).getSelectedValue(type);
     final layerLink = DropdownOptions.layerLinks[type];
 
     return OverlayEntry(
@@ -64,10 +67,8 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
         selectedValue: selectedValue,
         type: type,
         onItemSelected: (item) {
-          setState(() {
-            DropdownOptions.setSelectedValue(type, item);
-            _activeDropdown = null;
-          });
+          ref.read(dropdownOptionsProvider.notifier).setSelectedValue(type, item);
+          setState(() => _activeDropdown = null);
           _removeOverlay();
         },
       ),
@@ -78,6 +79,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
   Widget build(BuildContext context) {
     final selectedDate = ref.watch(selectedDateProvider);
     final hospitalSection = ref.watch(hospitalSectionProvider);
+    final dropdownOptions = ref.watch(dropdownOptionsProvider);
     
     return _HeaderContainer(
       child: LayoutBuilder(
@@ -120,7 +122,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
                               
                               ...DropdownOptions.getVisibleTypes(hospitalSection).map((type) => 
                                 _DropdownButton(
-                                  value: DropdownOptions.getSelectedValue(type),
+                                  value: dropdownOptions[type] ?? DropdownOptions.options[type]![0],
                                   type: type,
                                   isActive: _activeDropdown == type,
                                   onTap: () => _showOverlay(type),
@@ -137,7 +139,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
               
               _ActionButtons(
                 onSearch: () => ref.invalidate(patientInfoLoaderProvider),
-                onRefresh: () {},
+                onRefresh: () => ref.read(dropdownOptionsProvider.notifier).resetToDefaults(),
               ),
             ],
           );

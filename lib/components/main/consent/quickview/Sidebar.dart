@@ -42,11 +42,15 @@ class _SidebarState extends State<Sidebar> {
 
   @override
   void dispose() {
-    _removeOverlay();
+    if (mounted) {
+      _overlayEntry?.remove();
+      _overlayEntry = null;
+    }
     super.dispose();
   }
 
   void _removeOverlay() {
+    if (!mounted) return;
     _overlayEntry?.remove();
     _overlayEntry = null;
     setState(() {
@@ -60,7 +64,6 @@ class _SidebarState extends State<Sidebar> {
       _activeDropdown = type;
     });
     
-    // Get the width of the dropdown button
     final RenderBox renderBox = _dropdownKeys[type]!.currentContext!.findRenderObject() as RenderBox;
     final size = renderBox.size;
     
@@ -226,8 +229,20 @@ class _SidebarState extends State<Sidebar> {
                     hintText: '사번을 입력해주세요',
                     initialValue: '',
                     onChanged: (value) {},
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     isDense: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: AppColors.blue50,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: AppColors.gray100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: AppColors.blue300),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -247,8 +262,20 @@ class _SidebarState extends State<Sidebar> {
                     hintText: '환자번호를 입력해주세요',
                     initialValue: '',
                     onChanged: (value) {},
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     isDense: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: AppColors.blue50,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: AppColors.gray100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: AppColors.blue300),
+                      ),
+                    ),
                   ),
                 ],
               ),
