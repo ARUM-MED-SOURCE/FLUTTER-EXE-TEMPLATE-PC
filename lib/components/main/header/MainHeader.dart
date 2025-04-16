@@ -95,28 +95,42 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
               ],
               
               Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (!isWideScreen) ...[
-                        _DatePickerSection(
-                          selectedDate: selectedDate,
-                          onDateSelected: (date) => 
-                            ref.read(selectedDateProvider.notifier).setDate(date),
+                child: Scrollbar(
+                  controller: ScrollController(),
+                  thumbVisibility: true,
+                  thickness: 4,
+                  radius: const Radius.circular(2),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    controller: ScrollController(),
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (!isWideScreen) ...[
+                                _DatePickerSection(
+                                  selectedDate: selectedDate,
+                                  onDateSelected: (date) => 
+                                    ref.read(selectedDateProvider.notifier).setDate(date),
+                                ),
+                              ],
+                              
+                              ...DropdownOptions.getVisibleTypes(hospitalSection).map((type) => 
+                                _DropdownButton(
+                                  value: DropdownOptions.getSelectedValue(type),
+                                  type: type,
+                                  isActive: _activeDropdown == type,
+                                  onTap: () => _showOverlay(type),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
-                      
-                      ...DropdownOptions.getVisibleTypes(hospitalSection).map((type) => 
-                        _DropdownButton(
-                          value: DropdownOptions.getSelectedValue(type),
-                          type: type,
-                          isActive: _activeDropdown == type,
-                          onTap: () => _showOverlay(type),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
