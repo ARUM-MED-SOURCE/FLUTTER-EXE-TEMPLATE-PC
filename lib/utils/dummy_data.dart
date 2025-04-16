@@ -148,7 +148,7 @@ const quickViewData = <Map<String, String>>[
     'doctor':'노민국',
     'printDateTime':'2024-03-05 12:15:07',
     'writer':'신짱구',
-    'consentName':'(수술, 시술, 검사) 설명 및 동의서'
+    'consentName':'(수술, 시술, 검사) 설명 및 동의서ㄹㄷㅈㄹㄷㅈㄹㄷㅈㄹㄷㅈㄹㄷㄹㄷㅈㄹㄷㅈㄹㄷㅈ'
   },
   
 ];

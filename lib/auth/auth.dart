@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'dart:convert';
 import 'package:flutter_exe/constants/api_method.dart';
+import 'package:flutter_exe/constants/key.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_exe/providers/secure_storage.dart';
@@ -61,8 +62,8 @@ class AuthNotifier extends _$AuthNotifier {
 
     try {
       final data = {
-        'userId': state.userId,
-        'userPassword': state.userPassword,
+        AppKey.userId: state.userId,
+        AppKey.userPassword: state.userPassword,
       };
 
       final response = await ref.read(userRepositoryProvider).login(
@@ -77,8 +78,8 @@ class AuthNotifier extends _$AuthNotifier {
 
       // Secure Storage에 사용자 정보 저장
       final storage = ref.read(secureStorageProvider);
-      await storage.write(key: 'userId', value: state.userId);
-      await storage.write(key: 'userPassword', value: state.userPassword);
+      await storage.write(key: AppKey.userId, value: state.userId);
+      await storage.write(key: AppKey.userPassword, value: state.userPassword);
 
       state = state.copyWith(isLoading: false);
     } catch (e) {
@@ -93,8 +94,8 @@ class AuthNotifier extends _$AuthNotifier {
   Future<void> logout() async {
     final storage = ref.read(secureStorageProvider);
     await Future.wait<void>([
-      storage.delete(key: 'userId'),
-      storage.delete(key: 'userPassword'),
+      storage.delete(key: AppKey.userId),
+      storage.delete(key: AppKey.userPassword),
     ]);
     state = state.copyWith(
       userId: '',
@@ -105,8 +106,8 @@ class AuthNotifier extends _$AuthNotifier {
   // 로그인 상태 확인
   Future<bool> checkLoginStatus() async {
     final storage = ref.read(secureStorageProvider);
-    final userId = await storage.read(key: 'userId');
-    final userPassword = await storage.read(key: 'userPassword');
+    final userId = await storage.read(key: AppKey.userId);
+    final userPassword = await storage.read(key: AppKey.userPassword);
     return userId != null && userPassword != null;
   }
 }
