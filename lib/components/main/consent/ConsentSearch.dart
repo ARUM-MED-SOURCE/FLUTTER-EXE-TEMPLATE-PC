@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
+import 'package:flutter_exe/components/main/set/SetBody.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/providers/selected_consents_provider.dart';
@@ -86,6 +87,7 @@ class _ConsentSearchHeader extends InfoHeader {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const _SetButton(),
           Text(
             title,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -156,6 +158,47 @@ class _ConsentSearchBar extends StatelessWidget {
           suffixIcon: const Icon(Icons.search, color: AppColors.blue300),
         ),
       ),
+    );
+  }
+}
+
+class _SetButton extends StatelessWidget{
+  const _SetButton();
+
+  @override
+  Widget build(BuildContext context){
+    return  Align(
+        alignment: Alignment.centerRight,
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.blue300,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          ),
+          icon: const Icon(Icons.library_books),
+          label: const Text('세트동의서 관리'),
+          onPressed: () {
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: SizedBox(
+                    width: 1400,
+                    height: 800,
+                    child: const SetBody(),
+                  ),
+                );
+              },
+            );
+          },
+        )
     );
   }
 }
