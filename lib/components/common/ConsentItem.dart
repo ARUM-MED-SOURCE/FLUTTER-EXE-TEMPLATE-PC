@@ -41,7 +41,7 @@ class BaseConsentItem extends StatelessWidget {
                     ),
               ),
             ),
-            ...buildTrailingWidgets(context),
+            ...buildTrailingWidgets(context), // TODO :: 검색동의서 별 아이콘을 맨 뒤에 붙여야함, 트레일러 위젯의 구조 자체를 바꿔야 할 듯
           ],
         ),
       ),
@@ -91,6 +91,8 @@ class CheckableConsentItem extends StatelessWidget {
   }
 }
 
+/// 즐겨찾기 달린 동의서 아이템
+//  주로 검색동의서 항목으로 쓰임
 class FavoriteConsentItem extends StatelessWidget {
   final String id;
   final String name;
@@ -116,7 +118,7 @@ class FavoriteConsentItem extends StatelessWidget {
       name: name,
       buildLeadingWidgets: (context) => [
         SizedBox(
-          width: 24,
+          width: 40,
           child: Text(
             '$id.',
             style: const TextStyle(fontSize: 14, color: AppColors.black),
