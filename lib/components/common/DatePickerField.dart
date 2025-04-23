@@ -90,22 +90,51 @@ class DateRangePickerField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        DatePickerField(
-          selectedDate: startDate,
-          dateFormat: dateFormat,
-          onDateSelected: onStartDateSelected,
-        ),
-        const SizedBox(width: 8),
-        Text('~', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
-        const SizedBox(width: 8),
-        DatePickerField(
-          selectedDate: endDate,
-          dateFormat: dateFormat,
-          onDateSelected: onEndDateSelected,
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isNarrow = constraints.maxWidth < 300;
+        
+        if (isNarrow) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DatePickerField(
+                selectedDate: startDate,
+                dateFormat: dateFormat,
+                onDateSelected: onStartDateSelected,
+                label: '시작일',
+              ),
+              const SizedBox(height: 8),
+              DatePickerField(
+                selectedDate: endDate,
+                dateFormat: dateFormat,
+                onDateSelected: onEndDateSelected,
+                label: '종료일',
+              ),
+            ],
+          );
+        }
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            DatePickerField(
+              selectedDate: startDate,
+              dateFormat: dateFormat,
+              onDateSelected: onStartDateSelected,
+            ),
+            const SizedBox(width: 8),
+            Text('~', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
+            const SizedBox(width: 8),
+            DatePickerField(
+              selectedDate: endDate,
+              dateFormat: dateFormat,
+              onDateSelected: onEndDateSelected,
+            ),
+          ],
+        );
+      },
     );
   }
 } 

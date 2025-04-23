@@ -193,3 +193,148 @@ class TaggedConsentItem extends StatelessWidget {
     );
   }
 }
+
+class QuickViewConsentItem extends StatelessWidget {
+  final String id;
+  final String type;
+  final String number;
+  final String os;
+  final String doctor;
+  final String printDateTime;
+  final String writer;
+  final String consentName;
+
+  const QuickViewConsentItem({
+    super.key,
+    required this.id,
+    required this.type,
+    required this.number,
+    required this.os,
+    required this.doctor,
+    required this.printDateTime,
+    required this.writer,
+    required this.consentName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: type == '임시저장' ? AppColors.blue50 : Colors.white,
+        border: Border(
+          bottom: BorderSide(color: AppColors.gray100),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        child: Row(
+          children: [
+            _buildTypeChip(),
+            const SizedBox(width: 16),
+            _buildNumber(),
+            const SizedBox(width: 16),
+            _buildOS(),
+            const SizedBox(width: 16),
+            _buildDoctor(),
+            const SizedBox(width: 16),
+            _buildWard(),
+            const SizedBox(width: 16),
+            _buildDateTime(),
+            const SizedBox(width: 16),
+            Expanded(child: _buildConsentName()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTypeChip() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      decoration: BoxDecoration(
+        color: AppColors.blue100,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        type,
+        style: TextStyle(
+          color: AppColors.blue400,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNumber() {
+    return SizedBox(
+      width: 80,
+      child: Text(
+        number,
+        style: TextStyle(
+          color: AppColors.gray500,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOS() {
+    return SizedBox(
+      width: 40,
+      child: Text(
+        os,
+        style: TextStyle(
+          color: AppColors.gray500,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDoctor() {
+    return SizedBox(
+      width: 60,
+      child: Text(
+        doctor,
+        style: TextStyle(
+          color: AppColors.gray500,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWard() {
+    return SizedBox(
+      width: 60,
+      child: Text(
+        'C3/79',
+        style: TextStyle(
+          color: AppColors.gray500,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDateTime() {
+    return Text(
+      printDateTime,
+      style: TextStyle(
+        color: AppColors.gray300,
+        fontSize: 14,
+      ),
+    );
+  }
+
+  Widget _buildConsentName() {
+    return Text(
+      consentName,
+      style: TextStyle(
+        color: AppColors.gray500,
+        fontSize: 14,
+      ),
+      // overflow: TextOverflow.ellipsis,
+    );
+  }
+}

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exe/auth/auth.dart';
 import 'package:flutter_exe/constants/index.dart';
 import 'package:flutter_exe/components/navigation/enum/HospitalSection.dart';
 import 'package:flutter_exe/providers/hospital_section_provider.dart';
+import 'package:flutter_exe/providers/dropdown_options_provider.dart';
+import 'package:flutter_exe/components/main/header/DropdownOptions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class TopBar extends ConsumerWidget {
   const TopBar({super.key});
@@ -39,7 +43,7 @@ class TopBar extends ConsumerWidget {
           // Icons section - Right aligned
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: _buildIconButtons(),
+            children: _buildIconButtons(context, ref),
           ),
           const SizedBox(width: 24),
         ],
@@ -65,7 +69,10 @@ class TopBar extends ConsumerWidget {
       child: SizedBox(
         height: 40,
         child: ElevatedButton(
-          onPressed: () => ref.read(hospitalSectionProvider.notifier).state = section,
+          onPressed: () {
+            ref.read(hospitalSectionProvider.notifier).state = section;
+            ref.read(dropdownOptionsProvider.notifier).resetToDefaults();
+          },
           child: Text(
             section.label,
             style: TextStyle(
@@ -87,7 +94,7 @@ class TopBar extends ConsumerWidget {
     )).toList();
   }
 
-  List<Widget> _buildIconButtons() {
+  List<Widget> _buildIconButtons(BuildContext context, WidgetRef ref) {
     return [
       IconButton(
         onPressed: () {},
@@ -97,8 +104,11 @@ class TopBar extends ConsumerWidget {
           size: 24,
         ),
       ),
-      IconButton( 
-        onPressed: () {},
+      IconButton(
+        onPressed: () {
+          ref.read(authNotifierProvider.notifier).logout();
+          context.go('/login');
+        },
         icon: Icon(
           Icons.logout_rounded,
           color: AppColors.white,
