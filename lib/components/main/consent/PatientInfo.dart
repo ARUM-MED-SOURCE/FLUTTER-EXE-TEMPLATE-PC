@@ -11,7 +11,6 @@ import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_exe/utils/time.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exe/constants/api_method.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
@@ -19,7 +18,8 @@ class PatientInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hospitalSection = ref.watch(hospitalSectionProvider);
-    final patientData = ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
+    final patientData =
+        ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
 
     return patientData.when(
       data: (response) => Info(
@@ -74,30 +74,7 @@ class PatientInfo extends ConsumerWidget {
           ),
           body: createSkeletonList<PatientInfoResultData>(
             itemBuilder: (patient) => const ConsentSkeletonItem(),
-            emptyItemBuilder: (index) => const PatientInfoResultData(
-              admissionDate: '',
-              age: '',
-              chargeName: '',
-              diagName: '',
-              doctorName: '',
-              patientCode: '',
-              patientName: '',
-              patientZipAddr: '',
-              room: '',
-              sex: '',
-              clnDeptCode: '',
-              clnDeptName: '',
-              clnDeptNum: '',
-              birthday: '',
-              mdrpno: '',
-              estimateTime: '',
-              doctorId: '',
-              patientAddr: '',
-              patientHp: '',
-              patientTelNo: '',
-              patientZipCode: '',
-              ward: '',
-            ),
+            emptyItemBuilder: (index) => PatientInfoResultData.empty(),
             itemCount: 8,
             backgroundColor: AppColors.white,
             contentPadding: EdgeInsets.zero,
@@ -283,12 +260,12 @@ class _PatientAlert extends StatelessWidget {
           ),
           child: Row(
             children: [
-          Text(
-            "임시",
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.white,
-            ),
+              const Text(
+                "임시",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.white,
+                ),
               ),
               const SizedBox(width: 4),
               Container(
@@ -297,9 +274,9 @@ class _PatientAlert extends StatelessWidget {
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Text(
+                child: const Text(
                   "1",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 8,
                     color: AppColors.blue400,
                   ),
@@ -315,9 +292,9 @@ class _PatientAlert extends StatelessWidget {
             color: AppColors.gray100,
             borderRadius: BorderRadius.circular(50),
           ),
-          child: Text(
+          child: const Text(
             "진행",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               color: AppColors.gray500,
             ),
@@ -330,9 +307,9 @@ class _PatientAlert extends StatelessWidget {
             color: AppColors.gray100,
             borderRadius: BorderRadius.circular(50),
           ),
-          child: Text(
+          child: const Text(
             "완료",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               color: AppColors.gray500,
             ),
