@@ -1,3 +1,4 @@
+import 'package:flutter_exe/model/common/conset_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,29 +6,10 @@ part 'patient_info_response.freezed.dart';
 
 part 'patient_info_response.g.dart';
 
-@freezed
-class PatientInfoResponse with _$PatientInfoResponse {
-  const factory PatientInfoResponse({
-    @JsonKey(name: 'RESULT_CODE') required String resultCode,
-    @JsonKey(name: 'RESULT_DATA')
-    required List<PatientInfoResultData> resultData,
-    @JsonKey(name: 'ERROR_CODE') required String errorCode,
-    @JsonKey(name: 'ERROR_MESSAGE') required String errorMessage,
-  }) = _PatientInfoResponse;
 
-  factory PatientInfoResponse.fromJson(Map<String, dynamic> json) =>
-      _$PatientInfoResponseFromJson(json);
-
-  factory PatientInfoResponse.empty() => const PatientInfoResponse(
-        resultCode: '0',
-        resultData: [],
-        errorCode: '0',
-        errorMessage: '',
-      );
-}
 
 @freezed
-class PatientInfoResultData with _$PatientInfoResultData {
+class PatientInfoResultData with _$PatientInfoResultData implements ConsentModel{
   const factory PatientInfoResultData({
     @JsonKey(name: 'AdmissionDate') required String admissionDate,
     @JsonKey(name: 'AdmissionTime', defaultValue: '') String? admissionTime,

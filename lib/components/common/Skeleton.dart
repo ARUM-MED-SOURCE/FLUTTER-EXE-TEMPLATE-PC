@@ -42,7 +42,6 @@ class SkeletonStyles {
 
 InfoList<T> createSkeletonList<T>({
   required Widget Function(T) itemBuilder,
-  required T Function(int) emptyItemBuilder,
   int itemCount = SkeletonConstants.skeletonItemCount,
   bool shrinkWrap = false,
   ScrollPhysics physics = const ClampingScrollPhysics(),
@@ -53,10 +52,7 @@ InfoList<T> createSkeletonList<T>({
   EdgeInsetsGeometry itemPadding = EdgeInsets.zero,
 }) {
   return InfoList<T>(
-    items: List.generate(
-      itemCount,
-      (index) => emptyItemBuilder(index),
-    ),
+    items: const [],
     shrinkWrap: shrinkWrap,
     physics: physics,
     buildItem: itemBuilder,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/DatePickerField.dart';
 import 'package:flutter_exe/components/main/header/DropdownOptions.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
+import 'package:flutter_exe/providers/patient_info_provider.dart';
 import 'package:flutter_exe/providers/selected_date_provider.dart';
 import 'package:flutter_exe/providers/hospital_section_provider.dart';
 import 'package:flutter_exe/providers/dropdown_options_provider.dart';
@@ -140,7 +140,7 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
               ),
               
               _ActionButtons(
-                onSearch: () => ref.invalidate(patientInfoLoaderProvider),
+                onSearch: () => ref.read(patientInfoProvider.notifier).getData(),
                 onRefresh: () => ref.read(dropdownOptionsProvider.notifier).resetToDefaults(),
               ),
             ],

@@ -1,53 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/Skeleton.dart';
 import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/model/common/consent_list_model.dart';
+import 'package:flutter_exe/model/common/conset_model.dart';
+import 'package:flutter_exe/providers/consent_list_provider.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
-class InfoListCard<T> extends StatelessWidget {
+typedef ConsentListViewBuilder<T extends ConsentModel> = Widget Function(
+    BuildContext context, int index, T model);
+
+final logger = Logger();
+
+class ConsentListView<T extends ConsentModel> extends ConsumerStatefulWidget {
+  final StateNotifierProvider<ConsentListProvider, ConsentListBase> provider;
+  final ConsentListViewBuilder<T> itemBuilder;
   final String title;
-  final List<T> items;
-  final Widget Function(T item) buildItem;
-  final Widget Function(BuildContext context, List<T> items) buildEmptyItem;
-  final Widget Function(T item)? itemBuilder;
-  final T Function(int index)? emptyItemBuilder;
+
   final int? itemCount;
-  final bool isLoading;
-  final bool hasError;
-  final String? errorMessage;
-  final VoidCallback? onRetry;
   final ScrollPhysics? physics;
   final bool shrinkWrap;
 
-  const InfoListCard({
+  const ConsentListView({
     super.key,
+    required this.provider,
+    required this.itemBuilder,
     required this.title,
-    required this.items,
-    required this.buildItem,
-    required this.buildEmptyItem,
-    this.itemBuilder,
-    this.emptyItemBuilder,
     this.itemCount,
-    this.isLoading = false,
-    this.hasError = false,
-    this.errorMessage,
-    this.onRetry,
     this.physics,
     this.shrinkWrap = false,
   });
 
   @override
+  ConsumerState<ConsentListView> createState() => _ConsentListViewState<T>();
+}
+
+class _ConsentListViewState<T> extends ConsumerState<ConsentListView> {
+  @override
   Widget build(BuildContext context) {
-    if (isLoading) {
+    final state = ref.watch(widget.provider);
+
+    if (state is ConsentListLoading) {
       return Info(
         card: InfoCard(
           header: InfoHeader(
-            title: title,
+            title: widget.title,
             titleStyle: Theme.of(context).textTheme.titleLarge,
           ),
           body: createSkeletonList<T>(
-            itemBuilder: itemBuilder ?? (item) => const ConsentSkeletonItem(),
-            emptyItemBuilder: emptyItemBuilder ?? (index) => throw UnimplementedError(),
-            itemCount: itemCount ?? 8,
+            itemBuilder: (context) => const ConsentSkeletonItem(),
+            itemCount: widget.itemCount ?? 8,
             backgroundColor: AppColors.white,
             contentPadding: EdgeInsets.zero,
             itemDecoration: const BoxDecoration(
@@ -67,16 +70,16 @@ class InfoListCard<T> extends StatelessWidget {
       );
     }
 
-    if (hasError) {
+    if (state is ConsentListError) {
       return Info(
         card: InfoCard(
           header: InfoHeader(
-            title: title,
+            title: widget.title,
             titleStyle: Theme.of(context).textTheme.titleLarge,
           ),
           body: InfoList<T>(
             items: const [],
-            buildItem: buildItem,
+            buildItem: (T item) => const SizedBox(),
             buildEmptyItem: (context, items) => Container(
               padding: const EdgeInsets.symmetric(vertical: 32),
               alignment: Alignment.center,
@@ -88,10 +91,11 @@ class InfoListCard<T> extends StatelessWidget {
                     color: AppColors.red500,
                   ),
                   const SizedBox(height: 16),
-                  Text(errorMessage ?? '내용을 불러오는데 실패했습니다.'),
-                  if (onRetry != null)
+                  Text(state.message),
                     IconButton(
-                      onPressed: onRetry,
+                      onPressed: () {
+                        ref.invalidate(widget.provider);
+                      },
                       icon: const Icon(Icons.refresh),
                     ),
                 ],
@@ -116,19 +120,39 @@ class InfoListCard<T> extends StatelessWidget {
       );
     }
 
+    final consents = state as ConsentList<T>;
     return Info(
       card: InfoCard(
         header: InfoHeader(
-          title: title,
+          title: widget.title,
           titleStyle: Theme.of(context).textTheme.titleLarge,
         ),
         body: InfoList<T>(
-          items: items,
-          shrinkWrap: shrinkWrap,
-          physics: physics ?? const BouncingScrollPhysics(),
+          items: consents.data,
+          shrinkWrap: widget.shrinkWrap,
+          physics: widget.physics ?? const BouncingScrollPhysics(),
           separatorBuilder: (context, index) => const SizedBox(height: 0),
-          buildItem: buildItem,
-          buildEmptyItem: buildEmptyItem,
+          buildEmptyItem: (context, items) => Container(
+            padding: const EdgeInsets.symmetric(vertical: 32),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                const Icon(
+                  Icons.description_outlined,
+                  size: 48,
+                  color: AppColors.gray400,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  '${widget.title}가 없습니다.',
+                  style: const TextStyle(
+                    color: AppColors.gray500,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
           backgroundColor: AppColors.white,
           contentPadding: EdgeInsets.zero,
           itemDecoration: const BoxDecoration(
@@ -137,6 +161,11 @@ class InfoListCard<T> extends StatelessWidget {
                 color: AppColors.gray100,
               ),
             ),
+          ),
+          buildItem: (T item) => widget.itemBuilder(
+            context,
+            consents.data.indexOf(item),
+            item as ConsentModel,
           ),
         ),
         backgroundColor: AppColors.white,
@@ -147,4 +176,4 @@ class InfoListCard<T> extends StatelessWidget {
       ),
     );
   }
-} 
+}

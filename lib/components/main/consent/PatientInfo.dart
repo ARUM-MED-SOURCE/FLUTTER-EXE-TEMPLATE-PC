@@ -1,103 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exe/components/common/InfoListCard.dart';
-import 'package:flutter_exe/components/common/Skeleton.dart';
+import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
-import 'package:flutter_exe/dataloaders/prescription_consent_dataloader.dart';
-import 'package:flutter_exe/dataloaders/written_consent_dataloader.dart';
 import 'package:flutter_exe/model/patient_info_response.dart';
-import 'package:flutter_exe/providers/hospital_section_provider.dart';
+import 'package:flutter_exe/providers/patient_info_provider.dart';
 import 'package:flutter_exe/providers/selected_date_provider.dart';
+import 'package:flutter_exe/repositories/consent/prescription_consent_repository.dart';
+import 'package:flutter_exe/repositories/consent/written_consent_repository.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
-import 'package:flutter_exe/utils/time.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PatientInfo extends ConsumerWidget {
-  const PatientInfo({super.key});
+class PatientInfo extends StatelessWidget {
+  const PatientInfo({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final hospitalSection = ref.watch(hospitalSectionProvider);
-    final patientData =
-        ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
-
-    return patientData.when(
-      data: (response) => InfoListCard<PatientInfoResultData>(
-        title: '환자정보',
-        items: response.resultData,
-        buildItem: (patient) => _PatientInfoItem(patient: patient),
-        buildEmptyItem: (context, items) => Container(
-          padding: const EdgeInsets.symmetric(vertical: 32),
-          alignment: Alignment.center,
-          child: const Column(
-            children: [
-              Icon(
-                Icons.description_outlined,
-                size: 48,
-                color: AppColors.gray400,
-              ),
-              SizedBox(height: 16),
-              Text('검색 결과가 없습니다.'),
-            ],
+  Widget build(BuildContext context) {
+    return ConsentListView(
+      provider: patientInfoProvider,
+      itemBuilder: <PatientInfoResultData>(_, index, model) {
+        return GestureDetector(
+          onTap: () {},
+          child: PatientInfoItem.fromModel(
+            model: model,
           ),
-        ),
-      ),
-      loading: () => InfoListCard<PatientInfoResultData>(
-        title: '환자정보',
-        items: const [],
-        buildItem: (patient) => _PatientInfoItem(patient: patient),
-        buildEmptyItem: (context, items) => const SizedBox(),
-        isLoading: true,
-        itemBuilder: (patient) => const ConsentSkeletonItem(),
-        emptyItemBuilder: (index) => PatientInfoResultData.empty(),
-        itemCount: 8,
-      ),
-      error: (error, stack) => InfoListCard<PatientInfoResultData>(
-        title: '환자정보',
-        items: const [],
-        buildItem: (patient) => _PatientInfoItem(patient: patient),
-        buildEmptyItem: (context, items) => const SizedBox(),
-        hasError: true,
-        errorMessage: '내용을 불러오는데 실패했습니다.',
-        onRetry: () {
-          ref.invalidate(
-            patientInfoLoaderProvider(hospitalSection.methodName),
-          );
-        },
-      ),
+        );
+      },
+      title: '환자정보',
     );
   }
 }
 
-class _PatientInfoItem extends ConsumerWidget {
+class PatientInfoItem extends ConsumerWidget {
   final PatientInfoResultData patient;
 
-  const _PatientInfoItem({
+  const PatientInfoItem({
+    super.key,
     required this.patient,
   });
 
+  factory PatientInfoItem.fromModel({
+    required PatientInfoResultData model,
+  }) {
+    return PatientInfoItem(
+      patient: model,
+    );
+  }
+
+  Future<void> _loadConsentData(BuildContext context, WidgetRef ref) async {
+    try {
+      // TODO: 실제 인증 정보로 교체 필요
+      const userId = 'userId';
+      const userPassword = 'userPassword';
+      final selectedDate = ref.read(selectedDateProvider);
+
+      await Future.wait([
+        ref.read(prescriptionConsentRepositoryProvider).getList(),
+        ref.read(writtenConsentRepositoryProvider).getList(),
+      ]);
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedDate = ref.watch(selectedDateProvider);
     return InkWell(
-      onTap: () {
-        ref
-            .read(prescriptionConsentDataLoaderProvider.notifier)
-            .getPrescriptionConsent(
-              userId: 'userId', // TODO: 실제 사용자 ID로 변경 필요
-              userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필
-            );
-
-        ref.read(writtenConsentDataLoaderProvider.notifier).getWrittenConsent(
-              userId: 'userId',
-              // TODO: 실제 사용자 ID로 변경 필요
-              userPassword: 'userPassword',
-              // TODO: 실제 비밀번호로 변경 필요
-              patientCode: patient.patientCode,
-              startDate: formatToYYYYMMDD(selectedDate),
-              endDate: formatToYYYYMMDD(DateTime.now()),
-            );
-      },
+      onTap: () => _loadConsentData(context, ref),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
