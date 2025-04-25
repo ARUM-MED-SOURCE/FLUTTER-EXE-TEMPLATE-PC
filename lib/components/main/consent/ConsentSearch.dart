@@ -20,10 +20,11 @@ class ConsentSearch extends StatelessWidget {
       itemBuilder: <SearchConsentData>(_, index, model) {
         return GestureDetector(
           onTap: () {},
-          child:SearchConsentItem.fromModel(model: model),
+          child: SearchConsentItem.fromModel(model: model),
         );
       },
-      title: '검색',
+      title: '',
+      header: const _ConsentSearchHeader(title: '동의서 검색'),
     );
   }
 }
@@ -70,11 +71,9 @@ notifier.toggleConsent(id);
 
 class _ConsentSearchHeader extends InfoHeader {
   const _ConsentSearchHeader({
-    required this.title,
-  }) : super(title: title);
-
-  @override
-  final String title;
+    super.key,
+    required super.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +91,13 @@ class _ConsentSearchHeader extends InfoHeader {
           const _SetButton(),
           Text(
             title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          const SizedBox(height: 8),
           const _ConsentSearchOptions(),
+          const SizedBox(height: 8),
           const _ConsentSearchBar(),
         ],
       ),

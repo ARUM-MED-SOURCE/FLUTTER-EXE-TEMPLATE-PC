@@ -17,6 +17,7 @@ class ConsentListView<T extends ConsentModel> extends ConsumerStatefulWidget {
   final StateNotifierProvider<ConsentListProvider, ConsentListBase> provider;
   final ConsentListViewBuilder<T> itemBuilder;
   final String title;
+  final InfoHeaderBase? header;
   final int? itemCount;
   final ScrollPhysics? physics;
   final bool shrinkWrap;
@@ -26,6 +27,7 @@ class ConsentListView<T extends ConsentModel> extends ConsumerStatefulWidget {
     required this.provider,
     required this.itemBuilder,
     required this.title,
+    this.header,
     this.itemCount,
     this.physics,
     this.shrinkWrap = false,
@@ -42,7 +44,7 @@ class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<Consen
 
     return Info(
       card: InfoCard(
-        header: InfoHeader(
+        header: widget.header ?? InfoHeader(
           title: widget.title,
           titleStyle: Theme.of(context).textTheme.titleLarge,
         ),
