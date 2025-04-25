@@ -73,12 +73,6 @@ class TopBar extends ConsumerWidget {
             ref.read(hospitalSectionProvider.notifier).state = section;
             ref.read(dropdownOptionsProvider.notifier).resetToDefaults();
           },
-          child: Text(
-            section.label,
-            style: TextStyle(
-              color: selectedSection == section ? AppColors.white : AppColors.gray200,
-            ),
-          ),
           style: ElevatedButton.styleFrom(
             backgroundColor: selectedSection == section ? AppColors.blue500 : AppColors.blue400,
             foregroundColor: Colors.white,
@@ -87,6 +81,12 @@ class TopBar extends ConsumerWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: BorderSide.none,
+            ),
+          ),
+          child: Text(
+            section.label,
+            style: TextStyle(
+              color: selectedSection == section ? AppColors.white : AppColors.gray200,
             ),
           ),
         ),
@@ -98,7 +98,7 @@ class TopBar extends ConsumerWidget {
     return [
       IconButton(
         onPressed: () {},
-        icon: Icon(
+        icon: const Icon(
           Icons.add_circle,
           color: AppColors.white,
           size: 24,
@@ -109,7 +109,7 @@ class TopBar extends ConsumerWidget {
           ref.read(authNotifierProvider.notifier).logout();
           context.go('/login');
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.logout_rounded,
           color: AppColors.white,
           size: 24,

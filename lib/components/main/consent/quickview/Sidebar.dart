@@ -206,9 +206,9 @@ class _SidebarState extends State<Sidebar> {
                   Checkbox(
                     value: false,
                     onChanged: (value) {},
-                    side: BorderSide(color: AppColors.gray200),
+                    side: const BorderSide(color: AppColors.gray200),
                   ),
-                  Text('내가 작성한 동의서만 조회', 
+                  const Text('내가 작성한 동의서만 조회',
                     style: TextStyle(color: AppColors.gray500),
                   ),
                 ],
@@ -217,7 +217,7 @@ class _SidebarState extends State<Sidebar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('사번', 
+                  const Text('사번',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.gray500,
@@ -236,11 +236,11 @@ class _SidebarState extends State<Sidebar> {
                       fillColor: AppColors.blue50,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: AppColors.gray100),
+                        borderSide: const BorderSide(color: AppColors.gray100),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: AppColors.blue300),
+                        borderSide: const BorderSide(color: AppColors.blue300),
                       ),
                     ),
                   ),
@@ -250,7 +250,7 @@ class _SidebarState extends State<Sidebar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('환자번호',
+                  const Text('환자번호',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.gray500,
@@ -283,7 +283,7 @@ class _SidebarState extends State<Sidebar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('진료과/병동/주치의 선택',
+                  const Text('진료과/병동/주치의 선택',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.gray500,
@@ -306,7 +306,7 @@ class _SidebarState extends State<Sidebar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('출력일',
+                  const Text('출력일',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.gray500,
@@ -327,7 +327,7 @@ class _SidebarState extends State<Sidebar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('방문유형',
+                  const Text('방문유형',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.gray500,
@@ -351,7 +351,7 @@ class _SidebarState extends State<Sidebar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('동의서유형',
+                  const Text('동의서유형',
                     style: TextStyle(
                       fontSize: 14,
                       color: AppColors.gray500,
@@ -408,7 +408,7 @@ class _SidebarState extends State<Sidebar> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text('총 조회건수: 29건',
+                        const Text('총 조회건수: 29건',
                           style: TextStyle(
                             fontSize: 14,
                             color: AppColors.gray500,
@@ -420,19 +420,19 @@ class _SidebarState extends State<Sidebar> {
                             Expanded(
                               child: OutlinedButton.icon(
                                 onPressed: () {},
-                                icon: Icon(Icons.refresh, size: 18, color: AppColors.blue400),
-                                label: Text('초기화', 
+                                icon: const Icon(Icons.refresh, size: 18, color: AppColors.blue400),
+                                label: const Text('초기화',
                                   style: TextStyle(
                                     color: AppColors.blue400,
                                     fontSize: 14,
                                   ),
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: AppColors.blue100),
+                                  side: const BorderSide(color: AppColors.blue100),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                   backgroundColor: Colors.white,
                                 ),
                               ),
@@ -441,19 +441,19 @@ class _SidebarState extends State<Sidebar> {
                             Expanded(
                               child: OutlinedButton.icon(
                                 onPressed: () {},
-                                icon: Icon(Icons.search, size: 18, color: AppColors.blue400),
-                                label: Text('검색',
+                                icon: const Icon(Icons.search, size: 18, color: AppColors.blue400),
+                                label: const Text('검색',
                                   style: TextStyle(
                                     color: AppColors.blue400,
                                     fontSize: 14,
                                   ),
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: AppColors.blue100),
+                                  side: const BorderSide(color: AppColors.blue100),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                   backgroundColor: Colors.white,
                                 ),
                               ),
@@ -467,7 +467,7 @@ class _SidebarState extends State<Sidebar> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('총 조회건수: 29건',
+                        const Text('총 조회건수: 29건',
                           style: TextStyle(
                             fontSize: 14,
                             color: AppColors.gray500,
@@ -479,19 +479,19 @@ class _SidebarState extends State<Sidebar> {
                               width: 90,  // 버튼 너비 축소
                               child: OutlinedButton.icon(
                                 onPressed: () {},
-                                icon: Icon(Icons.refresh, size: 18, color: AppColors.blue400),
-                                label: Text('초기화', 
+                                icon: const Icon(Icons.refresh, size: 18, color: AppColors.blue400),
+                                label: const Text('초기화',
                                   style: TextStyle(
                                     color: AppColors.blue400,
                                     fontSize: 14,
                                   ),
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: AppColors.blue100),
+                                  side: const BorderSide(color: AppColors.blue100),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                   backgroundColor: Colors.white,
                                 ),
                               ),
@@ -501,19 +501,19 @@ class _SidebarState extends State<Sidebar> {
                               width: 90,  // 버튼 너비 축소
                               child: OutlinedButton.icon(
                                 onPressed: () {},
-                                icon: Icon(Icons.search, size: 18, color: AppColors.blue400),
-                                label: Text('검색',
+                                icon: const Icon(Icons.search, size: 18, color: AppColors.blue400),
+                                label: const Text('검색',
                                   style: TextStyle(
                                     color: AppColors.blue400,
                                     fontSize: 14,
                                   ),
                                 ),
                                 style: OutlinedButton.styleFrom(
-                                  side: BorderSide(color: AppColors.blue100),
+                                  side: const BorderSide(color: AppColors.blue100),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                                   backgroundColor: Colors.white,
                                 ),
                               ),
@@ -542,7 +542,7 @@ class _SidebarState extends State<Sidebar> {
           onChanged: (value) {},
           activeColor: AppColors.blue400,
         ),
-        Text(label, style: TextStyle(color: AppColors.gray500)),
+        Text(label, style: const TextStyle(color: AppColors.gray500)),
       ],
     );
   }
@@ -558,13 +558,13 @@ class _SidebarState extends State<Sidebar> {
             value: isChecked,
             onChanged: (value) {},
             activeColor: AppColors.blue400,
-            side: BorderSide(color: AppColors.gray200),
+            side: const BorderSide(color: AppColors.gray200),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ),
         const SizedBox(width: 4),
         Text(label, 
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             color: AppColors.gray500
           ),

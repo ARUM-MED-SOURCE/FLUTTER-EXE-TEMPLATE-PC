@@ -14,7 +14,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool isDense;
   final InputDecoration? decoration;
 
-  const CustomTextFormField({
+  const CustomTextFormField({super.key,
     required this.hintText,
     required this.initialValue,
     this.autoFocus = false,
@@ -54,11 +54,11 @@ class CustomTextFormField extends StatelessWidget {
         ) : null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: AppColors.gray100),
+          borderSide: const BorderSide(color: AppColors.gray100),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: AppColors.blue300),
+          borderSide: const BorderSide(color: AppColors.blue300),
         ),
       ),
       onChanged: onChanged,
