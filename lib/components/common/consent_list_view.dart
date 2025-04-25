@@ -40,7 +40,7 @@ class _ConsentListViewState<T> extends ConsumerState<ConsentListView> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(widget.provider);
-
+    logger.i(state);
     if (state is ConsentListLoading) {
       return Info(
         card: InfoCard(
@@ -121,6 +121,8 @@ class _ConsentListViewState<T> extends ConsumerState<ConsentListView> {
     }
 
     final consents = state as ConsentList<T>;
+    logger.i("상태");
+    logger.i(state);
     return Info(
       card: InfoCard(
         header: InfoHeader(

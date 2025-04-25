@@ -41,7 +41,7 @@ class SkeletonStyles {
 }
 
 InfoList<T> createSkeletonList<T>({
-  required Widget Function(T) itemBuilder,
+  required Widget Function(BuildContext) itemBuilder,
   int itemCount = SkeletonConstants.skeletonItemCount,
   bool shrinkWrap = false,
   ScrollPhysics physics = const ClampingScrollPhysics(),
@@ -55,7 +55,30 @@ InfoList<T> createSkeletonList<T>({
     items: const [],
     shrinkWrap: shrinkWrap,
     physics: physics,
-    buildItem: itemBuilder,
+    buildItem: (item) => Builder(
+      builder: (context) => itemBuilder(context),
+    ),
+    buildEmptyItem: (context, items) => Container(
+      padding: const EdgeInsets.symmetric(vertical: 32),
+      alignment: Alignment.center,
+      child: const Column(
+        children: [
+          Icon(
+            Icons.description_outlined,
+            size: 48,
+            color: AppColors.gray400,
+          ),
+          SizedBox(height: 16),
+          Text(
+             '환자정보를 선택해주세요.',
+            style: TextStyle(
+              color: AppColors.gray500,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ),
     backgroundColor: backgroundColor,
     contentPadding: contentPadding,
     itemPadding: itemPadding,
