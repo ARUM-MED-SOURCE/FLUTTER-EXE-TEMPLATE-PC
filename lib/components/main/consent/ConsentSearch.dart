@@ -55,7 +55,7 @@ class ConsentSearch extends ConsumerWidget {
                 );
               },
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.white,
             contentPadding: EdgeInsets.zero,
           ),
 
@@ -97,7 +97,7 @@ class ConsentSearch extends ConsumerWidget {
             ),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.white,
         isRound: true,
         showBorder: false,
         padding: EdgeInsets.zero,
@@ -238,10 +238,10 @@ class _SetButton extends StatelessWidget{
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: SizedBox(
+                  child: const SizedBox(
                     width: 1400,
                     height: 800,
-                    child: const SetBody(),
+                    child: SetBody(),
                   ),
                 );
               },

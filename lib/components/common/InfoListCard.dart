@@ -75,7 +75,7 @@ class InfoListCard<T> extends StatelessWidget {
             titleStyle: Theme.of(context).textTheme.titleLarge,
           ),
           body: InfoList<T>(
-            items: [],
+            items: const [],
             buildItem: buildItem,
             buildEmptyItem: (context, items) => Container(
               padding: const EdgeInsets.symmetric(vertical: 32),
@@ -87,7 +87,7 @@ class InfoListCard<T> extends StatelessWidget {
                     size: 48,
                     color: AppColors.red500,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(errorMessage ?? '내용을 불러오는데 실패했습니다.'),
                   if (onRetry != null)
                     IconButton(

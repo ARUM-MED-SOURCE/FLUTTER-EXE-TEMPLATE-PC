@@ -50,7 +50,7 @@ class WrittenConsentDataLoader
     } catch (e) {
       logger.severe('Error fetching written consent: $e');
       state = AsyncValue.error(e, StackTrace.current);
-      throw e;
+      rethrow;
     }
   }
 } 

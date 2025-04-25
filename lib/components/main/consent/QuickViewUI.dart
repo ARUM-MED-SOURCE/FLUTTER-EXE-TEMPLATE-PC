@@ -116,7 +116,7 @@ class QuickViewUI extends StatelessWidget {
   Widget _buildListHeader() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.white,
         border: Border(
           bottom: BorderSide(color: AppColors.gray100),
@@ -124,7 +124,7 @@ class QuickViewUI extends StatelessWidget {
       ),
       child: Row(
         children: [
-          SizedBox(width: 76),
+          const SizedBox(width: 76),
           _buildHeaderText('동록번호', width: 80),
           const SizedBox(width: 16),
           _buildHeaderText('진료과', width: 40),
@@ -144,7 +144,7 @@ class QuickViewUI extends StatelessWidget {
   Widget _buildHeaderText(String text, {double? width}) {
     final textWidget = Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 14,
         color: AppColors.gray500,
         fontWeight: FontWeight.w500,

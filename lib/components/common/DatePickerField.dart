@@ -28,7 +28,7 @@ class DatePickerField extends ConsumerWidget {
     return Row(
       children: [
         if (label != null) ...[
-          Text(label!, style: TextStyle(fontSize: 14, color: AppColors.gray500)),
+          Text(label!, style: const TextStyle(fontSize: 14, color: AppColors.gray500)),
           const SizedBox(width: 8),
         ],
         GestureDetector(
@@ -125,7 +125,7 @@ class DateRangePickerField extends StatelessWidget {
               onDateSelected: onStartDateSelected,
             ),
             const SizedBox(width: 8),
-            Text('~', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
+            const Text('~', style: TextStyle(fontSize: 14, color: AppColors.gray500)),
             const SizedBox(width: 8),
             DatePickerField(
               selectedDate: endDate,
