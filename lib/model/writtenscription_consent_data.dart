@@ -65,6 +65,8 @@ class WrittenConsentData with _$WrittenConsentData {
   }) = _WrittenConsentData;
 
   factory WrittenConsentData.fromJson(Map<String, dynamic> json) => _$WrittenConsentDataFromJson(json);
+
+  factory WrittenConsentData.empty() =>  const WrittenConsentData();
 }
 
 
