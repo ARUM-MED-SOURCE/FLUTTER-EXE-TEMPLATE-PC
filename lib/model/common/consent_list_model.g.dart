@@ -11,7 +11,11 @@ ConsentList<T> _$ConsentListFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     ConsentList<T>(
-      data: (json['data'] as List<dynamic>).map(fromJsonT).toList(),
+      resultCode: json['RESULT_CODE'] as String,
+      resultData:
+          (json['RESULT_DATA'] as List<dynamic>).map(fromJsonT).toList(),
+      errorCode: json['ERROR_CODE'] as String,
+      errorMessage: json['ERROR_MESSAGE'] as String,
     );
 
 Map<String, dynamic> _$ConsentListToJson<T>(
@@ -19,7 +23,10 @@ Map<String, dynamic> _$ConsentListToJson<T>(
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
-      'data': instance.data.map(toJsonT).toList(),
+      'RESULT_CODE': instance.resultCode,
+      'RESULT_DATA': instance.resultData.map(toJsonT).toList(),
+      'ERROR_CODE': instance.errorCode,
+      'ERROR_MESSAGE': instance.errorMessage,
     };
 
 ConsentListResponse<T> _$ConsentListResponseFromJson<T>(

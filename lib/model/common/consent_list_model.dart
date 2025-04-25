@@ -16,17 +16,36 @@ class ConsentListLoading extends ConsentListBase {}
 
 @JsonSerializable(genericArgumentFactories: true)
 class ConsentList<T> extends ConsentListBase {
-  final List<T> data;
+  @JsonKey(name: 'RESULT_CODE')
+  final String resultCode;
+  
+  @JsonKey(name: 'RESULT_DATA')
+  final List<T> resultData;
+  
+  @JsonKey(name: 'ERROR_CODE')
+  final String errorCode;
+  
+  @JsonKey(name: 'ERROR_MESSAGE')
+  final String errorMessage;
 
   ConsentList({
-    required this.data,
+    required this.resultCode,
+    required this.resultData,
+    required this.errorCode,
+    required this.errorMessage,
   });
 
   ConsentList copyWith({
-    List<T>? data,
+    String? resultCode,
+    List<T>? resultData,
+    String? errorCode,
+    String? errorMessage,
   }) {
     return ConsentList<T>(
-      data: data ?? this.data,
+      resultCode: resultCode ?? this.resultCode,
+      resultData: resultData ?? this.resultData,
+      errorCode: errorCode ?? this.errorCode,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
@@ -35,6 +54,13 @@ class ConsentList<T> extends ConsentListBase {
     T Function(Object? json) fromJsonT,
   ) =>
       _$ConsentListFromJson(json, fromJsonT);
+
+  factory ConsentList.empty() => ConsentList<T>(
+    resultCode: '0',
+    resultData: [],
+    errorCode: '0',
+    errorMessage: '',
+  );
 }
 
 @JsonSerializable(genericArgumentFactories: true)

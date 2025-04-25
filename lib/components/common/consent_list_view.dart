@@ -130,7 +130,7 @@ class _ConsentListViewState<T> extends ConsumerState<ConsentListView> {
           titleStyle: Theme.of(context).textTheme.titleLarge,
         ),
         body: InfoList<T>(
-          items: consents.data,
+          items: consents.resultData,
           shrinkWrap: widget.shrinkWrap,
           physics: widget.physics ?? const BouncingScrollPhysics(),
           separatorBuilder: (context, index) => const SizedBox(height: 0),
@@ -166,7 +166,7 @@ class _ConsentListViewState<T> extends ConsumerState<ConsentListView> {
           ),
           buildItem: (T item) => widget.itemBuilder(
             context,
-            consents.data.indexOf(item),
+            consents.resultData.indexOf(item),
             item as ConsentModel,
           ),
         ),
