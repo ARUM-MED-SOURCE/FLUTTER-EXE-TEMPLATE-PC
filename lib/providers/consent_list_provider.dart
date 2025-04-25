@@ -31,10 +31,6 @@ class ConsentListProvider<T extends ConsentModel,
     String? deviceIdentMac,
   }) async {
     try {
-      if (state is ConsentList) {
-        logger.i('이미 데이터가 존재합니다.');
-        return;
-      }
 
       // if (state is ConsentListLoading) {
       //   logger.i('이미 데이터를 불러오는 중입니다.');

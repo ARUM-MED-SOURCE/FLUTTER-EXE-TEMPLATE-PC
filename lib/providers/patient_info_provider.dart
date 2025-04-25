@@ -27,27 +27,22 @@ class PatientInfoStateNotifier
   });
 
   Future<void> getData() async {
-    if (state is! ConsentList) {
-      final secureStorage = ref.read(secureStorageProvider);
-      final userId = await secureStorage.read(key: AppKey.userId);
-      final userPassword = await secureStorage.read(key: AppKey.userPassword);
+    final secureStorage = ref.read(secureStorageProvider);
+    final userId = await secureStorage.read(key: AppKey.userId);
+    final userPassword = await secureStorage.read(key: AppKey.userPassword);
 
-      // if(userId == null || userId == '') return;
-      // if(userPassword == null || userPassword == '') return;
+    // if(userId == null || userId == '') return;
+    // if(userPassword == null || userPassword == '') return;
 
-      final hospitalSection = ref.read(hospitalSectionProvider);
-      logger.i(hospitalSection.label);
-      await getList(
-          methodName: hospitalSection.methodName,
-          userId: '1',
-          userPassword: '1',
-          deviceType: ApiPcConfig.browserType,
-          deviceIdentIP: ApiPcConfig.ipAddress,
-          deviceIdentName: ApiPcConfig.searchType,
-          deviceIdentMac: ApiPcConfig.deviceId);
-    }
-    if (state is! ConsentList) {
-      return;
-    }
+    final hospitalSection = ref.read(hospitalSectionProvider);
+    logger.i(hospitalSection.label);
+    await getList(
+        methodName: hospitalSection.methodName,
+        userId: '1',
+        userPassword: '1',
+        deviceType: ApiPcConfig.browserType,
+        deviceIdentIP: ApiPcConfig.ipAddress,
+        deviceIdentName: ApiPcConfig.searchType,
+        deviceIdentMac: ApiPcConfig.deviceId);
   }
 }

@@ -8,25 +8,66 @@ import 'package:flutter_exe/repositories/consent/prescription_consent_repository
 import 'package:flutter_exe/repositories/consent/written_consent_repository.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
-class PatientInfo extends StatelessWidget {
+final logger = Logger();
+
+class PatientInfo extends ConsumerWidget {
   const PatientInfo({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(patientInfoProvider);
+    
     return ConsentListView(
       provider: patientInfoProvider,
       itemBuilder: <PatientInfoResultData>(_, index, model) {
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            logger.i("test");
+          },
           child: PatientInfoItem.fromModel(
             model: model,
           ),
         );
       },
       title: '환자정보',
+    );
+  }
+}
+
+class _PatientInfoSkeleton extends StatelessWidget {
+  const _PatientInfoSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSkeletonRow(width: 200, height: 20),
+          const SizedBox(height: 8),
+          _buildSkeletonRow(width: 300, height: 16),
+          const SizedBox(height: 4),
+          _buildSkeletonRow(width: 300, height: 16),
+          const SizedBox(height: 4),
+          _buildSkeletonRow(width: 300, height: 16),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSkeletonRow({required double width, required double height}) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: AppColors.gray100,
+        borderRadius: BorderRadius.circular(4),
+      ),
     );
   }
 }
@@ -47,24 +88,23 @@ class PatientInfoItem extends ConsumerWidget {
     );
   }
 
-  Future<void> _loadConsentData(BuildContext context, WidgetRef ref) async {
+ /* Future<void> _loadConsentData(BuildContext context, WidgetRef ref) async {
     try {
       // TODO: 실제 인증 정보로 교체 필요
       const userId = 'userId';
       const userPassword = 'userPassword';
       final selectedDate = ref.read(selectedDateProvider);
-
       await Future.wait([
         ref.read(prescriptionConsentRepositoryProvider).getList(),
         ref.read(writtenConsentRepositoryProvider).getList(),
       ]);
     } catch (e) {}
-  }
+  }*/
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      onTap: () => _loadConsentData(context, ref),
+      // onTap: () => _loadConsentData(context, ref),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         child: Column(
