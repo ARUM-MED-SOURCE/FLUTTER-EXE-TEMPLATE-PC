@@ -15,7 +15,7 @@ class ConsentListProvider<T extends ConsentModel,
 
   ConsentListProvider({
     required this.repository,
-  }) : super(ConsentListLoading());
+  }) : super(ConsentListInitial());
 
   Future<void> getList({
     String? methodName,
@@ -31,13 +31,6 @@ class ConsentListProvider<T extends ConsentModel,
     String? deviceIdentMac,
   }) async {
     try {
-
-      // if (state is ConsentListLoading) {
-      //   logger.i('이미 데이터를 불러오는 중입니다.');
-      //   return;
-      // }
-
-
       state = ConsentListLoading();
 
       final data = {

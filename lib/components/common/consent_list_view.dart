@@ -57,6 +57,10 @@ class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<Consen
   }
 
   InfoList<T> _buildBody(ConsentListBase state) {
+    if (state is ConsentListInitial) {
+      return _buildInitialState();
+    }
+
     if (state is ConsentListError) {
       return _buildErrorState(state);
     }
@@ -72,11 +76,21 @@ class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<Consen
     return _buildEmptyState();
   }
 
+  InfoList<T> _buildInitialState() {
+    return InfoList<T>(
+      backgroundColor: AppColors.white,
+      contentPadding: EdgeInsets.zero,
+      items: List<T>.empty(),
+      buildItem: (_) => const SizedBox(),
+      buildEmptyItem: (_, __) => _buildEmptyState(),
+    );
+  }
+
   InfoList<T> _buildErrorState(ConsentListError state) {
     return InfoList<T>(
       backgroundColor: AppColors.white,
       contentPadding: EdgeInsets.zero,
-      items: const [],
+      items: List<T>.empty(),
       buildItem: (_) => const SizedBox(),
       buildEmptyItem: (_, __) => Container(
         padding: const EdgeInsets.symmetric(vertical: 32),
@@ -114,7 +128,7 @@ class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<Consen
       contentPadding: EdgeInsets.zero,
       items: List<T>.empty(),
       buildItem: (_) => const ConsentSkeletonItem(),
-      buildEmptyItem: (_, __) => const Text("few"),
+      buildEmptyItem: (_, __) => const ConsentSkeletonItem(),
     );
   }
 

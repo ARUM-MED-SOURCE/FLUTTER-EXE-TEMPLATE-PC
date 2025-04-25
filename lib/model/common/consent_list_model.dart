@@ -4,6 +4,8 @@ part 'consent_list_model.g.dart';
 
 abstract class ConsentListBase {}
 
+class ConsentListInitial extends ConsentListBase {}
+
 class ConsentListError extends ConsentListBase {
   final String message;
 
