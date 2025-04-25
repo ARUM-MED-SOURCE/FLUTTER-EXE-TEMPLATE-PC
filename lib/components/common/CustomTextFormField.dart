@@ -12,8 +12,9 @@ class CustomTextFormField extends StatelessWidget {
   final Function()? onSuffixIconPressed;
   final EdgeInsetsGeometry? contentPadding;
   final bool isDense;
+  final InputDecoration? decoration;
 
-  const CustomTextFormField({
+  const CustomTextFormField({super.key,
     required this.hintText,
     required this.initialValue,
     this.autoFocus = false,
@@ -24,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onSuffixIconPressed,
     this.contentPadding,
     this.isDense = false,
+    this.decoration,
   });
 
   @override
@@ -32,10 +34,19 @@ class CustomTextFormField extends StatelessWidget {
       initialValue: initialValue,
       autofocus: autoFocus,
       obscureText: obscureText,
-      decoration: InputDecoration(
+      decoration: decoration?.copyWith(
         hintText: hintText,
         isDense: isDense,
-        contentPadding: contentPadding ?? EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.gray200) : null,
+        suffixIcon: suffixIcon != null ? IconButton(
+          onPressed: onSuffixIconPressed,
+          icon: Icon(suffixIcon),
+        ) : null,
+      ) ?? InputDecoration(
+        hintText: hintText,
+        isDense: isDense,
+        contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.gray200) : null,
         suffixIcon: suffixIcon != null ? IconButton(
           onPressed: onSuffixIconPressed,
@@ -43,11 +54,11 @@ class CustomTextFormField extends StatelessWidget {
         ) : null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: AppColors.gray100),
+          borderSide: const BorderSide(color: AppColors.gray100),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: AppColors.blue300),
+          borderSide: const BorderSide(color: AppColors.blue300),
         ),
       ),
       onChanged: onChanged,

@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:flutter_exe/api/dio/dio.dart';
 import 'dart:convert';
+
+import '../model/search_consent_data.dart';
 part 'consent_repository.g.dart';
 
 @RestApi()
@@ -36,6 +38,18 @@ abstract class ConsentRepository {
     @Field('deviceIdentIP') String deviceIdentIP,
     @Field('deviceIdentMac') String deviceIdentMac,
   );
+
+  @POST('/HospitalSvc.aspx')
+  @FormUrlEncoded()
+  Future<SearchConsentResponse> getSearchConsentData(
+      @Field('methodName') String methodName,
+      @Field('params') String params,
+      @Field('userId') String userId,
+      @Field('deviceType') String deviceType,
+      @Field('deviceIdentName') String deviceIdentName,
+      @Field('deviceIdentIP') String deviceIdentIP,
+      @Field('deviceIdentMac') String deviceIdentMac,
+      );
 }
 
 @riverpod

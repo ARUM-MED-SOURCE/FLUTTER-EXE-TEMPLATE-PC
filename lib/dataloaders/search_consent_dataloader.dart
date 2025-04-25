@@ -6,38 +6,34 @@ import 'package:flutter_exe/constants/api_constants.dart';
 import 'dart:convert';
 import 'package:logging/logging.dart';
 
-part 'written_consent_dataloader.g.dart';
+import '../model/search_consent_data.dart';
 
-final logger = Logger('WrittenConsentDataLoader');
+part 'search_consent_dataloader.g.dart';
+
+final logger = Logger('SearchConsentDataLoader');
 
 @riverpod
-class WrittenConsentDataLoader
-    extends AutoDisposeAsyncNotifier<WrittenConsentResponse?> {
+class SearchConsentDataLoader
+    extends AutoDisposeAsyncNotifier<SearchConsentResponse?> {
   @override
-  Future<WrittenConsentResponse?> build() async => null;
+  Future<SearchConsentResponse?> build() async => null;
 
-  Future<void> getWrittenConsent({
+  Future<void> getSearchConsent({
     required String userId,
     required String userPassword,
-    required String patientCode,
-    required String startDate,
-    required String endDate,
   }) async {
     state = const AsyncValue.loading();
-    
+
     final consentRepository = ref.read(consentRepositoryProvider);
 
     final data = {
       "UserId": userId,
       "UserPassword": userPassword,
-      "patientCode": patientCode,
-      "startDate": startDate,
-      "endDate": endDate,
     };
 
     try {
-      final response = await consentRepository.getWrittenConsentData(
-        'GetConsents',
+      final response = await consentRepository.getSearchConsentData(
+        'GetDocList',
         json.encode(data),
         userId,
         ApiConstants.searchType,
@@ -48,9 +44,9 @@ class WrittenConsentDataLoader
 
       state = AsyncValue.data(response);
     } catch (e) {
-      logger.severe('Error fetching written consent: $e');
+      logger.severe('Error fetching search consent: $e');
       state = AsyncValue.error(e, StackTrace.current);
       rethrow;
     }
   }
-} 
+}

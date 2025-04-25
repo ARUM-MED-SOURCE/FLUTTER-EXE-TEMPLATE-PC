@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exe/components/common/InfoListCard.dart';
 import 'package:flutter_exe/components/common/Skeleton.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
@@ -9,9 +10,7 @@ import 'package:flutter_exe/providers/hospital_section_provider.dart';
 import 'package:flutter_exe/providers/selected_date_provider.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_exe/utils/time.dart';
-import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_exe/constants/api_method.dart';
 
 class PatientInfo extends ConsumerWidget {
   const PatientInfo({super.key});
@@ -19,113 +18,52 @@ class PatientInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final hospitalSection = ref.watch(hospitalSectionProvider);
-    final patientData = ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
+    final patientData =
+        ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
 
     return patientData.when(
-      data: (response) => Info(
-        card: InfoCard(
-          header: InfoHeader(
-            title: '환자정보',
-            titleStyle: Theme.of(context).textTheme.titleLarge,
-          ),
-          body: InfoList<PatientInfoResultData>(
-            items: response?.resultData ?? [],
-            shrinkWrap: false,
-            physics: const BouncingScrollPhysics(),
-            separatorBuilder: (context, index) => const SizedBox(height: 0),
-            buildItem: (patient) => _PatientInfoItem(patient: patient),
-            buildEmptyItem: (context, items) => Container(
-              padding: const EdgeInsets.symmetric(vertical: 32),
-              alignment: Alignment.center,
-              child: const Column(
-                children: [
-                  Icon(
-                    Icons.description_outlined,
-                    size: 48,
-                    color: AppColors.gray400,
-                  ),
-                  SizedBox(height: 16),
-                  Text('검색 결과가 없습니다.'),
-                ],
-              ),
-            ),
-            backgroundColor: AppColors.white,
-            contentPadding: EdgeInsets.zero,
-            itemDecoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.gray100,
-                ),
-              ),
-            ),
-          ),
-          backgroundColor: AppColors.white,
-          isRound: true,
-          showBorder: false,
-          padding: EdgeInsets.zero,
-          margin: EdgeInsets.zero,
-        ),
-      ),
-      loading: () => Info(
-        card: InfoCard(
-          header: InfoHeader(
-            title: '환자정보',
-            titleStyle: Theme.of(context).textTheme.titleLarge,
-          ),
-          body: createSkeletonList<PatientInfoResultData>(
-            itemBuilder: (patient) => const ConsentSkeletonItem(),
-            emptyItemBuilder: (index) => const PatientInfoResultData(
-              admissionDate: '',
-              age: '',
-              chargeName: '',
-              diagName: '',
-              doctorName: '',
-              patientCode: '',
-              patientName: '',
-              patientZipAddr: '',
-              room: '',
-              sex: '',
-              clnDeptCode: '',
-              clnDeptName: '',
-              clnDeptNum: '',
-              birthday: '',
-              mdrpno: '',
-              estimateTime: '',
-              doctorId: '',
-              patientAddr: '',
-              patientHp: '',
-              patientTelNo: '',
-              patientZipCode: '',
-              ward: '',
-            ),
-            itemCount: 8,
-            backgroundColor: AppColors.white,
-            contentPadding: EdgeInsets.zero,
-            itemDecoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.gray100,
-                ),
-              ),
-            ),
-          ),
-          backgroundColor: AppColors.white,
-          isRound: true,
-          showBorder: false,
-          padding: EdgeInsets.zero,
-          margin: EdgeInsets.zero,
-        ),
-      ),
-      error: (error, stack) => Center(
-        child: SelectableText.rich(
-          TextSpan(
-            text: 'Error: ',
-            style: const TextStyle(color: AppColors.red500),
+      data: (response) => InfoListCard<PatientInfoResultData>(
+        title: '환자정보',
+        items: response.resultData,
+        buildItem: (patient) => _PatientInfoItem(patient: patient),
+        buildEmptyItem: (context, items) => Container(
+          padding: const EdgeInsets.symmetric(vertical: 32),
+          alignment: Alignment.center,
+          child: const Column(
             children: [
-              TextSpan(text: error.toString()),
+              Icon(
+                Icons.description_outlined,
+                size: 48,
+                color: AppColors.gray400,
+              ),
+              SizedBox(height: 16),
+              Text('검색 결과가 없습니다.'),
             ],
           ),
         ),
+      ),
+      loading: () => InfoListCard<PatientInfoResultData>(
+        title: '환자정보',
+        items: const [],
+        buildItem: (patient) => _PatientInfoItem(patient: patient),
+        buildEmptyItem: (context, items) => const SizedBox(),
+        isLoading: true,
+        itemBuilder: (patient) => const ConsentSkeletonItem(),
+        emptyItemBuilder: (index) => PatientInfoResultData.empty(),
+        itemCount: 8,
+      ),
+      error: (error, stack) => InfoListCard<PatientInfoResultData>(
+        title: '환자정보',
+        items: const [],
+        buildItem: (patient) => _PatientInfoItem(patient: patient),
+        buildEmptyItem: (context, items) => const SizedBox(),
+        hasError: true,
+        errorMessage: '내용을 불러오는데 실패했습니다.',
+        onRetry: () {
+          ref.invalidate(
+            patientInfoLoaderProvider(hospitalSection.methodName),
+          );
+        },
       ),
     );
   }
@@ -283,12 +221,12 @@ class _PatientAlert extends StatelessWidget {
           ),
           child: Row(
             children: [
-          Text(
-            "임시",
-            style: const TextStyle(
-              fontSize: 12,
-              color: AppColors.white,
-            ),
+              const Text(
+                "임시",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.white,
+                ),
               ),
               const SizedBox(width: 4),
               Container(
@@ -297,9 +235,9 @@ class _PatientAlert extends StatelessWidget {
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Text(
+                child: const Text(
                   "1",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 8,
                     color: AppColors.blue400,
                   ),
@@ -315,9 +253,9 @@ class _PatientAlert extends StatelessWidget {
             color: AppColors.gray100,
             borderRadius: BorderRadius.circular(50),
           ),
-          child: Text(
+          child: const Text(
             "진행",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               color: AppColors.gray500,
             ),
@@ -330,9 +268,9 @@ class _PatientAlert extends StatelessWidget {
             color: AppColors.gray100,
             borderRadius: BorderRadius.circular(50),
           ),
-          child: Text(
+          child: const Text(
             "완료",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               color: AppColors.gray500,
             ),

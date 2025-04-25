@@ -18,7 +18,7 @@ class BaseConsentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(color: AppColors.gray100),
         ),
@@ -41,7 +41,7 @@ class BaseConsentItem extends StatelessWidget {
                     ),
               ),
             ),
-            ...buildTrailingWidgets(context),
+            ...buildTrailingWidgets(context), // TODO :: 검색동의서 별 아이콘을 맨 뒤에 붙여야함, 트레일러 위젯의 구조 자체를 바꿔야 할 듯
           ],
         ),
       ),
@@ -79,7 +79,7 @@ class CheckableConsentItem extends StatelessWidget {
           value: isSelected,
           onChanged: (_) => onSelected(),
           activeColor: AppColors.blue300,
-          side: BorderSide(color: AppColors.gray150),
+          side: const BorderSide(color: AppColors.gray150),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
           ),
@@ -91,6 +91,8 @@ class CheckableConsentItem extends StatelessWidget {
   }
 }
 
+/// 즐겨찾기 달린 동의서 아이템
+//  주로 검색동의서 항목으로 쓰임
 class FavoriteConsentItem extends StatelessWidget {
   final String id;
   final String name;
@@ -116,7 +118,7 @@ class FavoriteConsentItem extends StatelessWidget {
       name: name,
       buildLeadingWidgets: (context) => [
         SizedBox(
-          width: 24,
+          width: 40,
           child: Text(
             '$id.',
             style: const TextStyle(fontSize: 14, color: AppColors.black),
@@ -126,7 +128,7 @@ class FavoriteConsentItem extends StatelessWidget {
           value: isSelected,
           onChanged: (_) => onSelected(),
           activeColor: AppColors.blue300,
-          side: BorderSide(color: AppColors.gray200),
+          side: const BorderSide(color: AppColors.gray200),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
           ),
@@ -219,7 +221,7 @@ class QuickViewConsentItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: type == '임시저장' ? AppColors.blue50 : Colors.white,
-        border: Border(
+        border: const Border(
           bottom: BorderSide(color: AppColors.gray100),
         ),
       ),
@@ -255,7 +257,7 @@ class QuickViewConsentItem extends StatelessWidget {
       ),
       child: Text(
         type,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.blue400,
           fontSize: 12,
         ),
@@ -268,7 +270,7 @@ class QuickViewConsentItem extends StatelessWidget {
       width: 80,
       child: Text(
         number,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.gray500,
           fontSize: 14,
         ),
@@ -281,7 +283,7 @@ class QuickViewConsentItem extends StatelessWidget {
       width: 40,
       child: Text(
         os,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.gray500,
           fontSize: 14,
         ),
@@ -294,7 +296,7 @@ class QuickViewConsentItem extends StatelessWidget {
       width: 60,
       child: Text(
         doctor,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppColors.gray500,
           fontSize: 14,
         ),
@@ -303,7 +305,7 @@ class QuickViewConsentItem extends StatelessWidget {
   }
 
   Widget _buildWard() {
-    return SizedBox(
+    return const SizedBox(
       width: 60,
       child: Text(
         'C3/79',
@@ -318,7 +320,7 @@ class QuickViewConsentItem extends StatelessWidget {
   Widget _buildDateTime() {
     return Text(
       printDateTime,
-      style: TextStyle(
+      style: const TextStyle(
         color: AppColors.gray300,
         fontSize: 14,
       ),
@@ -328,7 +330,7 @@ class QuickViewConsentItem extends StatelessWidget {
   Widget _buildConsentName() {
     return Text(
       consentName,
-      style: TextStyle(
+      style: const TextStyle(
         color: AppColors.gray500,
         fontSize: 14,
       ),

@@ -44,7 +44,7 @@ class PrescriptionConsentDataLoader
     } catch (e) {
       logger.severe('Error fetching prescription consent: $e');
       state = AsyncValue.error(e, StackTrace.current);
-      throw e;
+      rethrow;
     }
   }
 } 

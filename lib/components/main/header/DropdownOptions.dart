@@ -32,18 +32,6 @@ class DropdownOptions {
     DropdownType.consentType2: ['임시저장', '인증저장', '구두동의', '응급동의'],
   };
 
-  // 선택된 값들을 저장하는 Map
-  static final Map<DropdownType, String> selectedValues = Map.fromEntries(
-    DropdownType.values.map((type) => MapEntry(type, options[type]![0])),
-  );
-
-  // 모든 드롭다운 값을 기본값으로 초기화
-  static void resetToDefaults() {
-    for (final type in DropdownType.values) {
-      selectedValues[type] = options[type]![0];
-    }
-  }
-
   // 섹션에 따라 보여줄 드롭다운 타입 목록 반환
   static List<DropdownType> getVisibleTypes(HospitalSection section) {
     return sectionDropdowns[section] ?? [];
@@ -52,16 +40,6 @@ class DropdownOptions {
   // 특정 드롭다운 타입의 옵션 목록 반환
   static List<String> getOptions(DropdownType type) {
     return options[type] ?? [];
-  }
-
-  // 선택된 값 설정
-  static void setSelectedValue(DropdownType type, String value) {
-    selectedValues[type] = value;
-  }
-
-  // 선택된 값 가져오기
-  static String getSelectedValue(DropdownType type) {
-    return selectedValues[type] ?? options[type]![0];
   }
   
   // 드롭다운 오버레이 위치 계산을 위한 레이어 링크
