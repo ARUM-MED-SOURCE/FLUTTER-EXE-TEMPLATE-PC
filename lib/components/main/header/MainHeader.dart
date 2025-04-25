@@ -30,12 +30,14 @@ class MainHeader extends ConsumerStatefulWidget {
 class _MainHeaderState extends ConsumerState<MainHeader> {
   OverlayEntry? _overlayEntry;
   DropdownType? _activeDropdown;
+  final ScrollController _scrollController = ScrollController();
   
   @override
   void dispose() {
     if (mounted) {
       _overlayEntry?.remove();
       _overlayEntry = null;
+      _scrollController.dispose();
     }
     super.dispose();
   }
@@ -98,13 +100,13 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
               
               Expanded(
                 child: Scrollbar(
-                  controller: ScrollController(),
+                  controller: _scrollController,
                   thumbVisibility: true,
                   thickness: 4,
                   radius: const Radius.circular(2),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    controller: ScrollController(),
+                    controller: _scrollController,
                     child: Stack(
                       children: [
                         Padding(
