@@ -1,23 +1,11 @@
+import 'package:flutter_exe/model/common/conset_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prescription_consent_data.freezed.dart';
 part 'prescription_consent_data.g.dart';
 
 @freezed
-class PrescriptionConsentResponse with _$PrescriptionConsentResponse {
-  const factory PrescriptionConsentResponse({
-    @JsonKey(name: 'RESULT_CODE') required String resultCode,
-    @JsonKey(name: 'RESULT_DATA') required List<PrescriptionConsentData> resultData,
-    @JsonKey(name: 'ERROR_CODE') required String errorCode,
-    @JsonKey(name: 'ERROR_MESSAGE') required String errorMessage,
-  }) = _PrescriptionConsentResponse;
-
-  factory PrescriptionConsentResponse.fromJson(Map<String, dynamic> json) =>
-      _$PrescriptionConsentResponseFromJson(json);
-}
-
-@freezed
-class PrescriptionConsentData with _$PrescriptionConsentData {
+class PrescriptionConsentData with _$PrescriptionConsentData implements ConsentModel{
   const factory PrescriptionConsentData({
     @JsonKey(name: 'FormName') String? formName,
     @JsonKey(name: 'FormCd') String? formCd,

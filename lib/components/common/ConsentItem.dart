@@ -17,33 +17,26 @@ class BaseConsentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: AppColors.gray100),
-        ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(
+        vertical: 12,
+        horizontal: 16,
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(
-          vertical: 12,
-          horizontal: 16,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ...buildLeadingWidgets(context),
-            IntrinsicWidth(
-              child: Text(
-                name,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 14,
-                    ),
-              ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ...buildLeadingWidgets(context),
+          IntrinsicWidth(
+            child: Text(
+              name,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 14,
+                  ),
             ),
-            ...buildTrailingWidgets(context), // TODO :: 검색동의서 별 아이콘을 맨 뒤에 붙여야함, 트레일러 위젯의 구조 자체를 바꿔야 할 듯
-          ],
-        ),
+          ),
+          ...buildTrailingWidgets(context), // TODO :: 검색동의서 별 아이콘을 맨 뒤에 붙여야함, 트레일러 위젯의 구조 자체를 바꿔야 할 듯
+        ],
       ),
     );
   }

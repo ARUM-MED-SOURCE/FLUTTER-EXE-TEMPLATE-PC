@@ -6,26 +6,6 @@ part of 'patient_info_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PatientInfoResponseImpl _$$PatientInfoResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PatientInfoResponseImpl(
-      resultCode: json['RESULT_CODE'] as String,
-      resultData: (json['RESULT_DATA'] as List<dynamic>)
-          .map((e) => PatientInfoResultData.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      errorCode: json['ERROR_CODE'] as String,
-      errorMessage: json['ERROR_MESSAGE'] as String,
-    );
-
-Map<String, dynamic> _$$PatientInfoResponseImplToJson(
-        _$PatientInfoResponseImpl instance) =>
-    <String, dynamic>{
-      'RESULT_CODE': instance.resultCode,
-      'RESULT_DATA': instance.resultData,
-      'ERROR_CODE': instance.errorCode,
-      'ERROR_MESSAGE': instance.errorMessage,
-    };
-
 _$PatientInfoResultDataImpl _$$PatientInfoResultDataImplFromJson(
         Map<String, dynamic> json) =>
     _$PatientInfoResultDataImpl(

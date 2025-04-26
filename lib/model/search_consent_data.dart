@@ -1,23 +1,11 @@
+import 'package:flutter_exe/model/common/conset_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'search_consent_data.freezed.dart';
 part 'search_consent_data.g.dart';
 
 @freezed
-class SearchConsentResponse with _$SearchConsentResponse {
-  const factory SearchConsentResponse({
-    @JsonKey(name: 'RESULT_CODE') required String resultCode,
-    @JsonKey(name: 'RESULT_DATA') required List<SearchConsentData> resultData,
-    @JsonKey(name: 'ERROR_CODE') required String errorCode,
-    @JsonKey(name: 'ERROR_MESSAGE') required String errorMessage,
-  }) = _SearchConsentResponse;
-
-  factory SearchConsentResponse.fromJson(Map<String, dynamic> json) =>
-      _$SearchConsentResponseFromJson(json);
-}
-
-@freezed
-class SearchConsentData with _$SearchConsentData {
+class SearchConsentData with _$SearchConsentData implements ConsentModel{
   const factory SearchConsentData({
     @JsonKey(name: 'FormName') String? formName,
     @JsonKey(name: 'FormCd') String? formCd,

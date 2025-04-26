@@ -1,22 +1,11 @@
+import 'package:flutter_exe/model/common/conset_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'writtenscription_consent_data.freezed.dart';
-part 'writtenscription_consent_data.g.dart';
+part 'written_consent_data.freezed.dart';
+part 'written_consent_data.g.dart';
 
 @freezed
-class WrittenConsentResponse with _$WrittenConsentResponse {
-  const factory WrittenConsentResponse({
-    @JsonKey(name: 'RESULT_CODE') @Default('') String resultCode,
-    @JsonKey(name: 'RESULT_DATA') @Default([]) List<WrittenConsentData> resultData,
-    @JsonKey(name: 'ERROR_CODE') @Default('') String errorCode,
-    @JsonKey(name: 'ERROR_MESSAGE') @Default('') String errorMessage,
-  }) = _WrittenConsentResponse;
-
-  factory WrittenConsentResponse.fromJson(Map<String, dynamic> json) => _$WrittenConsentResponseFromJson(json);
-}
-
-@freezed
-class WrittenConsentData with _$WrittenConsentData {
+class WrittenConsentData with _$WrittenConsentData implements ConsentModel{
   const factory WrittenConsentData({
     @JsonKey(name: 'ConsentMstRid') @Default(0) int consentMstRid,
     @JsonKey(name: 'RewriteConsentMstRid') @Default(0) int rewriteConsentMstRid,

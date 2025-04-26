@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'patientinfo_repository.dart';
+part of 'prescription_consent_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'patientinfo_repository.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations
 
-class _PatientInfoRepository implements PatientInfoRepository {
-  _PatientInfoRepository(
+class _PrescriptionConsentRepository implements PrescriptionConsentRepository {
+  _PrescriptionConsentRepository(
     this._dio, {
     this.baseUrl,
     this.errorLogger,
@@ -22,17 +22,18 @@ class _PatientInfoRepository implements PatientInfoRepository {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<PatientInfoResponse> getPatientInfo(
-    String methodName,
-    String params,
-    String userId,
-    String deviceType,
-    String deviceIdentName,
-    String deviceIdentIP,
-    String deviceIdentMac,
-  ) async {
+  Future<ConsentList<PrescriptionConsentData>> getList({
+    String? methodName,
+    String? params,
+    String? userId,
+    String? deviceType,
+    String? deviceIdentName,
+    String? deviceIdentIP,
+    String? deviceIdentMac,
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = {
       'methodName': methodName,
@@ -43,27 +44,33 @@ class _PatientInfoRepository implements PatientInfoRepository {
       'deviceIdentIP': deviceIdentIP,
       'deviceIdentMac': deviceIdentMac,
     };
-    final _options = _setStreamType<PatientInfoResponse>(Options(
+    _data.removeWhere((k, v) => v == null);
+    final _options =
+        _setStreamType<ConsentList<PrescriptionConsentData>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
       contentType: 'application/x-www-form-urlencoded',
     )
-        .compose(
-          _dio.options,
-          '/HospitalSvc.aspx',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        )));
+            .compose(
+              _dio.options,
+              '/HospitalSvc.aspx',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late PatientInfoResponse _value;
+    late ConsentList<PrescriptionConsentData> _value;
     try {
-      _value = PatientInfoResponse.fromJson(_result.data!);
+      _value = ConsentList<PrescriptionConsentData>.fromJson(
+        _result.data!,
+        (json) =>
+            PrescriptionConsentData.fromJson(json as Map<String, dynamic>),
+      );
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -106,25 +113,25 @@ class _PatientInfoRepository implements PatientInfoRepository {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$patientInfoRepositoryHash() =>
-    r'35e380e65fa58468872f98c8e4255239790e4ca1';
+String _$prescriptionConsentRepositoryHash() =>
+    r'56b19fe5f301557fce9b171545ac84c5fe451f07';
 
-/// See also [patientInfoRepository].
-@ProviderFor(patientInfoRepository)
-final patientInfoRepositoryProvider =
-    AutoDisposeProvider<PatientInfoRepository>.internal(
-  patientInfoRepository,
-  name: r'patientInfoRepositoryProvider',
+/// See also [prescriptionConsentRepository].
+@ProviderFor(prescriptionConsentRepository)
+final prescriptionConsentRepositoryProvider =
+    AutoDisposeProvider<PrescriptionConsentRepository>.internal(
+  prescriptionConsentRepository,
+  name: r'prescriptionConsentRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$patientInfoRepositoryHash,
+      : _$prescriptionConsentRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef PatientInfoRepositoryRef
-    = AutoDisposeProviderRef<PatientInfoRepository>;
+typedef PrescriptionConsentRepositoryRef
+    = AutoDisposeProviderRef<PrescriptionConsentRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

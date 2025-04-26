@@ -6,26 +6,6 @@ part of 'search_consent_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SearchConsentResponseImpl _$$SearchConsentResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$SearchConsentResponseImpl(
-      resultCode: json['RESULT_CODE'] as String,
-      resultData: (json['RESULT_DATA'] as List<dynamic>)
-          .map((e) => SearchConsentData.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      errorCode: json['ERROR_CODE'] as String,
-      errorMessage: json['ERROR_MESSAGE'] as String,
-    );
-
-Map<String, dynamic> _$$SearchConsentResponseImplToJson(
-        _$SearchConsentResponseImpl instance) =>
-    <String, dynamic>{
-      'RESULT_CODE': instance.resultCode,
-      'RESULT_DATA': instance.resultData,
-      'ERROR_CODE': instance.errorCode,
-      'ERROR_MESSAGE': instance.errorMessage,
-    };
-
 _$SearchConsentDataImpl _$$SearchConsentDataImplFromJson(
         Map<String, dynamic> json) =>
     _$SearchConsentDataImpl(
