@@ -18,6 +18,7 @@ class PatientInfo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ConsentListView(
+      title: '환자정보',
       provider: patientInfoProvider,
       itemBuilder: <PatientInfoResultData>(_, index, model) {
         return MouseRegion(
@@ -34,7 +35,6 @@ class PatientInfo extends ConsumerWidget {
           ),
         );
       },
-      title: '환자정보',
     );
   }
 }
