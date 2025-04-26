@@ -58,39 +58,13 @@ InfoList<T> createSkeletonList<T>({
     buildItem: (item) => Builder(
       builder: (context) => itemBuilder(context),
     ),
-    buildEmptyItem: (context, items) => Container(
-      padding: const EdgeInsets.symmetric(vertical: 32),
-      alignment: Alignment.center,
-      child: const Column(
+    buildEmptyItem: (context, items) {
+      return Column(
         children: [
-          Icon(
-            Icons.description_outlined,
-            size: 48,
-            color: AppColors.gray400,
-          ),
-          SizedBox(height: 16),
-          Text(
-             '환자정보를 선택해주세요.',
-            style: TextStyle(
-              color: AppColors.gray500,
-              fontSize: 14,
-            ),
-          ),
+          ...List.generate(itemCount, (i) => const ConsentSkeletonItem())
         ],
-      ),
-    ),
-    backgroundColor: backgroundColor,
-    contentPadding: contentPadding,
-    itemPadding: itemPadding,
-    useSliver: useSliver,
-    itemDecoration: itemDecoration ??
-        const BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.grey,
-            ),
-          ),
-        ),
+      );
+    },
   );
 }
 

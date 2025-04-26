@@ -14,6 +14,7 @@ class WrittenConsent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConsentListView(
+      title: '작성동의서',
       provider: writtenConsentProvider,
       itemBuilder: <WrittenConsentData>(_, index, model) {
         return
@@ -29,7 +30,6 @@ class WrittenConsent extends StatelessWidget {
                     ),
           );
       },
-      title: '작성동의서',
     );
   }
 }

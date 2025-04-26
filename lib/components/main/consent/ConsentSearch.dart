@@ -19,6 +19,8 @@ class ConsentSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConsentListView(
+      title: '동의서 검색',
+      header: const _ConsentSearchHeader(title: '동의서 검색'),
       provider: searchConsentProvider,
       itemBuilder: <SearchConsentData>(_, index, model) {
         return GestureDetector(
@@ -26,8 +28,6 @@ class ConsentSearch extends StatelessWidget {
           child: SearchConsentItem.fromModel(model: model),
         );
       },
-      title: '',
-      header: const _ConsentSearchHeader(title: '동의서 검색'),
     );
   }
 }
