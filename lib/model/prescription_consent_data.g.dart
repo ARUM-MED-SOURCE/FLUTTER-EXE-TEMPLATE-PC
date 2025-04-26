@@ -6,27 +6,6 @@ part of 'prescription_consent_data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PrescriptionConsentResponseImpl _$$PrescriptionConsentResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$PrescriptionConsentResponseImpl(
-      resultCode: json['RESULT_CODE'] as String,
-      resultData: (json['RESULT_DATA'] as List<dynamic>)
-          .map((e) =>
-              PrescriptionConsentData.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      errorCode: json['ERROR_CODE'] as String,
-      errorMessage: json['ERROR_MESSAGE'] as String,
-    );
-
-Map<String, dynamic> _$$PrescriptionConsentResponseImplToJson(
-        _$PrescriptionConsentResponseImpl instance) =>
-    <String, dynamic>{
-      'RESULT_CODE': instance.resultCode,
-      'RESULT_DATA': instance.resultData,
-      'ERROR_CODE': instance.errorCode,
-      'ERROR_MESSAGE': instance.errorMessage,
-    };
-
 _$PrescriptionConsentDataImpl _$$PrescriptionConsentDataImplFromJson(
         Map<String, dynamic> json) =>
     _$PrescriptionConsentDataImpl(

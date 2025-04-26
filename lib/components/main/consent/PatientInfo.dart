@@ -1,113 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exe/components/common/InfoListCard.dart';
-import 'package:flutter_exe/components/common/Skeleton.dart';
+import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/dataloaders/patientinfo_dataloader.dart';
-import 'package:flutter_exe/dataloaders/prescription_consent_dataloader.dart';
-import 'package:flutter_exe/dataloaders/written_consent_dataloader.dart';
 import 'package:flutter_exe/model/patient_info_response.dart';
-import 'package:flutter_exe/providers/hospital_section_provider.dart';
-import 'package:flutter_exe/providers/selected_date_provider.dart';
-import 'package:flutter_exe/styles/patient_styles.dart';
-import 'package:flutter_exe/utils/time.dart';
+import 'package:flutter_exe/providers/consent/patient_info_provider.dart';
+import 'package:flutter_exe/providers/consent/prescription_consent_provider.dart';
+import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class PatientInfo extends ConsumerWidget {
-  const PatientInfo({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final hospitalSection = ref.watch(hospitalSectionProvider);
-    final patientData =
-        ref.watch(patientInfoLoaderProvider(hospitalSection.methodName));
-
-    return patientData.when(
-      data: (response) => InfoListCard<PatientInfoResultData>(
-        title: '환자정보',
-        items: response.resultData,
-        buildItem: (patient) => _PatientInfoItem(patient: patient),
-        buildEmptyItem: (context, items) => Container(
-          padding: const EdgeInsets.symmetric(vertical: 32),
-          alignment: Alignment.center,
-          child: const Column(
-            children: [
-              Icon(
-                Icons.description_outlined,
-                size: 48,
-                color: AppColors.gray400,
-              ),
-              SizedBox(height: 16),
-              Text('검색 결과가 없습니다.'),
-            ],
-          ),
-        ),
-      ),
-      loading: () => InfoListCard<PatientInfoResultData>(
-        title: '환자정보',
-        items: const [],
-        buildItem: (patient) => _PatientInfoItem(patient: patient),
-        buildEmptyItem: (context, items) => const SizedBox(),
-        isLoading: true,
-        itemBuilder: (patient) => const ConsentSkeletonItem(),
-        emptyItemBuilder: (index) => PatientInfoResultData.empty(),
-        itemCount: 8,
-      ),
-      error: (error, stack) => InfoListCard<PatientInfoResultData>(
-        title: '환자정보',
-        items: const [],
-        buildItem: (patient) => _PatientInfoItem(patient: patient),
-        buildEmptyItem: (context, items) => const SizedBox(),
-        hasError: true,
-        errorMessage: '내용을 불러오는데 실패했습니다.',
-        onRetry: () {
-          ref.invalidate(
-            patientInfoLoaderProvider(hospitalSection.methodName),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _PatientInfoItem extends ConsumerWidget {
-  final PatientInfoResultData patient;
-
-  const _PatientInfoItem({
-    required this.patient,
+  const PatientInfo({
+    super.key,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedDate = ref.watch(selectedDateProvider);
-    return InkWell(
-      onTap: () {
-        ref
-            .read(prescriptionConsentDataLoaderProvider.notifier)
-            .getPrescriptionConsent(
-              userId: 'userId', // TODO: 실제 사용자 ID로 변경 필요
-              userPassword: 'userPassword', // TODO: 실제 비밀번호로 변경 필
-            );
-
-        ref.read(writtenConsentDataLoaderProvider.notifier).getWrittenConsent(
-              userId: 'userId',
-              // TODO: 실제 사용자 ID로 변경 필요
-              userPassword: 'userPassword',
-              // TODO: 실제 비밀번호로 변경 필요
-              patientCode: patient.patientCode,
-              startDate: formatToYYYYMMDD(selectedDate),
-              endDate: formatToYYYYMMDD(DateTime.now()),
-            );
+    return ConsentListView(
+      provider: patientInfoProvider,
+      itemBuilder: <PatientInfoResultData>(_, index, model) {
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              logger.i("처방동의서 및 작성동의서 조회 ${index}");
+              ref.read(prescriptionConsentProvider.notifier).getData();
+              ref.read(writtenConsentProvider.notifier).getData();
+            },
+            child: PatientInfoItem.fromModel(
+              model: model,
+            ),
+          ),
+        );
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _PatientName(patient: patient),
-            _PatientDetail(patient: patient),
-            _PatientAlert(patient: patient),
-          ],
-        ),
+      title: '환자정보',
+    );
+  }
+}
+
+class PatientInfoItem extends ConsumerWidget {
+  final PatientInfoResultData model;
+
+  const PatientInfoItem({
+    super.key,
+    required this.model,
+  });
+
+  factory PatientInfoItem.fromModel({
+    required PatientInfoResultData model,
+  }) {
+    return PatientInfoItem(
+      model: model,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _PatientName(patient: model),
+          _PatientDetail(patient: model),
+          _PatientProcedure(patient: model),
+        ],
       ),
     );
   }
@@ -126,12 +84,18 @@ class _PatientName extends StatelessWidget {
       children: [
         Text(
           patient.patientName,
-          style: PatientStyles.nameStyle,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const SizedBox(width: 8),
         Text(
           patient.patientCode,
-          style: PatientStyles.nameStyle,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
@@ -190,21 +154,29 @@ class _PatientDetail extends StatelessWidget {
       children: [
         Text(
           label,
-          style: PatientStyles.infoLabelStyle,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.gray500,
+            height: 1.5,
+          ),
         ),
         Text(
           value,
-          style: PatientStyles.infoValueStyle,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.black,
+            height: 1.5,
+          ),
         ),
       ],
     );
   }
 }
 
-class _PatientAlert extends StatelessWidget {
+class _PatientProcedure extends StatelessWidget {
   final PatientInfoResultData patient;
 
-  const _PatientAlert({
+  const _PatientProcedure({
     required this.patient,
     super.key,
   });

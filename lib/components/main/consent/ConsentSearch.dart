@@ -1,119 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
+import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/components/main/set/SetBody.dart';
+import 'package:flutter_exe/constants/api_method.dart';
 import 'package:flutter_exe/constants/colors.dart';
-import 'package:flutter_exe/dataloaders/search_consent_dataloader.dart';
-import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/model/search_consent_data.dart';
 import 'package:flutter_exe/providers/search_consent_keyword_provider.dart';
-import 'package:flutter_exe/providers/selected_consents_provider.dart';
-import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
+import 'package:flutter_exe/providers/consent/search_consent_provider.dart';
 import 'package:flutter_exe/providers/selected_option_provider.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../common/Skeleton.dart';
-
-class ConsentSearch extends ConsumerWidget {
+class ConsentSearch extends StatelessWidget {
   const ConsentSearch({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final searchResults = ref.watch(searchConsentDataLoaderProvider); // 검색 결과 정보를 가진 프로바이더 변수
-
-    return Info(
-      card: InfoCard(
-        header: const _ConsentSearchHeader(title: "동의서 검색"),
-        body: searchResults.when(
-          /// DATA EXIST CASE
-          data: (data) => InfoList<SearchConsentData>(
-            shrinkWrap: false,
-            physics: const BouncingScrollPhysics(),
-            items: data?.resultData ?? [],
-            buildItem: (consent) => Consumer(
-              builder: (context, ref, _) {
-                final id = consent.formId.toString();
-                final name = consent.formName;
-
-                if (id == null || name == null) {
-                  return const SizedBox.shrink();
-                }
-
-                return FavoriteConsentItem(
-                  name: name,
-                  id: id,
-                  isSelected: ref.watch(selectedConsentsProvider).contains(id),
-                  isFavorite: ref.watch(selectedFavoriteConsentsProvider).contains(id),
-                  onSelected: () {
-                    final notifier = ref.read(selectedConsentsProvider.notifier);
-                    notifier.toggleConsent(id);
-                  },
-                  onFavoriteToggled: () {
-                    final notifier = ref.read(selectedFavoriteConsentsProvider.notifier);
-                    notifier.toggleConsent(id);
-                  },
-                );
-              },
-            ),
-            backgroundColor: AppColors.white,
-            contentPadding: EdgeInsets.zero,
-          ),
-
-          /// ERROR CASE
-          error: (error, stackTrace) => InfoList(
-            items: const ['empty'],
-            buildItem: (item) => Center(
-              child: SelectableText.rich(
-                TextSpan(
-                  text: 'Error: ',
-                  style: const TextStyle(color: AppColors.red500),
-                  children: [
-                    TextSpan(
-                      text: error.toString(),
-                      style: const TextStyle(color: AppColors.red500),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
-          /// LOADING CASE
-          loading: () => createSkeletonList<SearchConsentData>(
-            itemBuilder: (consent) => const ConsentSkeletonItem(),
-            emptyItemBuilder: (index) => const SearchConsentData(
-              consentMstRid: 0,
-              formName: '',
-            ),
-            itemCount: 4,
-            backgroundColor: AppColors.white,
-            contentPadding: EdgeInsets.zero,
-            itemDecoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppColors.gray100,
-                ),
-              ),
-            ),
-          ),
-        ),
-        backgroundColor: AppColors.white,
-        isRound: true,
-        showBorder: false,
-        padding: EdgeInsets.zero,
-        margin: EdgeInsets.zero,
-      ),
+  Widget build(BuildContext context) {
+    return ConsentListView(
+      provider: searchConsentProvider,
+      itemBuilder: <SearchConsentData>(_, index, model) {
+        return GestureDetector(
+          onTap: () {},
+          child: SearchConsentItem.fromModel(model: model),
+        );
+      },
+      title: '',
+      header: const _ConsentSearchHeader(title: '동의서 검색'),
     );
   }
 }
 
-class _ConsentSearchHeader extends InfoHeader {
-  const _ConsentSearchHeader({
-    required this.title,
-  }) : super(title: title);
+class SearchConsentItem extends StatelessWidget {
+  final SearchConsentData model;
+
+  const SearchConsentItem({
+    super.key,
+    required this.model,
+  });
+
+  factory SearchConsentItem.fromModel({
+    required SearchConsentData model,
+  }) {
+    return SearchConsentItem(model: model);
+  }
 
   @override
-  final String title;
+  Widget build(BuildContext context) {
+    return CheckableConsentItem(
+      name: model.formName ?? "",
+      id: model.formId.toString(),
+      isSelected: true,
+      onSelected: () {},
+    );
+  }
+}
+
+/*return FavoriteConsentItem(
+name: name,
+id: id,
+isSelected: ref.watch(selectedConsentsProvider).contains(id),
+isFavorite: ref.watch(selectedFavoriteConsentsProvider).contains(id),
+onSelected: () {
+final notifier = ref.read(selectedConsentsProvider.notifier);
+notifier.toggleConsent(id);
+},
+onFavoriteToggled: () {
+final notifier = ref.read(selectedFavoriteConsentsProvider.notifier);
+notifier.toggleConsent(id);
+},
+);*/
+
+class _ConsentSearchHeader extends InfoHeader {
+  const _ConsentSearchHeader({
+    super.key,
+    required super.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -131,9 +92,13 @@ class _ConsentSearchHeader extends InfoHeader {
           const _SetButton(),
           Text(
             title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
           ),
+          const SizedBox(height: 8),
           const _ConsentSearchOptions(),
+          const SizedBox(height: 8),
           const _ConsentSearchBar(),
         ],
       ),
@@ -165,7 +130,8 @@ class _ConsentSearchOptions extends StatelessWidget {
               child: Radio(
                 value: value,
                 groupValue: ref.watch(selectedOptionProvider),
-                onChanged: (value) => ref.read(selectedOptionProvider.notifier).setOption(value!),
+                onChanged: (value) =>
+                    ref.read(selectedOptionProvider.notifier).setOption(value!),
                 activeColor: AppColors.blue300,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
@@ -197,9 +163,11 @@ class _ConsentSearchBar extends ConsumerWidget {
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           suffixIcon: IconButton(
               onPressed: () {
-                ref.read(searchConsentDataLoaderProvider.notifier).getSearchConsent(
+                ref.read(searchConsentProvider.notifier).getList(
+                    methodName: ApiMethod.searchConsent,
                     userId: 'userId', // TODO:: userId를 실제 아이디로 변경해야함
-                    userPassword: 'userPassword'); // TODO :: userPassword를 실제 비밀번호로 변경해야함
+                    userPassword:
+                        'userPassword'); // TODO :: userPassword를 실제 비밀번호로 변경해야함
               },
               icon: const Icon(Icons.search, color: AppColors.blue300)),
         ),
@@ -211,12 +179,12 @@ class _ConsentSearchBar extends ConsumerWidget {
   }
 }
 
-class _SetButton extends StatelessWidget{
+class _SetButton extends StatelessWidget {
   const _SetButton();
 
   @override
-  Widget build(BuildContext context){
-    return  Align(
+  Widget build(BuildContext context) {
+    return Align(
         alignment: Alignment.centerRight,
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
@@ -247,7 +215,6 @@ class _SetButton extends StatelessWidget{
               },
             );
           },
-        )
-    );
+        ));
   }
 }

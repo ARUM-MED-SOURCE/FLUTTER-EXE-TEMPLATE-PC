@@ -1,32 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'writtenscription_consent_data.dart';
+part of 'written_consent_data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
-
-_$WrittenConsentResponseImpl _$$WrittenConsentResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$WrittenConsentResponseImpl(
-      resultCode: json['RESULT_CODE'] as String? ?? '',
-      resultData: (json['RESULT_DATA'] as List<dynamic>?)
-              ?.map(
-                  (e) => WrittenConsentData.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-      errorCode: json['ERROR_CODE'] as String? ?? '',
-      errorMessage: json['ERROR_MESSAGE'] as String? ?? '',
-    );
-
-Map<String, dynamic> _$$WrittenConsentResponseImplToJson(
-        _$WrittenConsentResponseImpl instance) =>
-    <String, dynamic>{
-      'RESULT_CODE': instance.resultCode,
-      'RESULT_DATA': instance.resultData,
-      'ERROR_CODE': instance.errorCode,
-      'ERROR_MESSAGE': instance.errorMessage,
-    };
 
 _$WrittenConsentDataImpl _$$WrittenConsentDataImplFromJson(
         Map<String, dynamic> json) =>

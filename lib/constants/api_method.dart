@@ -10,4 +10,13 @@ class ApiMethod {
   static const String laboratory = 'GetInpatientSearch';
   static const String search = 'GetSearch';
   static const String quickView = 'GetQuickView';
+
+  // 작성동의서
+  static const String writtenConsent = 'GetConsents';
+  // 처방동의서
+  static const String prescriptionConsent = 'GetUnfinishedConsentSearch';
+
+  // 동의서 검색
+  static const String searchConsent = 'GetDocList';
+
 }
