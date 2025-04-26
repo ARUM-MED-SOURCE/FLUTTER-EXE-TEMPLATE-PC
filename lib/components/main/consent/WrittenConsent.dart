@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/model/writtenscription_consent_data.dart';
-import 'package:flutter_exe/providers/writtenscription_consent_provider.dart';
+import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
 import 'package:flutter_exe/utils/time.dart';
 
 class WrittenConsent extends StatelessWidget {
@@ -11,7 +11,7 @@ class WrittenConsent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConsentListView(
-      provider: writtenscriptionConsentProvider,
+      provider: writtenConsentProvider,
       itemBuilder: <WrittenConsentData>(_, index, model) {
         return GestureDetector(
           onTap: () {},

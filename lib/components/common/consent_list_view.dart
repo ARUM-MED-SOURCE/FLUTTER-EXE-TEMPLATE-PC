@@ -3,7 +3,7 @@ import 'package:flutter_exe/components/common/Skeleton.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/model/common/consent_list_model.dart';
 import 'package:flutter_exe/model/common/conset_model.dart';
-import 'package:flutter_exe/providers/consent_list_provider.dart';
+import 'package:flutter_exe/providers/consent/consent_list_provider.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';

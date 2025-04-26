@@ -19,8 +19,8 @@ class ConsentListProvider<T extends ConsentModel,
 
   Future<void> getList({
     String? methodName,
-     String? userId,
-     String? userPassword,
+    String? userId,
+    String? userPassword,
     String? clnDate,
     String? ward,
     String? docName,

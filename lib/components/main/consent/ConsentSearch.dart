@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/components/main/set/SetBody.dart';
+import 'package:flutter_exe/constants/api_method.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/model/search_consent_data.dart';
 import 'package:flutter_exe/providers/search_consent_keyword_provider.dart';
-import 'package:flutter_exe/providers/search_consent_provider.dart';
+import 'package:flutter_exe/providers/consent/search_consent_provider.dart';
 import 'package:flutter_exe/providers/selected_option_provider.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,7 +40,7 @@ class SearchConsentItem extends StatelessWidget {
 
   factory SearchConsentItem.fromModel({
     required SearchConsentData model,
-  }){
+  }) {
     return SearchConsentItem(model: model);
   }
 
@@ -92,8 +93,8 @@ class _ConsentSearchHeader extends InfoHeader {
           Text(
             title,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           const SizedBox(height: 8),
           const _ConsentSearchOptions(),
@@ -162,12 +163,11 @@ class _ConsentSearchBar extends ConsumerWidget {
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
           suffixIcon: IconButton(
               onPressed: () {
-                // ref
-                    // .read(searchConsentDataLoaderProvider.notifier)
-                    // .getSearchConsent(
-                    // userId: 'userId', // TODO:: userId를 실제 아이디로 변경해야함
-                    // userPassword:
-                    // 'userPassword'); // TODO :: userPassword를 실제 비밀번호로 변경해야함
+                ref.read(searchConsentProvider.notifier).getList(
+                    methodName: ApiMethod.searchConsent,
+                    userId: 'userId', // TODO:: userId를 실제 아이디로 변경해야함
+                    userPassword:
+                        'userPassword'); // TODO :: userPassword를 실제 비밀번호로 변경해야함
               },
               icon: const Icon(Icons.search, color: AppColors.blue300)),
         ),

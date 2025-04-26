@@ -2,26 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/model/patient_info_response.dart';
-import 'package:flutter_exe/providers/patient_info_provider.dart';
+import 'package:flutter_exe/providers/consent/patient_info_provider.dart';
+import 'package:flutter_exe/providers/consent/prescription_consent_provider.dart';
+import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
 import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 final logger = Logger();
 
-class PatientInfo extends StatelessWidget {
+class PatientInfo extends ConsumerWidget {
   const PatientInfo({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ConsentListView(
       provider: patientInfoProvider,
       itemBuilder: <PatientInfoResultData>(_, index, model) {
         return GestureDetector(
           onTap: () {
-            logger.i("test");
+            logger.i("처방동의서 및 작성동의서 조회");
+            ref.read(prescriptionConsentProvider.notifier).getData();
+            ref.read(writtenConsentProvider.notifier).getData();
           },
           child: PatientInfoItem.fromModel(
             model: model,

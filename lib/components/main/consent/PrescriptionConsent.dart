@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
-import 'package:flutter_exe/providers/prescription_consent_provider.dart';
+import 'package:flutter_exe/providers/consent/prescription_consent_provider.dart';
 
 class PrescriptionConsent extends StatelessWidget {
   const PrescriptionConsent({super.key});
