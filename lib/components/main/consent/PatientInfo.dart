@@ -5,7 +5,6 @@ import 'package:flutter_exe/model/patient_info_response.dart';
 import 'package:flutter_exe/providers/consent/patient_info_provider.dart';
 import 'package:flutter_exe/providers/consent/prescription_consent_provider.dart';
 import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
-import 'package:flutter_exe/styles/patient_styles.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
@@ -21,14 +20,17 @@ class PatientInfo extends ConsumerWidget {
     return ConsentListView(
       provider: patientInfoProvider,
       itemBuilder: <PatientInfoResultData>(_, index, model) {
-        return GestureDetector(
-          onTap: () {
-            logger.i("처방동의서 및 작성동의서 조회");
-            ref.read(prescriptionConsentProvider.notifier).getData();
-            ref.read(writtenConsentProvider.notifier).getData();
-          },
-          child: PatientInfoItem.fromModel(
-            model: model,
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              logger.i("처방동의서 및 작성동의서 조회 ${index}");
+              ref.read(prescriptionConsentProvider.notifier).getData();
+              ref.read(writtenConsentProvider.notifier).getData();
+            },
+            child: PatientInfoItem.fromModel(
+              model: model,
+            ),
           ),
         );
       },
@@ -38,18 +40,18 @@ class PatientInfo extends ConsumerWidget {
 }
 
 class PatientInfoItem extends ConsumerWidget {
-  final PatientInfoResultData patient;
+  final PatientInfoResultData model;
 
   const PatientInfoItem({
     super.key,
-    required this.patient,
+    required this.model,
   });
 
   factory PatientInfoItem.fromModel({
     required PatientInfoResultData model,
   }) {
     return PatientInfoItem(
-      patient: model,
+      model: model,
     );
   }
 
@@ -60,9 +62,9 @@ class PatientInfoItem extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _PatientName(patient: patient),
-          _PatientDetail(patient: patient),
-          _PatientAlert(patient: patient),
+          _PatientName(patient: model),
+          _PatientDetail(patient: model),
+          _PatientProcedure(patient: model),
         ],
       ),
     );
@@ -82,12 +84,18 @@ class _PatientName extends StatelessWidget {
       children: [
         Text(
           patient.patientName,
-          style: PatientStyles.nameStyle,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const SizedBox(width: 8),
         Text(
           patient.patientCode,
-          style: PatientStyles.nameStyle,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
@@ -146,21 +154,29 @@ class _PatientDetail extends StatelessWidget {
       children: [
         Text(
           label,
-          style: PatientStyles.infoLabelStyle,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.gray500,
+            height: 1.5,
+          ),
         ),
         Text(
           value,
-          style: PatientStyles.infoValueStyle,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.black,
+            height: 1.5,
+          ),
         ),
       ],
     );
   }
 }
 
-class _PatientAlert extends StatelessWidget {
+class _PatientProcedure extends StatelessWidget {
   final PatientInfoResultData patient;
 
-  const _PatientAlert({
+  const _PatientProcedure({
     required this.patient,
     super.key,
   });

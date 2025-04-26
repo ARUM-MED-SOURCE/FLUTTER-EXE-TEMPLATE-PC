@@ -3,6 +3,9 @@ import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/providers/consent/prescription_consent_provider.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class PrescriptionConsent extends StatelessWidget {
   const PrescriptionConsent({super.key});
@@ -12,9 +15,14 @@ class PrescriptionConsent extends StatelessWidget {
     return ConsentListView(
       provider: prescriptionConsentProvider,
       itemBuilder: <PrescriptionConsentData>(_, index, model) {
-        return GestureDetector(
-          onTap: () {},
-          child: PrescriptionConsentItem.fromModel(model: model),
+        return MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(
+            onTap: () {
+              logger.i("처방동의서 열기 ${model.formId}");
+            },
+            child: PrescriptionConsentItem.fromModel(model: model),
+          ),
         );
       },
       title: '처방동의서',

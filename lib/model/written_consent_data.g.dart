@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'writtenscription_consent_data.dart';
+part of 'written_consent_data.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

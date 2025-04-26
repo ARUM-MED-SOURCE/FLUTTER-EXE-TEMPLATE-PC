@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/components/common/consent_list_view.dart';
-import 'package:flutter_exe/model/writtenscription_consent_data.dart';
+import 'package:flutter_exe/model/written_consent_data.dart';
 import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
 import 'package:flutter_exe/utils/time.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class WrittenConsent extends StatelessWidget {
   const WrittenConsent({super.key});
@@ -13,12 +16,18 @@ class WrittenConsent extends StatelessWidget {
     return ConsentListView(
       provider: writtenConsentProvider,
       itemBuilder: <WrittenConsentData>(_, index, model) {
-        return GestureDetector(
-          onTap: () {},
-          child: WrittenScriptionConsentItem.fromModel(
-            model: model,
-          ),
-        );
+        return
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+            onTap: () {
+              logger.i("작성동의서 열기");
+            },
+            child: WrittenScriptionConsentItem.fromModel(
+              model: model,
+            ),
+                    ),
+          );
       },
       title: '작성동의서',
     );

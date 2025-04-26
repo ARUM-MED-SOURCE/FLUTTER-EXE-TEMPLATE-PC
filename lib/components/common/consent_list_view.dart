@@ -38,6 +38,7 @@ class ConsentListView<T extends ConsentModel> extends ConsumerStatefulWidget {
 }
 
 class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<ConsentListView> {
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(widget.provider);
@@ -144,12 +145,13 @@ class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<Consen
       contentPadding: EdgeInsets.zero,
       items: state.resultData,
       shrinkWrap: widget.shrinkWrap,
+      separatorBuilder: (context,index)=> const SizedBox(),
       physics: widget.physics ?? const BouncingScrollPhysics(),
       itemDecoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: AppColors.gray100,
-          ),
+          )
         ),
       ),
       buildItem: (T item) => widget.itemBuilder(

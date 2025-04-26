@@ -1,8 +1,8 @@
 import 'package:flutter_exe/model/common/conset_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'writtenscription_consent_data.freezed.dart';
-part 'writtenscription_consent_data.g.dart';
+part 'written_consent_data.freezed.dart';
+part 'written_consent_data.g.dart';
 
 @freezed
 class WrittenConsentData with _$WrittenConsentData implements ConsentModel{

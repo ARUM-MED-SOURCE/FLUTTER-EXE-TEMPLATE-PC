@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_exe/api/dio/dio.dart';
 import 'package:flutter_exe/model/common/consent_list_model.dart';
-import 'package:flutter_exe/model/writtenscription_consent_data.dart';
+import 'package:flutter_exe/model/written_consent_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
