@@ -1,29 +1,28 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_exe/components/common/ConsentItem.dart';
 import 'package:flutter_exe/components/common/consent_list_view.dart';
 import 'package:flutter_exe/model/written_consent_data.dart';
 import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
-import 'package:flutter_exe/utils/time.dart';
 import 'package:logger/logger.dart';
+
+import '../../../../utils/time.dart';
 
 final logger = Logger();
 
-class WrittenConsent extends StatelessWidget {
-  const WrittenConsent({super.key});
+class QuickViewUI extends StatelessWidget {
+  const QuickViewUI({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ConsentListView(
-      title: '작성동의서',
+      title: "빠른조회",
       provider: writtenConsentProvider,
       itemBuilder: <WrittenConsentData>(_, index, model) {
         return MouseRegion(
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
-            onTap: () {
-              logger.i("작성동의서 열기");
-            },
-            child: WrittenConsentItem.fromModel(model: model),
+            onTap: () {},
+            child: QuickViewItem.fromModel(model: model),
           ),
         );
       },
@@ -31,27 +30,27 @@ class WrittenConsent extends StatelessWidget {
   }
 }
 
-class WrittenConsentItem extends StatelessWidget {
+class QuickViewItem extends StatelessWidget {
   final WrittenConsentData model;
 
-  const WrittenConsentItem({
+  const QuickViewItem({
     super.key,
     required this.model,
   });
 
-  factory WrittenConsentItem.fromModel({
+  factory QuickViewItem.fromModel({
     required WrittenConsentData model,
   }) {
-    return WrittenConsentItem(model: model);
+    return QuickViewItem(model: model);
   }
 
   @override
   Widget build(BuildContext context) {
     return TaggedConsentItem(
-      type: model.consentStateDisp,
-      date: formatToYYYY_MM_DD(DateTime.parse(model.createDateTime)),
+      id: model.consentStateDisp,
       name: model.consentName,
-      id: model.consentMstRid.toString(),
+      type: model.hosType,
+      date: formatToYYYY_MM_DD(DateTime.parse(model.createDateTime)),
     );
   }
 }
