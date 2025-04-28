@@ -9,9 +9,38 @@ import 'package:dio/dio.dart';
 
 final logger = Logger();
 
+class ConsentListRequestParams {
+  final String? methodName;
+  final String? userId;
+  final String? userPassword;
+  final String? clnDate;
+  final String? ward;
+  final String? docName;
+  final String? dept;
+  final String? deviceType;
+  final String? deviceIdentName;
+  final String? deviceIdentIP;
+  final String? deviceIdentMac;
+
+  const ConsentListRequestParams({
+    this.methodName,
+    this.userId,
+    this.userPassword,
+    this.clnDate,
+    this.ward,
+    this.docName,
+    this.dept,
+    this.deviceType,
+    this.deviceIdentName,
+    this.deviceIdentIP,
+    this.deviceIdentMac,
+  });
+}
+
 class ConsentListProvider<T extends ConsentModel,
     U extends ConsentListRepository<T>> extends StateNotifier<ConsentListBase> {
   final U repository;
+  ConsentListRequestParams? _lastParams;
 
   ConsentListProvider({
     required this.repository,
@@ -30,6 +59,19 @@ class ConsentListProvider<T extends ConsentModel,
     String? deviceIdentIP,
     String? deviceIdentMac,
   }) async {
+    _lastParams = ConsentListRequestParams(
+      methodName: methodName,
+      userId: userId,
+      userPassword: userPassword,
+      clnDate: clnDate,
+      ward: ward,
+      docName: docName,
+      dept: dept,
+      deviceType: deviceType,
+      deviceIdentName: deviceIdentName,
+      deviceIdentIP: deviceIdentIP,
+      deviceIdentMac: deviceIdentMac,
+    );
     try {
       state = ConsentListLoading();
 
@@ -82,5 +124,22 @@ class ConsentListProvider<T extends ConsentModel,
 
       state = ConsentListError(message: errorMessage);
     }
+  }
+
+  Future<void> retry() async {
+    if (_lastParams == null) return;
+    await getList(
+      methodName: _lastParams!.methodName,
+      userId: _lastParams!.userId,
+      userPassword: _lastParams!.userPassword,
+      clnDate: _lastParams!.clnDate,
+      ward: _lastParams!.ward,
+      docName: _lastParams!.docName,
+      dept: _lastParams!.dept,
+      deviceType: _lastParams!.deviceType,
+      deviceIdentName: _lastParams!.deviceIdentName,
+      deviceIdentIP: _lastParams!.deviceIdentIP,
+      deviceIdentMac: _lastParams!.deviceIdentMac,
+    );
   }
 }
