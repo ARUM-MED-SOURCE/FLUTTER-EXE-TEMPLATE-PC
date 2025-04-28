@@ -6,8 +6,7 @@ const _kDropdownItemPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 const _kThickness = 4.0;
 const _kIconSize = 18.0;
 
-
-class SetHeader extends StatelessWidget {
+class SetHeader extends StatefulWidget {
   final VoidCallback onRegister;
   final VoidCallback onDeleteGroup;
 
@@ -18,8 +17,22 @@ class SetHeader extends StatelessWidget {
   });
 
   @override
+  State<SetHeader> createState() => _SetHeaderState();
+}
+
+class _SetHeaderState extends State<SetHeader> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scrollbar(
+      controller: _scrollController,
       thickness: _kThickness,
       thumbVisibility: true,
       child: Container(
@@ -31,6 +44,7 @@ class SetHeader extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
+              controller: _scrollController,
               scrollDirection: Axis.horizontal,
               child: ConstrainedBox(
                 constraints: BoxConstraints(minWidth: constraints.maxWidth),
@@ -61,7 +75,7 @@ class SetHeader extends StatelessWidget {
                       _buildToolbarButton(
                         icon: Icons.delete,
                         label: '서식그룹 삭제',
-                        onPressed: onDeleteGroup,
+                        onPressed: widget.onDeleteGroup,
                       ),
                       _buildToolbarButton(
                         icon: Icons.edit,
@@ -75,7 +89,7 @@ class SetHeader extends StatelessWidget {
                           _buildSearchField(),
                           const SizedBox(width: 8),
                           ElevatedButton(
-                            onPressed: onRegister,
+                            onPressed: widget.onRegister,
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.blue400),
                             child: const Text(
