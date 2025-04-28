@@ -1,5 +1,5 @@
 import 'package:flutter_exe/model/common/consent_list_model.dart';
-import 'package:flutter_exe/model/common/conset_model.dart';
+import 'package:flutter_exe/model/common/consent_model.dart';
 
 abstract class ConsentListRepository<T extends ConsentModel> {
   Future<ConsentList<T>> getList({
