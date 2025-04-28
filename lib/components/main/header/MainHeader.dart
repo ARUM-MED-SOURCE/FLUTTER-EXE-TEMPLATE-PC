@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/DatePickerField.dart';
+import 'package:flutter_exe/components/common/Dropdown.dart';
 import 'package:flutter_exe/components/main/header/DropdownOptions.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/providers/consent/patient_info_provider.dart';
@@ -10,15 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Constants
 const _kHeaderHeight = 60.0;
-const _kDropdownWidth = 150.0;
-const _kDropdownItemHeight = 38.0;
-const _kDropdownItemPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 8);
-const _kDropdownBorderRadius = 4.0;
-const _kDropdownElevation = 4.0;
-const _kDropdownOffset = Offset(0, 40);
 const _kIconSize = 20.0;
-const _kTextFontSize = 14.0;
-const _kMinDropdownWidth = 100.0;
 
 class MainHeader extends ConsumerStatefulWidget {
   const MainHeader({super.key});
@@ -28,53 +21,12 @@ class MainHeader extends ConsumerStatefulWidget {
 }
 
 class _MainHeaderState extends ConsumerState<MainHeader> {
-  OverlayEntry? _overlayEntry;
-  DropdownType? _activeDropdown;
   final ScrollController _scrollController = ScrollController();
   
   @override
   void dispose() {
-    if (mounted) {
-      _overlayEntry?.remove();
-      _overlayEntry = null;
-      _scrollController.dispose();
-    }
+    _scrollController.dispose();
     super.dispose();
-  }
-
-  void _removeOverlay() {
-    if (!mounted) return;
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-    setState(() => _activeDropdown = null);
-  }
-
-  void _showOverlay(DropdownType type) {
-    _removeOverlay();
-    setState(() => _activeDropdown = type);
-    _overlayEntry = _createOverlayEntry(type);
-    Overlay.of(context).insert(_overlayEntry!);
-  }
-
-  OverlayEntry _createOverlayEntry(DropdownType type) {
-    final items = DropdownOptions.getOptions(type);
-    final selectedValue = ref.read(dropdownOptionsProvider.notifier).getSelectedValue(type);
-    final layerLink = DropdownOptions.layerLinks[type];
-
-    return OverlayEntry(
-      builder: (context) => _DropdownOverlay(
-        onDismiss: _removeOverlay,
-        layerLink: layerLink!,
-        items: items,
-        selectedValue: selectedValue,
-        type: type,
-        onItemSelected: (item) {
-          ref.read(dropdownOptionsProvider.notifier).setSelectedValue(type, item);
-          setState(() => _activeDropdown = null);
-          _removeOverlay();
-        },
-      ),
-    );
   }
 
   @override
@@ -123,11 +75,15 @@ class _MainHeaderState extends ConsumerState<MainHeader> {
                               ],
                               
                               ...DropdownOptions.getVisibleTypes(hospitalSection).map((type) => 
-                                _DropdownButton(
-                                  value: dropdownOptions[type] ?? DropdownOptions.options[type]![0],
-                                  type: type,
-                                  isActive: _activeDropdown == type,
-                                  onTap: () => _showOverlay(type),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Dropdown<String>(
+                                    value: dropdownOptions[type] ?? DropdownOptions.options[type]![0],
+                                    items: DropdownOptions.getOptions(type),
+                                    onChanged: (value) => 
+                                      ref.read(dropdownOptionsProvider.notifier).setSelectedValue(type, value),
+                                    itemBuilder: (value) => value,
+                                  ),
                                 ),
                               ),
                             ],
@@ -196,155 +152,6 @@ class _DatePickerSection extends StatelessWidget {
         ),
         const SizedBox(width: 8),
       ],
-    );
-  }
-}
-
-class _DropdownOverlay extends StatelessWidget {
-  final VoidCallback onDismiss;
-  final LayerLink layerLink;
-  final List<String> items;
-  final String selectedValue;
-  final DropdownType type;
-  final ValueChanged<String> onItemSelected;
-
-  const _DropdownOverlay({
-    required this.onDismiss,
-    required this.layerLink,
-    required this.items,
-    required this.selectedValue,
-    required this.type,
-    required this.onItemSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: GestureDetector(
-            onTap: onDismiss,
-            child: Container(color: Colors.transparent),
-          ),
-        ),
-        Positioned(
-          width: _kDropdownWidth,
-          child: CompositedTransformFollower(
-            link: layerLink,
-            showWhenUnlinked: false,
-            offset: _kDropdownOffset,
-            child: Material(
-              elevation: _kDropdownElevation,
-              borderRadius: BorderRadius.circular(_kDropdownBorderRadius),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(_kDropdownBorderRadius),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: items.map((item) => _DropdownItem(
-                    item: item,
-                    isSelected: item == selectedValue,
-                    onTap: () => onItemSelected(item),
-                  )).toList(),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _DropdownItem extends StatelessWidget {
-  final String item;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _DropdownItem({
-    required this.item,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: _kDropdownItemPadding,
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.blue50 : Colors.transparent,
-          borderRadius: BorderRadius.circular(_kDropdownBorderRadius),
-        ),
-        child: Text(
-          item,
-          style: TextStyle(
-            fontSize: _kTextFontSize,
-            color: isSelected ? AppColors.blue300 : AppColors.gray300,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _DropdownButton extends StatelessWidget {
-  final String value;
-  final DropdownType type;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  const _DropdownButton({
-    required this.value,
-    required this.type,
-    required this.isActive,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: CompositedTransformTarget(
-        link: DropdownOptions.layerLinks[type]!,
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            constraints: const BoxConstraints(minWidth: _kMinDropdownWidth),
-            height: _kDropdownItemHeight,
-            padding: _kDropdownItemPadding,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isActive ? AppColors.blue300 : AppColors.gray100,
-              ),
-              borderRadius: BorderRadius.circular(_kDropdownBorderRadius),
-              color: isActive ? AppColors.blue50 : AppColors.white,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: _kTextFontSize,
-                    color: isActive ? AppColors.blue300 : AppColors.gray300,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Icon(
-                  Icons.arrow_drop_down,
-                  size: _kIconSize,
-                  color: isActive ? AppColors.blue300 : AppColors.gray300,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
