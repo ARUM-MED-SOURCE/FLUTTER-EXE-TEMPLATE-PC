@@ -137,4 +137,58 @@ class DateRangePickerField extends StatelessWidget {
       },
     );
   }
+}
+
+class _DatePickerFieldState extends State<DatePickerField> {
+  @override
+  Widget build(BuildContext context) {
+    final effectiveDate = widget.selectedDate ?? DateTime.now();
+    
+    return InkWell(
+      onTap: () => _showDatePicker(context),
+      child: Container(
+        height: 38,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.gray100),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Text(
+                widget.dateFormat.format(effectiveDate),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppColors.gray300,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.calendar_today,
+              size: 20,
+              color: AppColors.gray300,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDatePicker(BuildContext context) {
+    showDatePicker(
+      context: context,
+      initialDate: widget.selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2030, 12, 31),
+      locale: const Locale('ko', 'KR'),
+    ).then((picked) {
+      if (picked != null) {
+        widget.onDateSelected(picked);
+      }
+    });
+  }
 } 

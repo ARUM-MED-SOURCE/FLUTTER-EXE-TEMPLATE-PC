@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/CustomTextFormField.dart';
 import 'package:flutter_exe/components/common/DatePickerField.dart';
+import 'package:flutter_exe/components/common/Dropdown.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,20 +20,6 @@ class Sidebar extends ConsumerStatefulWidget {
 }
 
 class _SidebarState extends ConsumerState<Sidebar> {
-  OverlayEntry? _overlayEntry;
-  SidebarDropdownType? _activeDropdown;
-  final Map<SidebarDropdownType, LayerLink> _layerLinks = {
-    SidebarDropdownType.department: LayerLink(),
-    SidebarDropdownType.ward: LayerLink(),
-    SidebarDropdownType.doctor: LayerLink(),
-  };
-  
-  final Map<SidebarDropdownType, GlobalKey> _dropdownKeys = {
-    SidebarDropdownType.department: GlobalKey(),
-    SidebarDropdownType.ward: GlobalKey(),
-    SidebarDropdownType.doctor: GlobalKey(),
-  };
-
   final Map<SidebarDropdownType, String> _selectedValues = {
     SidebarDropdownType.department: '신경과',
     SidebarDropdownType.ward: '병동',
@@ -44,152 +31,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
     SidebarDropdownType.ward: ['병동'],
     SidebarDropdownType.doctor: ['주치의'],
   };
-
-  @override
-  void dispose() {
-    if (mounted) {
-      _overlayEntry?.remove();
-      _overlayEntry = null;
-    }
-    super.dispose();
-  }
-
-  void _removeOverlay() {
-    if (!mounted) return;
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-    setState(() {
-      _activeDropdown = null;
-    });
-  }
-
-  void _showOverlay(SidebarDropdownType type) {
-    _removeOverlay();
-    setState(() {
-      _activeDropdown = type;
-    });
-    
-    final RenderBox renderBox = _dropdownKeys[type]!.currentContext!.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-    
-    _overlayEntry = _createOverlayEntry(type, size.width);
-    Overlay.of(context).insert(_overlayEntry!);
-  }
-
-  OverlayEntry _createOverlayEntry(SidebarDropdownType type, double width) {
-    final items = _options[type]!;
-    final selectedValue = _selectedValues[type]!;
-    final layerLink = _layerLinks[type]!;
-
-    return OverlayEntry(
-      builder: (context) => Stack(
-        children: [
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: _removeOverlay,
-              child: Container(
-                color: Colors.transparent,
-              ),
-            ),
-          ),
-          Positioned(
-            width: width,
-            child: CompositedTransformFollower(
-              link: layerLink,
-              showWhenUnlinked: false,
-              offset: const Offset(0, 40),
-              child: Material(
-                elevation: 4,
-                borderRadius: BorderRadius.circular(4),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: items.map((item) => _buildDropdownItem(item, selectedValue, type)).toList(),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDropdownItem(String item, String selectedValue, SidebarDropdownType type) {
-    final isSelected = item == selectedValue;
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _selectedValues[type] = item;
-          _activeDropdown = null;
-        });
-        _removeOverlay();
-      },
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.blue50 : Colors.transparent,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Text(
-          item,
-          style: TextStyle(
-            fontSize: 14,
-            color: isSelected ? AppColors.blue300 : AppColors.gray300,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownButton(SidebarDropdownType type) {
-    final isActive = _activeDropdown == type;
-    final value = _selectedValues[type]!;
-
-    return CompositedTransformTarget(
-      link: _layerLinks[type]!,
-      child: Container(
-        key: _dropdownKeys[type],
-        child: InkWell(
-          onTap: () => _showOverlay(type),
-          child: Container(
-            height: 38,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: isActive ? AppColors.blue300 : AppColors.gray100,
-              ),
-              borderRadius: BorderRadius.circular(4),
-              color: isActive ? AppColors.blue50 : AppColors.white,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    value,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: isActive ? AppColors.blue300 : AppColors.gray300,
-                    ),
-                  ),
-                ),
-                Icon(
-                  Icons.arrow_drop_down,
-                  size: 20,
-                  color: isActive ? AppColors.blue300 : AppColors.gray300,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -255,39 +96,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('환자번호',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.gray500,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  CustomTextFormField(
-                    hintText: '환자번호를 입력해주세요',
-                    initialValue: '',
-                    onChanged: (value) {},
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    isDense: true,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: AppColors.blue50,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: AppColors.gray100),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide(color: AppColors.blue300),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
                   const Text('진료과/병동/주치의 선택',
                     style: TextStyle(
                       fontSize: 14,
@@ -298,13 +106,52 @@ class _SidebarState extends ConsumerState<Sidebar> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Expanded(child: _buildDropdownButton(SidebarDropdownType.department)),
+                      Expanded(
+                        child: Dropdown<String>(
+                          value: _selectedValues[SidebarDropdownType.department]!,
+                          items: _options[SidebarDropdownType.department]!,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedValues[SidebarDropdownType.department] = value;
+                            });
+                          },
+                          itemBuilder: (value) => value,
+                        ),
+                      ),
                       const SizedBox(width: 8),
-                      Expanded(child: _buildDropdownButton(SidebarDropdownType.ward)),
+                      Expanded(
+                        child: Dropdown<String>(
+                          value: _selectedValues[SidebarDropdownType.ward]!,
+                          items: _options[SidebarDropdownType.ward]!,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedValues[SidebarDropdownType.ward] = value;
+                            });
+                          },
+                          itemBuilder: (value) => value,
+                          width: 200,
+                          minWidth: 200,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  _buildDropdownButton(SidebarDropdownType.doctor),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Dropdown<String>(
+                          value: _selectedValues[SidebarDropdownType.doctor]!,
+                          items: _options[SidebarDropdownType.doctor]!,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedValues[SidebarDropdownType.doctor] = value;
+                      });
+                    },
+                          itemBuilder: (value) => value,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               const SizedBox(height: 16),
@@ -325,30 +172,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
                     dateFormat: DateFormat('yyyy-MM-dd'),
                     onStartDateSelected: (value) {},
                     onEndDateSelected: (value) {},
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('방문유형',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.gray500,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 16,
-                    runSpacing: 8,
-                    children: [
-                      _buildRadioButton('전체', '전체', true),
-                      _buildRadioButton('입원', '전체', false),
-                      _buildRadioButton('외래', '전체', false),
-                      _buildRadioButton('응급', '전체', false),
-                    ],
                   ),
                 ],
               ),
@@ -539,21 +362,6 @@ class _SidebarState extends ConsumerState<Sidebar> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildRadioButton(String label, String groupValue, bool isSelected) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Radio(
-          value: label,
-          groupValue: isSelected ? label : groupValue,
-          onChanged: (value) {},
-          activeColor: AppColors.blue400,
-        ),
-        Text(label, style: const TextStyle(color: AppColors.gray500)),
-      ],
     );
   }
 
