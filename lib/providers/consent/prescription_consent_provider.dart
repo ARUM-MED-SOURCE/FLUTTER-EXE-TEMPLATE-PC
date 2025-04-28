@@ -2,7 +2,7 @@ import 'package:flutter_exe/constants/api_method.dart';
 import 'package:flutter_exe/constants/api_pc_config.dart';
 import 'package:flutter_exe/constants/key.dart';
 import 'package:flutter_exe/model/common/consent_list_model.dart';
-import 'package:flutter_exe/model/common/conset_model.dart';
+import 'package:flutter_exe/model/common/consent_model.dart';
 import 'package:flutter_exe/model/prescription_consent_data.dart';
 import 'package:flutter_exe/providers/consent/consent_list_provider.dart';
 import 'package:flutter_exe/providers/secure_storage.dart';
