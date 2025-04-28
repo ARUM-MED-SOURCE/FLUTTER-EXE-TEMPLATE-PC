@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/components/common/CustomTextFormField.dart';
 import 'package:flutter_exe/components/common/DatePickerField.dart';
+import 'package:flutter_exe/constants/colors.dart';
+import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 enum SidebarDropdownType { department, ward, doctor }
 
-class Sidebar extends StatefulWidget {
+class Sidebar extends ConsumerStatefulWidget {
   const Sidebar({super.key});
 
   @override
-  State<Sidebar> createState() => _SidebarState();
+  ConsumerState<Sidebar> createState() => _SidebarState();
 }
 
-class _SidebarState extends State<Sidebar> {
+class _SidebarState extends ConsumerState<Sidebar> {
   OverlayEntry? _overlayEntry;
   SidebarDropdownType? _activeDropdown;
   final Map<SidebarDropdownType, LayerLink> _layerLinks = {
@@ -440,7 +445,10 @@ class _SidebarState extends State<Sidebar> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: OutlinedButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  logger.i('ee');
+                                  // ref.read(writtenConsentProvider.notifier).getData();
+                                },
                                 icon: const Icon(Icons.search, size: 18, color: AppColors.blue400),
                                 label: const Text('검색',
                                   style: TextStyle(
@@ -500,7 +508,9 @@ class _SidebarState extends State<Sidebar> {
                             SizedBox(
                               width: 90,  // 버튼 너비 축소
                               child: OutlinedButton.icon(
-                                onPressed: () {},
+                                onPressed: () {
+                                  ref.read(writtenConsentProvider.notifier).getData();
+                                },
                                 icon: const Icon(Icons.search, size: 18, color: AppColors.blue400),
                                 label: const Text('검색',
                                   style: TextStyle(

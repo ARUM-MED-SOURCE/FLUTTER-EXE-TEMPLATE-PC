@@ -28,12 +28,13 @@ jobs:
     environment: ${{ needs.set-environment.outputs.environment }}
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [windows-latest]
+#          , macos-latest]
         include:
           - os: windows-latest
             build: windows
-          - os: macos-latest
-            build: macos
+#          - os: macos-latest
+#            build: macos
     runs-on: ${{ matrix.os }}
     needs: [set-environment]
     steps:
@@ -64,13 +65,13 @@ jobs:
           name: windows-release
           path: build/windows/x64/runner/Release/
           
-      - name: Upload macOS artifact
-        if: matrix.os == 'macos-latest'
-        id: upload-macos-artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-release
-          path: build/macos/Build/Products/Release/
+#      - name: Upload macOS artifact
+#        if: matrix.os == 'macos-latest'
+#        id: upload-macos-artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: macos-release
+#          path: build/macos/Build/Products/Release/
 
       - name: Notify Slack on Success
         if: always()

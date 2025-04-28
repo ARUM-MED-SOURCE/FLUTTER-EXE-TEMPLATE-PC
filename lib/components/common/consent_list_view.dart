@@ -24,9 +24,9 @@ class ConsentListView<T extends ConsentModel> extends ConsumerStatefulWidget {
 
   const ConsentListView({
     super.key,
+    required this.title,
     required this.provider,
     required this.itemBuilder,
-    required this.title,
     this.header,
     this.itemCount,
     this.physics,

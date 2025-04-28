@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'MainComponent.dart';
 import 'consent/ConsentSearch.dart';
-import 'consent/QuickViewUI.dart';
+import 'consent/quickview/QuickViewUI.dart';
 import 'consent/quickview/Sidebar.dart';
 
 class ConsentRouter extends ConsumerWidget {
@@ -52,7 +52,7 @@ class _QuickViewComponent extends StatelessWidget {
     return Container(
       color: AppColors.blue50,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             flex: 1,
