@@ -14,7 +14,7 @@ class MainBody extends StatelessWidget {
     return Container(
       color: AppColors.blue50,
       child: const Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: PatientInfo(),

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_exe/model/common/consent_list_model.dart';
-import 'package:flutter_exe/model/common/conset_model.dart';
+import 'package:flutter_exe/model/common/consent_model.dart';
 import 'package:flutter_exe/repositories/consent/consent_list_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';

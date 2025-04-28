@@ -1,4 +1,4 @@
-import 'package:flutter_exe/model/common/conset_model.dart';
+import 'package:flutter_exe/model/common/consent_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'search_consent_data.freezed.dart';

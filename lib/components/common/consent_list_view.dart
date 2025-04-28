@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exe/components/common/Skeleton.dart';
 import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/model/common/consent_list_model.dart';
-import 'package:flutter_exe/model/common/conset_model.dart';
+import 'package:flutter_exe/model/common/consent_model.dart';
 import 'package:flutter_exe/providers/consent/consent_list_provider.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,18 +37,19 @@ class ConsentListView<T extends ConsentModel> extends ConsumerStatefulWidget {
   ConsumerState<ConsentListView> createState() => _ConsentListViewState<T>();
 }
 
-class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<ConsentListView> {
-
+class _ConsentListViewState<T extends ConsentModel>
+    extends ConsumerState<ConsentListView> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(widget.provider);
 
     return Info(
       card: InfoCard(
-        header: widget.header ?? InfoHeader(
-          title: widget.title,
-          titleStyle: Theme.of(context).textTheme.titleLarge,
-        ),
+        header: widget.header ??
+            InfoHeader(
+              title: widget.title,
+              titleStyle: Theme.of(context).textTheme.titleLarge,
+            ),
         body: _buildBody(state) as InfoList<dynamic>,
         backgroundColor: AppColors.white,
         isRound: true,
@@ -130,8 +131,11 @@ class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<Consen
       backgroundColor: AppColors.white,
       contentPadding: EdgeInsets.zero,
       items: List<T>.empty(),
-      buildItem: (_) => const ConsentSkeletonItem(),
-      buildEmptyItem: (_, __) => const ConsentSkeletonItem(),
+      buildItem: (_) => const SizedBox(),
+      buildEmptyItem: (_, __) => createSkeletonList(
+        itemBuilder: (BuildContext context) => const ConsentSkeletonItem(),
+        itemCount: 3,
+      ),
     );
   }
 
@@ -145,14 +149,13 @@ class _ConsentListViewState<T extends ConsentModel> extends ConsumerState<Consen
       contentPadding: EdgeInsets.zero,
       items: state.resultData,
       shrinkWrap: widget.shrinkWrap,
-      separatorBuilder: (context,index)=> const SizedBox(),
+      separatorBuilder: (context, index) => const SizedBox(),
       physics: widget.physics ?? const BouncingScrollPhysics(),
       itemDecoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: AppColors.gray100,
-          )
-        ),
+            bottom: BorderSide(
+          color: AppColors.gray100,
+        )),
       ),
       buildItem: (T item) => widget.itemBuilder(
         context,

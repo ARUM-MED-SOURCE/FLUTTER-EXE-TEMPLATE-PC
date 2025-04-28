@@ -7,6 +7,8 @@ import 'package:flutter_exe/constants/colors.dart';
 import 'package:flutter_exe/model/search_consent_data.dart';
 import 'package:flutter_exe/providers/search_consent_keyword_provider.dart';
 import 'package:flutter_exe/providers/consent/search_consent_provider.dart';
+import 'package:flutter_exe/providers/selected_consents_provider.dart';
+import 'package:flutter_exe/providers/selected_favorite_consents_provider.dart';
 import 'package:flutter_exe/providers/selected_option_provider.dart';
 import 'package:flutter_list_ui/flutter_list_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +19,8 @@ class ConsentSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConsentListView(
+      title: '동의서 검색',
+      header: const _ConsentSearchHeader(title: '동의서 검색'),
       provider: searchConsentProvider,
       itemBuilder: <SearchConsentData>(_, index, model) {
         return GestureDetector(
@@ -24,13 +28,11 @@ class ConsentSearch extends StatelessWidget {
           child: SearchConsentItem.fromModel(model: model),
         );
       },
-      title: '',
-      header: const _ConsentSearchHeader(title: '동의서 검색'),
     );
   }
 }
 
-class SearchConsentItem extends StatelessWidget {
+class SearchConsentItem extends ConsumerWidget {
   final SearchConsentData model;
 
   const SearchConsentItem({
@@ -45,13 +47,21 @@ class SearchConsentItem extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return CheckableConsentItem(
-      name: model.formName ?? "",
+  Widget build(BuildContext context,WidgetRef ref) {
+    return FavoriteConsentItem(
+      name: model.formName!,
       id: model.formId.toString(),
-      isSelected: true,
-      onSelected: () {},
-    );
+      isSelected: ref.watch(selectedConsentsProvider).contains(model.formId.toString()),
+      isFavorite: ref.watch(selectedFavoriteConsentsProvider).contains(model.formId.toString()),
+      onSelected: () {
+        final notifier = ref.read(selectedConsentsProvider.notifier);
+        notifier.toggleConsent(model.formId.toString());
+      },
+      onFavoriteToggled: () {
+        final notifier = ref.read(selectedFavoriteConsentsProvider.notifier);
+        notifier.toggleConsent(model.formId.toString());
+      },
+    );;
   }
 }
 

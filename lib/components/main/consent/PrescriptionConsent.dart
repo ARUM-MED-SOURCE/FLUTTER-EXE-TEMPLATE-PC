@@ -13,6 +13,7 @@ class PrescriptionConsent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConsentListView(
+      title: '처방동의서',
       provider: prescriptionConsentProvider,
       itemBuilder: <PrescriptionConsentData>(_, index, model) {
         return MouseRegion(
@@ -25,7 +26,6 @@ class PrescriptionConsent extends StatelessWidget {
           ),
         );
       },
-      title: '처방동의서',
     );
   }
 }
