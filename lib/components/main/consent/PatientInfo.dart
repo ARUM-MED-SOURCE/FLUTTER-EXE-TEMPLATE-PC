@@ -5,6 +5,7 @@ import 'package:flutter_exe/model/patient_info_response.dart';
 import 'package:flutter_exe/providers/consent/patient_info_provider.dart';
 import 'package:flutter_exe/providers/consent/prescription_consent_provider.dart';
 import 'package:flutter_exe/providers/consent/written_consent_provider.dart';
+import 'package:flutter_exe/providers/consent/selected_patient_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
@@ -25,7 +26,8 @@ class PatientInfo extends ConsumerWidget {
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
             onTap: () {
-              logger.i("처방동의서 및 작성동의서 조회 ${index}");
+              // 환자 선택 시 동의서 정보를 가져옵니다
+              ref.read(selectedPatientProvider.notifier).selectPatient(model);
               ref.read(prescriptionConsentProvider.notifier).getData();
               ref.read(writtenConsentProvider.notifier).getData();
             },

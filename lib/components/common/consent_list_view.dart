@@ -117,7 +117,7 @@ class _ConsentListViewState<T extends ConsentModel>
               ),
             ),
             IconButton(
-              onPressed: () => ref.invalidate(widget.provider),
+              onPressed: () => ref.read(widget.provider.notifier).retry(),
               icon: const Icon(Icons.refresh),
             ),
           ],
