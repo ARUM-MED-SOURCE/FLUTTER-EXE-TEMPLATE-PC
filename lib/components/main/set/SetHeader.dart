@@ -56,7 +56,7 @@ class SetHeader extends StatelessWidget {
                       _buildToolbarButton(
                         icon: Icons.create_new_folder,
                         label: '서식그룹 등록',
-                        onPressed: onRegister,
+                        onPressed: () => _showFolderNameDialog(context),
                       ),
                       _buildToolbarButton(
                         icon: Icons.delete,
@@ -93,6 +93,56 @@ class SetHeader extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  void _showFolderNameDialog(BuildContext context) {
+    String folderName = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('서식그룹 등록'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('생성할 폴더 이름을 입력해주세요.'),
+              const SizedBox(height: 16),
+              TextField(
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: '폴더 이름',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  folderName = value;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();  // TODO 추가 예정
+              },
+              child: const Text('취소'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // TODO 추가 예정
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.blue400,
+              ),
+              child: const Text(
+                '등록',
+                style: TextStyle(color: AppColors.white),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
