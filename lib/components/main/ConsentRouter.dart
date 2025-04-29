@@ -62,9 +62,12 @@ class _QuickViewComponent extends StatelessWidget {
               child: const Sidebar(),
             ),
           ),
-          const Expanded(
+          Expanded(
             flex: 2,
-            child: QuickViewUI(),
+            child: Container(
+              color: AppColors.white,
+              child: QuickViewUI(),
+            ),
           ),
         ],
       ),
