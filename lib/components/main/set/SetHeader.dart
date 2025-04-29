@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_exe/components/common/Dropdown.dart';
 import 'package:flutter_exe/constants/colors.dart';
 
 // Constants
 const _kDropdownItemPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 const _kThickness = 4.0;
 const _kIconSize = 18.0;
+
+enum SetHeaderDropdownType { department, ward }
 
 class SetHeader extends StatefulWidget {
   final VoidCallback onRegister;
@@ -22,6 +25,16 @@ class SetHeader extends StatefulWidget {
 
 class _SetHeaderState extends State<SetHeader> {
   final ScrollController _scrollController = ScrollController();
+
+  final Map<SetHeaderDropdownType, String> _selectedValues = {
+    SetHeaderDropdownType.department: '신경과',
+    SetHeaderDropdownType.ward: '병동'
+  };
+
+  final Map<SetHeaderDropdownType, List<String>> _options = {
+    SetHeaderDropdownType.department: ['신경과', '소화기과'],
+    SetHeaderDropdownType.ward: ['병동'],
+  };
 
   @override
   void dispose() {
@@ -53,13 +66,16 @@ class _SetHeaderState extends State<SetHeader> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Text('과별  '),
-                      DropdownButton<String>(
-                        value: '병동',
-                        items: const [
-                          DropdownMenuItem(value: '병동', child: Text('병동')),
-                          DropdownMenuItem(value: '외래', child: Text('외래')),
-                        ],
-                        onChanged: (value) {},
+                      Dropdown<String>(
+                        value: _selectedValues[SetHeaderDropdownType.department]!,
+                        items: _options[SetHeaderDropdownType.department]!,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedValues[SetHeaderDropdownType.department] =
+                                value;
+                          });
+                        },
+                        itemBuilder: (value) => value
                       ),
                       const SizedBox(width: 16),
                       _buildToolbarButton(
@@ -91,7 +107,8 @@ class _SetHeaderState extends State<SetHeader> {
                           ElevatedButton(
                             onPressed: widget.onRegister,
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.blue400),
+                              backgroundColor: AppColors.blue400,
+                            ),
                             child: const Text(
                               '서식등록',
                               style: TextStyle(color: AppColors.white),
@@ -138,13 +155,13 @@ class _SetHeaderState extends State<SetHeader> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();  // TODO 추가 예정
+                Navigator.of(context).pop(); // TODO: 기능 추가 예정
               },
               child: const Text('취소'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // TODO 추가 예정
+                Navigator.of(context).pop(); // TODO: 기능 추가 예정
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.blue400,
